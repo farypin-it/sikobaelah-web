@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Landasan Regulasi & Dasar Hukum - SiKoBaELah</title>
+    <link rel="icon" type="image/png" href="./src/assets/img/sikobaelah.png">
+    <meta http-equiv="refresh" content="0; url=./src/dasar-hukum.html">
+    <script>
+        (function () {
+            var target = './src/dasar-hukum.html' + (window.location.search || '') + (window.location.hash || '');
+            window.location.replace(target);
+        })();
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ff007a, #7000ff, #0055ff, #00d2ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .loader-card {
+            background: rgba(255, 255, 255, 0.92);
+            color: #0f172a;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 32px;
+            border-radius: 28px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            max-width: 440px;
+            width: 100%;
+        }
+
+        .logo-pulse {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 18px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .logo-pulse img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            margin-bottom: 6px;
+            color: #0f172a;
+        }
+
+        p {
+            font-size: 0.90rem;
+            color: #64748b;
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+
+        .btn-enter {
+            display: inline-block;
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 20px rgba(13, 110, 253, 0.35);
+            transition: all 0.3s;
+        }
+
+        .btn-enter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader-card">
+        <div class="logo-pulse">
+            <img src="./src/assets/img/sikobaelah.png" alt="Logo SiKoBaELah">
+        </div>
+        <h1>Landasan Regulasi & Dasar Hukum</h1>
+        <p>Sistem Kolaboratif berBasis Elektronik Sekolah (SiKoBaELah)<br>Memuat regulasi...</p>
+        <a href="./src/dasar-hukum.html" class="btn-enter">Buka Halaman Dasar Hukum</a>
+    </div>
+</body>
+
+</html>

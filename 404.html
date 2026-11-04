@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengarahkan ke portal sekolah</title>
+</head>
+<body>
+    <p>Membuka portal sekolah...</p>
+    <script>
+        (function () {
+            var parts = window.location.pathname.split('/').filter(Boolean);
+            var schoolId = parts.pop() || '';
+            var basePath = parts.length ? '/' + parts.join('/') + '/' : './';
+            if (!schoolId || /\.[a-z0-9]+$/i.test(schoolId)) {
+                window.location.replace(basePath || './');
+                return;
+            }
+
+            var params = new URLSearchParams(window.location.search);
+            try {
+                params.set('id', decodeURIComponent(schoolId));
+            } catch (error) {
+                window.location.replace(basePath);
+                return;
+            }
+            window.location.replace(basePath + '?' + params.toString());
+        })();
+    </script>
+</body>
+</html>

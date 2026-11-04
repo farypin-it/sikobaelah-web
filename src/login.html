@@ -1,0 +1,3402 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Dashboard & Database Manager - SiKoBaELah</title>
+    <link rel="icon" type="image/png" href="./assets/img/sikobaelah.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Philosopher:wght@400;700&display=swap" rel="stylesheet">
+    <script src="./assets/js/portal-database.js?v=20261104-school-data-mobile-fix"></script>
+
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --primary-hover: #0b5ed7;
+            --secondary: #0dcaf0;
+            --accent-pink: #ff007a;
+            --accent-purple: #7000ff;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.94);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1, h2, h3, h4, .brand-title {
+            font-family: 'Philosopher', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ff007a, #7000ff, #0055ff, #00d2ff);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 50px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- LOGIN CARD CONTAINER --- */
+        #loginContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 42px 36px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-logo {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 15px;
+            filter: drop-shadow(0 6px 15px rgba(13, 110, 253, 0.35));
+        }
+
+        .login-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .login-subtitle {
+            font-size: 0.88rem;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            font-size: 0.92rem;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.18);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .password-input-wrapper .form-input {
+            padding-right: 48px;
+        }
+
+        .btn-toggle-eye {
+            position: absolute;
+            right: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            border-radius: 8px;
+            transition: all 0.2s;
+            user-select: none;
+            line-height: 0;
+        }
+
+        .btn-toggle-eye:hover {
+            color: #0d6efd;
+            background: rgba(13, 110, 253, 0.08);
+        }
+
+        .btn-toggle-eye svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            pointer-events: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.35);
+            transition: all 0.25s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.5);
+        }
+
+        .is-loading {
+            cursor: wait !important;
+            opacity: 0.8;
+        }
+
+        .is-loading::before {
+            content: '';
+            display: inline-block;
+            width: 0.85em;
+            height: 0.85em;
+            margin-right: 8px;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            vertical-align: -0.12em;
+            animation: button-spin 0.7s linear infinite;
+        }
+
+        @keyframes button-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .school-save-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+            color: #334155;
+            font-size: 0.92rem;
+        }
+
+        .school-save-status[hidden] {
+            display: none;
+        }
+
+        .school-save-spinner {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 18px;
+            border: 2px solid #bfdbfe;
+            border-top-color: #0d6efd;
+            border-radius: 50%;
+            animation: school-save-spin 0.75s linear infinite;
+        }
+
+        @keyframes school-save-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-back-portal {
+            display: inline-block;
+            margin-top: 18px;
+            font-size: 0.88rem;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .btn-back-portal:hover {
+            color: var(--primary);
+        }
+
+        /* --- DASHBOARD CONTAINER --- */
+        #dashboardContainer {
+            display: none;
+            width: 100%;
+            max-width: 1280px;
+            padding: 20px 24px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* TOP NAVIGATION BAR */
+        .dash-nav {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dash-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dash-brand img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .dash-brand-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+
+        .dash-brand-subtitle {
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .dash-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border-radius: 50px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: all 0.25s;
+        }
+
+        .btn-nav-portal {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .btn-nav-portal:hover {
+            background: #bae6fd;
+            transform: translateY(-2px);
+        }
+
+        .btn-nav-sync {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .btn-nav-sync:hover {
+            background: #bbf7d0;
+            transform: translateY(-2px);
+        }
+
+        .btn-nav-logout {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-nav-logout:hover {
+            background: #fecaca;
+            transform: translateY(-2px);
+        }
+
+        /* DASHBOARD TABS */
+        .dash-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .dash-tab-btn {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px 24px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .dash-tab-btn:hover {
+            background: #ffffff;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .dash-tab-btn.active {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: #ffffff;
+            box-shadow: 0 6px 18px rgba(13, 110, 253, 0.35);
+            border-color: transparent;
+        }
+
+        /* TAB PANELS */
+        .tab-panel {
+            display: none;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 32px 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .panel-title {
+            font-size: 1.45rem;
+            color: #0f172a;
+        }
+
+        .panel-desc {
+            font-size: 0.88rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .btn-add-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(13, 110, 253, 0.3);
+            transition: all 0.25s;
+        }
+
+        .btn-add-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.45);
+        }
+
+        /* DATA TABLES */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.90rem;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+            padding: 12px 14px;
+            border-bottom: 1.5px solid #cbd5e1;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+            vertical-align: middle;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .school-editor-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 0 0 20px;
+        }
+
+        .school-editor-tab {
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 9px 16px;
+            background: #ffffff;
+            color: #475569;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .school-editor-tab.active {
+            color: #ffffff;
+            border-color: transparent;
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+        }
+
+        .school-app-config {
+            display: grid;
+            grid-template-columns: minmax(150px, 1fr) minmax(220px, 2fr);
+            gap: 12px;
+            align-items: center;
+        }
+
+        .school-logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            grid-column: 1 / -1;
+        }
+
+        .school-logo-upload {
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .school-logo-preview {
+            display: block;
+            width: 96px;
+            height: 96px;
+            object-fit: contain;
+            margin: 0 0 12px;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .school-logo-upload-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .school-logo-upload-actions .btn-add-primary {
+            margin: 0;
+        }
+
+        .logo-mode-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .btn-logo-mode {
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: #f1f5f9;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-logo-mode.active {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 2px 6px rgba(13, 110, 253, 0.25);
+        }
+
+        .logo-crop-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10050;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(15, 23, 42, .72);
+        }
+
+        .logo-crop-modal.show {
+            display: flex;
+        }
+
+        .logo-crop-card {
+            width: min(100%, 460px);
+            padding: 22px;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, .35);
+        }
+
+        .logo-crop-viewport {
+            width: min(100%, 320px);
+            aspect-ratio: 1;
+            margin: 16px auto;
+            overflow: hidden;
+            border: 2px solid #0d6efd;
+            border-radius: 12px;
+            background-color: #e2e8f0;
+            background-image: linear-gradient(45deg, #cbd5e1 25%, transparent 25%), linear-gradient(-45deg, #cbd5e1 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cbd5e1 75%), linear-gradient(-45deg, transparent 75%, #cbd5e1 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+            touch-action: none;
+            cursor: grab;
+        }
+
+        .logo-crop-viewport:active {
+            cursor: grabbing;
+        }
+
+        #logoCropCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-crop-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .logo-crop-actions button {
+            min-height: 42px;
+            padding: 9px 16px;
+            border: 0;
+            border-radius: 10px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .logo-crop-cancel {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .logo-crop-apply {
+            background: linear-gradient(135deg, #0d6efd, #7000ff);
+            color: #fff;
+        }
+
+        .school-app-config input[type="text"],
+        .school-app-config input[type="url"] {
+            width: 100%;
+            min-width: 180px;
+            padding: 9px 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 640px) {
+            .school-editor-tabs,
+            .school-app-config {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-active {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-dev {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .btn-action-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            color: #475569;
+        }
+
+        .btn-action-icon:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-action-icon.btn-delete:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* ============ TOMBOL AKSI MODERN (ikon SVG + gradasi) ============ */
+        .aksi-group {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .aksi-btn {
+            --c1: #6366f1;
+            --c2: #4338ca;
+            --glow: rgba(99, 102, 241, 0.35);
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 14px 7px 8px;
+            border: none;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            line-height: 1;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--c1), var(--c2));
+            box-shadow: 0 3px 10px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+            white-space: nowrap;
+        }
+        .aksi-btn .aksi-ico {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            flex: 0 0 auto;
+            transition: transform 0.25s ease, background 0.2s;
+        }
+        .aksi-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .aksi-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            filter: brightness(1.06);
+        }
+        .aksi-btn:hover .aksi-ico {
+            background: rgba(255, 255, 255, 0.34);
+            transform: rotate(-8deg) scale(1.08);
+        }
+        .aksi-btn:active { transform: translateY(0) scale(0.97); }
+        .aksi-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+        .aksi-btn:focus-visible { outline: 3px solid rgba(13, 110, 253, 0.35); outline-offset: 2px; }
+        .aksi-buka  { --c1: #3b82f6; --c2: #1d4ed8; --glow: rgba(37, 99, 235, 0.38); }
+        .aksi-web   { --c1: #10b981; --c2: #047857; --glow: rgba(5, 150, 105, 0.36); }
+        .aksi-edit  { --c1: #fbbf24; --c2: #d97706; --glow: rgba(217, 119, 6, 0.36); color: #3b2300; }
+        .aksi-edit .aksi-ico { background: rgba(255, 255, 255, 0.38); }
+        .aksi-hapus { --c1: #f87171; --c2: #dc2626; --glow: rgba(220, 38, 38, 0.36); }
+        .aksi-tambah { --c1: #8b5cf6; --c2: #6d28d9; --glow: rgba(109, 40, 217, 0.36); }
+        .aksi-btn.aksi-compact { padding: 6px 8px; }
+        .aksi-btn.aksi-compact .aksi-label { display: none; }
+        .btn-add-primary svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* TOMBOL AKSI TABEL DAFTAR SEKOLAH (MODERN PILL BADGES) */
+        .btn-school-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            line-height: 1.2;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .btn-school-action:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-school-open {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #bfdbfe;
+        }
+        .btn-school-open:hover {
+            background: #1d4ed8;
+            color: #ffffff;
+            border-color: #1d4ed8;
+        }
+        .btn-school-visit {
+            background: #ecfdf5;
+            color: #047857;
+            border-color: #a7f3d0;
+        }
+        .btn-school-visit:hover {
+            background: #047857;
+            color: #ffffff;
+            border-color: #047857;
+        }
+        .btn-school-edit {
+            background: #fffbeb;
+            color: #b45309;
+            border-color: #fde68a;
+        }
+        .btn-school-edit:hover {
+            background: #b45309;
+            color: #ffffff;
+            border-color: #b45309;
+        }
+        .btn-school-delete {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+        .btn-school-delete:hover {
+            background: #b91c1c;
+            color: #ffffff;
+            border-color: #b91c1c;
+        }
+
+        /* MODAL DIALOG */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 32px 30px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-title {
+            font-size: 1.35rem;
+            color: #0f172a;
+        }
+
+        .modal-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+            border: none;
+            background: none;
+        }
+
+        .modal-close:hover {
+            color: #0f172a;
+        }
+
+        
+        /* LOGO & THEME PREVIEWS */
+        .logo-preview-box {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+        }
+        .logo-preview-box img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+        .logo-preview-box span {
+            font-size: 0.8rem;
+            color: #475569;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .color-picker-input {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1.5px solid #cbd5e1;
+            cursor: pointer;
+            padding: 2px;
+            background: #ffffff;
+            flex-shrink: 0;
+        }
+        .btn-preset-color {
+            padding: 6px 14px;
+            border-radius: 50px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-preset-color:hover {
+            border-color: #0d6efd;
+            color: #0d6efd;
+            background: #f0f7ff;
+            transform: translateY(-1px);
+        }
+        .theme-live-preview-box {
+            width: 100%;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: background 0.3s ease;
+        }
+        .btn-action-gps, .btn-action-maps {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-action-gps {
+            background: #0d6efd;
+            color: #ffffff;
+        }
+        .btn-action-gps:hover {
+            background: #0b5ed7;
+            transform: translateY(-2px);
+        }
+        .btn-action-maps {
+            background: #10b981;
+            color: #ffffff;
+        }
+        .btn-action-maps:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        /* TOAST NOTIFIKASI */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 14px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            font-size: 0.92rem;
+            font-weight: 600;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success { background: #059669; }
+        .toast.error { background: #dc2626; }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         1. TAMPILAN LOGIN SCREEN (OTENTIKASI ADMIN)
+         ========================================================= -->
+    <div id="loginContainer">
+        <div class="login-card">
+            <div class="login-logo">
+                <img id="loginLogoImg" src="./assets/img/sikobaelah.png" alt="Logo SiKoBaELah">
+            </div>
+            <h1 class="login-title">Admin SiKoBaELah</h1>
+            <p class="login-subtitle">Masuk untuk mengelola data sekolah, modul aplikasi, dan dasar hukum.</p>
+
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label" for="loginUsername">Nama Pengguna (Username)</label>
+                    <input type="text" id="loginUsername" class="form-input" placeholder="Masukkan username" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Kata Sandi (Password)</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Masukkan password" required autocomplete="current-password">
+                        <button type="button" class="btn-toggle-eye" onclick="togglePasswordVisibility('loginPassword', this)" title="Lihat / Sembunyikan Password" tabindex="-1">
+                            <svg class="eye-open" viewBox="0 0 24 24">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            </svg>
+                            <svg class="eye-closed" viewBox="0 0 24 24" style="display:none;">
+                                <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnLoginSubmit" class="btn-submit">Masuk Dashboard</button>
+            </form>
+
+            <a href="index.html" class="btn-back-portal">&larr; Kembali ke Portal Publik</a>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         2. TAMPILAN DASHBOARD ADMIN (SETELAH LOGIN)
+         ========================================================= -->
+    <div id="dashboardContainer">
+        <!-- TOP NAV -->
+        <div class="dash-nav">
+            <div class="dash-brand">
+                <img src="./assets/img/sikobaelah.png" alt="Logo SiKoBaELah">
+                <div>
+                    <div class="dash-brand-title">SiKoBaELah Admin Panel</div>
+                    <div class="dash-brand-subtitle" id="dashSchoolSubtitle">SEMUA SEKOLAH</div>
+                </div>
+            </div>
+
+            <div class="dash-nav-actions">
+                <a href="index.html" target="_blank" class="btn-nav-action btn-nav-portal">
+                    <span>Lihat Portal</span>
+                    <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+                <button type="button" class="btn-nav-action btn-nav-sync" onclick="syncCloudNow(this)">
+                    <span>Sinkron Cloud</span>
+                </button>
+                <button type="button" class="btn-nav-action btn-nav-logout" onclick="handleLogout()">
+                    <span>Keluar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- TABS NAV -->
+        <div class="dash-tabs">
+            <button class="dash-tab-btn active" onclick="switchTab('tabDaftarSekolah', this)">
+                <span>🏫</span> Daftar Sekolah
+            </button>
+            <button class="dash-tab-btn" onclick="switchTab('tabSekolah', this)">
+                <span>🏢</span> Pengaturan Portal (Admin)
+            </button>
+            <button class="dash-tab-btn" onclick="switchTab('tabProfil', this)">
+                <span>👤</span> Profil Pengembang
+            </button>
+            <button class="dash-tab-btn" onclick="switchTab('tabAplikasi', this)">
+                <span>📱</span> Katalog Aplikasi
+            </button>
+            <button class="dash-tab-btn" onclick="switchTab('tabHukum', this)">
+                <span>⚖️</span> Daftar Dasar Hukum
+            </button>
+            <button class="dash-tab-btn" onclick="switchTab('tabKoneksi', this)">
+                <span>⚙️</span> Koneksi Spreadsheet (GAS)
+            </button>
+        </div>
+
+        <div id="tabDaftarSekolah" class="tab-panel active">
+            <div id="schoolListView">
+                <div class="panel-header">
+                    <div>
+                        <h2 class="panel-title">Daftar Sekolah</h2>
+                        <p class="panel-desc">Kelola sekolah dan buka pengaturan lembaga serta aplikasi masing-masing.</p>
+                    </div>
+                    <button type="button" class="btn-add-primary" onclick="bukaModalSekolah()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Tambah Sekolah</button>
+                </div>
+                <div id="schoolApiCompatibilityNotice" role="alert" hidden
+                    style="margin: 0 0 16px; padding: 14px 16px; border: 1px solid #fdba74; border-radius: 12px; background: #fff7ed; color: #9a3412; line-height: 1.5;">
+                    Deployment Apps Script yang dipakai Desktop belum mendukung API multi-sekolah. Buka proyek Apps Script yang terhubung ke Spreadsheet, salin isi <code>src/db kode gs/Code.gs</code>, lalu pilih <strong>Deploy &gt; Manage deployments &gt; Edit &gt; New version &gt; Deploy</strong>. Pastikan URL deployment yang aktif sama dengan URL pada tab Koneksi Spreadsheet.
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Sekolah</th>
+                                <th>ID URL</th>
+                                <th>Aplikasi Aktif</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodySekolah"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="schoolEditorView" style="display:none;">
+                <div class="panel-header">
+                    <div>
+                        <h2 class="panel-title" id="schoolEditorTitle">Pengaturan Sekolah</h2>
+                        <p class="panel-desc" id="schoolEditorUrl"></p>
+                    </div>
+                    <button type="button" class="btn-nav-action" onclick="kembaliKeDaftarSekolah()">← Daftar Sekolah</button>
+                </div>
+                <div class="school-editor-tabs">
+                    <button type="button" id="schoolEditorTabConfig" class="school-editor-tab active" onclick="switchSchoolEditorTab('config')">Data Lembaga (Sheet Sekolah)</button>
+                    <button type="button" id="schoolEditorTabApps" class="school-editor-tab" onclick="switchSchoolEditorTab('apps')">Modul Aplikasi (Sheet Aplikasi_Sekolah)</button>
+                </div>
+
+                <section id="schoolEditorConfigPanel">
+                    <form id="formSchoolConfig" onsubmit="event.preventDefault(); simpanDataLembagaSekolah(event.submitter);">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label class="form-label" for="schoolCfgNamaLengkap" style="font-weight:700;">Nama Lengkap Sekolah</label>
+                                <input id="schoolCfgNamaLengkap" class="form-input" type="text" placeholder="Contoh: SMA NEGERI 1 TEBO" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="schoolCfgPemprov">Instansi Induk / Pemerintah Provinsi</label>
+                                <input id="schoolCfgPemprov" class="form-input" type="text" placeholder="Contoh: PEMERINTAH PROVINSI JAMBI">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="schoolCfgAlamat">Alamat Sekolah</label>
+                                <input id="schoolCfgAlamat" class="form-input" type="text" placeholder="Contoh: Jl. Lintas Tebo - Bungo KM 08...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="schoolCfgWebsite">Website Sekolah</label>
+                                <input id="schoolCfgWebsite" class="form-input" type="text" inputmode="url"
+                                    placeholder="contoh: sekolah.sch.id atau https://sekolah.sch.id">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="schoolCfgEmail">Email Sekolah</label>
+                                <input id="schoolCfgEmail" class="form-input" type="email" placeholder="sekolah@gmail.com">
+                            </div>
+                            <div class="school-logo-grid">
+                                <div class="school-logo-upload">
+                                    <label class="form-label" style="font-weight:700;margin-bottom:6px;">Logo Instansi Induk</label>
+                                    
+                                    <!-- Toggle Mode Pilihan Logo Instansi -->
+                                    <div class="logo-mode-tabs">
+                                        <button type="button" class="btn-logo-mode active" id="tabLogoInstansiFile" onclick="setModeLogo('logo_instansi', 'file')">📁 Nama File (Cepat)</button>
+                                        <button type="button" class="btn-logo-mode" id="tabLogoInstansiUpload" onclick="setModeLogo('logo_instansi', 'upload')">📤 Upload Gambar</button>
+                                    </div>
+
+                                    <div style="display:flex;align-items:center;gap:12px;margin:10px 0;">
+                                        <img id="schoolCfgLogoInstansiPreview" class="school-logo-preview" alt="Pratinjau logo instansi" style="width:68px;height:68px;object-fit:contain;background:#fff;border-radius:12px;padding:4px;border:1px solid #cbd5e1;display:none;">
+                                        <div style="flex:1;">
+                                            <input id="schoolCfgLogoInstansi" type="text" class="form-input" placeholder="Contoh: logo prov jambi.png" oninput="handleLogoManualInput('logo_instansi', this.value)">
+                                        </div>
+                                    </div>
+
+                                    <!-- Panel File: Dropdown Pilihan Cepat -->
+                                    <div id="panelLogoInstansiFile" class="logo-mode-panel">
+                                        <select id="selectLogoInstansiQuick" class="form-input" onchange="handleLogoSelectChange('logo_instansi', this.value)">
+                                            <option value="">-- Pilih Logo Instansi Tersedia --</option>
+                                            <optgroup label="Pemerintah & Instansi">
+                                                <option value="logo prov jambi.png">Pemerintah Provinsi Jambi (Perisai / logo prov jambi.png)</option>
+                                                <option value="logo prov maluku utara.png">Pemerintah Provinsi Maluku Utara (logo prov maluku utara.png)</option>
+                                                <option value="logo jambi 512.png">Provinsi Jambi Bulat (logo jambi 512.png)</option>
+                                            </optgroup>
+                                        </select>
+                                        <small style="display:block;margin-top:5px;color:#64748b;">⚡ Mengambil langsung dari folder lokal / CDN GitHub sehingga loading instan.</small>
+                                    </div>
+
+                                    <!-- Panel Upload: Upload Baru Base64 -->
+                                    <div id="panelLogoInstansiUpload" class="logo-mode-panel" style="display:none;">
+                                        <div class="school-logo-upload-actions">
+                                            <input id="schoolCfgLogoInstansiFile" type="file" accept="image/*" hidden onchange="pilihLogoSekolah(this, 'logo_instansi')">
+                                            <button type="button" class="btn-add-primary" onclick="document.getElementById('schoolCfgLogoInstansiFile').click()">Pilih Gambar Perangkat...</button>
+                                        </div>
+                                        <small style="display:block;margin-top:5px;color:#64748b;">Crop 1:1, diubah otomatis menjadi format Base64.</small>
+                                    </div>
+                                </div>
+
+                                <div class="school-logo-upload">
+                                    <label class="form-label" style="font-weight:700;margin-bottom:6px;">Logo Sekolah</label>
+
+                                    <!-- Toggle Mode Pilihan Logo Sekolah -->
+                                    <div class="logo-mode-tabs">
+                                        <button type="button" class="btn-logo-mode active" id="tabLogoSekolahFile" onclick="setModeLogo('logo_sekolah', 'file')">📁 Nama File (Cepat)</button>
+                                        <button type="button" class="btn-logo-mode" id="tabLogoSekolahUpload" onclick="setModeLogo('logo_sekolah', 'upload')">📤 Upload Gambar</button>
+                                    </div>
+
+                                    <div style="display:flex;align-items:center;gap:12px;margin:10px 0;">
+                                        <img id="schoolCfgLogoSekolahPreview" class="school-logo-preview" alt="Pratinjau logo sekolah" style="width:68px;height:68px;object-fit:contain;background:#fff;border-radius:12px;padding:4px;border:1px solid #cbd5e1;display:none;">
+                                        <div style="flex:1;">
+                                            <input id="schoolCfgLogo" type="text" class="form-input" placeholder="Contoh: logo sman 1 tebo.png" oninput="handleLogoManualInput('logo_sekolah', this.value)">
+                                        </div>
+                                    </div>
+
+                                    <!-- Panel File: Dropdown Pilihan Cepat -->
+                                    <div id="panelLogoSekolahFile" class="logo-mode-panel">
+                                        <select id="selectLogoSekolahQuick" class="form-input" onchange="handleLogoSelectChange('logo_sekolah', this.value)">
+                                            <option value="">-- Pilih Logo Sekolah Tersedia di img-sekolah --</option>
+                                            <optgroup label="Logo Sekolah (SMA / SMK / SLB)">
+                                                <option value="logo sman15tebo.png">SMA Negeri 15 Tebo (logo sman15tebo.png)</option>
+                                                <option value="logo sman 15 tebo.png">SMA Negeri 15 Tebo (logo sman 15 tebo.png)</option>
+                                                <option value="logo sman 1 tebo.png">SMA Negeri 1 Tebo (logo sman 1 tebo.png)</option>
+                                                <option value="logo sman 2 tebo.png">SMA Negeri 2 Tebo (logo sman 2 tebo.png)</option>
+                                                <option value="logo sman 5 tebo.png">SMA Negeri 5 Tebo (logo sman 5 tebo.png)</option>
+                                                <option value="logo sman 17 tebo.png">SMA Negeri 17 Tebo (logo sman 17 tebo.png)</option>
+                                                <option value="logo sman 19 tebo.png">SMA Negeri 19 Tebo (logo sman 19 tebo.png)</option>
+                                                <option value="logo sman 20 tebo.png">SMA Negeri 20 Tebo (logo sman 20 tebo.png)</option>
+                                                <option value="logo smkn 1 tebo.png">SMK Negeri 1 Tebo (logo smkn 1 tebo.png)</option>
+                                                <option value="logo smkn 2 tebo.png">SMK Negeri 2 Tebo (logo smkn 2 tebo.png)</option>
+                                                <option value="logo slbn tebo.png">SLB Negeri Tebo (logo slbn tebo.png)</option>
+                                                <option value="logo sman 9 kota jambi.png">SMA Negeri 9 Kota Jambi (logo sman 9 kota jambi.png)</option>
+                                                <option value="logo sman 6 tanjabbarat.png">SMA Negeri 6 Tanjabbarat (logo sman 6 tanjabbarat.png)</option>
+                                                <option value="logo smkn 1 kota ternate.png">SMK Negeri 1 Kota Ternate (logo smkn 1 kota ternate.png)</option>
+                                            </optgroup>
+                                            <optgroup label="Logo Instansi / Pemerintah">
+                                                <option value="logo prov jambi.png">Pemerintah Provinsi Jambi (logo prov jambi.png)</option>
+                                                <option value="logo prov maluku utara.png">Pemerintah Provinsi Maluku Utara (logo prov maluku utara.png)</option>
+                                                <option value="logo jambi 512.png">Provinsi Jambi Bulat (logo jambi 512.png)</option>
+                                            </optgroup>
+                                        </select>
+                                        <small style="display:block;margin-top:5px;color:#64748b;">⚡ Mengambil langsung dari folder lokal / CDN GitHub sehingga loading instan.</small>
+                                    </div>
+
+                                    <!-- Panel Upload: Upload Baru Base64 -->
+                                    <div id="panelLogoSekolahUpload" class="logo-mode-panel" style="display:none;">
+                                        <div class="school-logo-upload-actions">
+                                            <input id="schoolCfgLogoSekolahFile" type="file" accept="image/*" hidden onchange="pilihLogoSekolah(this, 'logo_sekolah')">
+                                            <button type="button" class="btn-add-primary" onclick="document.getElementById('schoolCfgLogoSekolahFile').click()">Pilih Gambar Perangkat...</button>
+                                            <button type="button" id="btnHapusLogoSekolah" class="btn-action-icon btn-delete" onclick="hapusLogoSekolah()" hidden>Hapus Logo</button>
+                                        </div>
+                                        <small style="display:block;margin-top:5px;color:#64748b;">Crop 1:1, diubah otomatis menjadi format Base64.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="schoolCfgColor1">Warna Tema 1</label>
+                                <input id="schoolCfgColor1" class="form-input" type="color" value="#ff007a">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="schoolCfgColor2">Warna Tema 2</label>
+                                <input id="schoolCfgColor2" class="form-input" type="color" value="#7000ff">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="schoolCfgColor3">Warna Tema 3</label>
+                                <input id="schoolCfgColor3" class="form-input" type="color" value="#00d2ff">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-add-primary">Simpan ke Sheet Sekolah (1 Baris)</button>
+                    </form>
+                </section>
+
+                <section id="schoolEditorAppsPanel" style="display:none;">
+                    <div class="panel-header">
+                        <div>
+                            <h3 class="panel-title">Aplikasi untuk Sekolah Ini</h3>
+                            <p class="panel-desc">Aktifkan aplikasi yang ditampilkan dan isi URL khusus sekolah (tersimpan di sheet Aplikasi_Sekolah).</p>
+                        </div>
+                        <button type="button" class="btn-add-primary" onclick="bukaModalAplikasiSekolah()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Tambah Aplikasi</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th style="width:90px;">Tampilkan</th><th>Aplikasi</th><th>URL Khusus Sekolah</th><th style="text-align:right;">Aksi</th></tr>
+                            </thead>
+                            <tbody id="tbodyAplikasiSekolah"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-add-primary" style="margin-top:16px;" onclick="simpanAplikasiSekolah(this)">Simpan Modul Aplikasi</button>
+                </section>
+            </div>
+        </div>
+
+        <div id="logoCropModal" class="logo-crop-modal" role="dialog" aria-modal="true" aria-labelledby="logoCropTitle">
+            <div class="logo-crop-card">
+                <h3 id="logoCropTitle" class="panel-title">Atur Potongan Logo</h3>
+                <p style="margin:8px 0;color:#64748b;">Geser gambar untuk mengatur posisi, lalu gunakan zoom. Area kotak akan disimpan.</p>
+                <div id="logoCropViewport" class="logo-crop-viewport">
+                    <canvas id="logoCropCanvas" width="320" height="320" aria-label="Area crop gambar berbentuk persegi"></canvas>
+                </div>
+                <label for="logoCropZoom" class="form-label">Zoom</label>
+                <input id="logoCropZoom" type="range" min="1" max="3" step="0.01" value="1" style="width:100%;">
+                <div class="logo-crop-actions">
+                    <button type="button" class="logo-crop-cancel" onclick="tutupCropLogo()">Batal</button>
+                    <button type="button" id="btnTerapkanCropLogo" class="logo-crop-apply" onclick="terapkanCropLogo()">Gunakan Logo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 1: PENGATURAN PORTAL UMUM & AKUN ADMIN -->
+        <div id="tabSekolah" class="tab-panel">
+            <div class="panel-header">
+                <div>
+                    <h2 class="panel-title">Pengaturan Portal Umum (Admin)</h2>
+                    <p class="panel-desc">Atur nama portal SiKoBaELah, subjudul, logo master aplikasi, dan akun admin. Identitas dan modul setiap sekolah diatur pada tab <strong>Daftar Sekolah</strong> (tersimpan di sheet <code>Sekolah</code>).</p>
+                </div>
+                <button type="button" class="btn-add-primary" onclick="simpanPengaturanSekolah(this)">Simpan Pengaturan Portal</button>
+            </div>
+
+            <form id="formSekolah" onsubmit="event.preventDefault(); simpanPengaturanSekolah(event.submitter);">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label">Nama Portal</label>
+                        <input type="text" id="cfgNamaPortal" class="form-input" placeholder="SiKoBaELah">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sub Judul Portal</label>
+                        <input type="text" id="cfgSubJudul" class="form-input" placeholder="Sistem Kolaboratif berBasis Elektronik Sekolah">
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px; padding-top: 18px; border-top: 1px dashed #cbd5e1;">
+                    <h3 style="font-size: 1.15rem; color: #0f172a; margin-bottom: 4px;">Logo Aplikasi</h3>
+                    <p style="font-size: 0.84rem; color: #64748b; margin-bottom: 16px;">Logo ini adalah identitas portal umum; logo instansi dan sekolah dikelola di pengaturan masing-masing sekolah.</p>
+                    <div class="form-group" style="max-width: 420px;">
+                        <label class="form-label">Nama File Logo Aplikasi SiKoBaELah</label>
+                        <input type="text" id="cfgLogoApp" class="form-input" placeholder="sikobaelah.png" oninput="updateLogoPreviews()">
+                        <div class="logo-preview-box">
+                            <img id="prevLogoApp" src="./assets/img/sikobaelah.png" alt="Preview Logo Aplikasi" onerror="this.src='./assets/img/sikobaelah.png'">
+                            <span id="prevTextApp">sikobaelah.png</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JEDA PEMBATAS: AKUN KEAMANAN ADMIN -->
+                <div style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed #cbd5e1;">
+                    <h3 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 12px;">Akun Keamanan Admin (Login)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Username Admin Baru (opsional)</label>
+                            <input type="text" id="cfgAdminUser" class="form-input" placeholder="Kosongkan jika tidak diubah" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password Admin Baru</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="cfgAdminPass" class="form-input" placeholder="Biarkan kosong jika tidak diubah">
+                                <button type="button" class="btn-toggle-eye" onclick="togglePasswordVisibility('cfgAdminPass', this)" title="Lihat / Sembunyikan Password" tabindex="-1">
+                                    <svg class="eye-open" viewBox="0 0 24 24">
+                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                    </svg>
+                                    <svg class="eye-closed" viewBox="0 0 24 24" style="display:none;">
+                                        <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- TAB BARU: PROFIL PENGEMBANG (DEVELOPER) -->
+        <div id="tabProfil" class="tab-panel">
+            <div class="panel-header">
+                <div>
+                    <h2 class="panel-title">Profil Pengembang Sistem (Developer)</h2>
+                    <p class="panel-desc">Kelola biodata, foto, kontak resmi, alamat developer, dan titik koordinat Google Maps yang tampil di modal profil portal.</p>
+                </div>
+                <button type="button" class="btn-add-primary" onclick="simpanProfilPengembang(this)">Simpan Profil Pengembang</button>
+            </div>
+
+            <form id="formProfil" onsubmit="event.preventDefault(); simpanProfilPengembang(event.submitter);">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap Pengembang</label>
+                        <input type="text" id="cfgDevNama" class="form-input" placeholder="Pariyanto">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jabatan / Peran Pengembang</label>
+                        <input type="text" id="cfgDevJabatan" class="form-input" placeholder="Pengembang Sistem & Pranata Komputer">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama File Foto Pengembang (di folder assets/img/)</label>
+                        <input type="text" id="cfgDevFoto" class="form-input" placeholder="fary.jpg" oninput="updateDevPhotoPreview()">
+                        <div class="logo-preview-box" style="margin-top: 8px;">
+                            <img id="prevDevPhoto" src="./assets/img/fary.jpg" style="width: 48px; height: 64px; aspect-ratio: 3/4; border-radius: 10px; object-fit: cover; border: 2px solid #0d6efd;" onerror="this.src='./assets/img/sikobaelah.png'">
+                            <span id="prevDevPhotoName">fary.jpg</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. WhatsApp Pengembang (Awali 62)</label>
+                        <input type="text" id="cfgDevWa" class="form-input" placeholder="6285219901909">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. Telepon Pengembang</label>
+                        <input type="text" id="cfgDevTelp" class="form-input" placeholder="+6285219901909">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Pengembang</label>
+                        <input type="email" id="cfgDevEmail" class="form-input" placeholder="fary.hambaAllah@gmail.com">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="form-label">Alamat Lengkap Pengembang (Developer)</label>
+                    <textarea id="cfgDevAlamat" class="form-textarea" rows="2" placeholder="Kab. Tebo, Prov. Jambi"></textarea>
+                </div>
+
+                <!-- TITIK KOORDINAT GPS & GOOGLE MAPS -->
+                <div style="margin-top: 15px; padding: 18px 20px; background: #f8fafc; border-radius: 18px; border: 1px solid #e2e8f0;">
+                    <label class="form-label" style="font-size: 0.95rem;">Titik Koordinat Lokasi Pengembang (Latitude, Longitude)</label>
+                    <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">Ketika alamat atau titik koordinat ini diklik di portal publik, pengunjung akan langsung diarahkan ke lokasi Google Maps secara akurat.</p>
+                    
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <input type="text" id="cfgDevKoordinat" class="form-input" style="flex: 1; min-width: 240px;" placeholder="-1.218545, 102.327892">
+                        <button type="button" class="btn-action-gps" onclick="ambilKoordinatGps()">
+                            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+                            <span>Ambil Titik Koordinat GPS</span>
+                        </button>
+                        <button type="button" class="btn-action-maps" onclick="bukaGoogleMapsPreview()">
+                            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <span>Cek di Google Maps</span>
+                        </button>
+                    </div>
+                    <div id="gpsStatusMessage" style="margin-top: 8px; font-size: 0.82rem; font-weight: 600;"></div>
+                </div>
+            </form>
+        </div>
+
+        <!-- TAB 2: MODUL 7 APLIKASI (CRUD) -->
+        <div id="tabAplikasi" class="tab-panel">
+            <div class="panel-header">
+                <div>
+                    <h2 class="panel-title">Manajemen Modul Aplikasi</h2>
+                    <p class="panel-desc">Kelola nama, deskripsi, logo, badge, dan URL online eksternal untuk tiap aplikasi.</p>
+                </div>
+                <button type="button" class="btn-add-primary" onclick="bukaModalApp()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Tambah Modul Aplikasi</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">Logo</th>
+                            <th>Nama & ID</th>
+                            <th>Kategori / Badge</th>
+                            <th>URL Online Eksternal</th>
+                            <th>Status</th>
+                            <th style="text-align: right; width: 100px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyAplikasi">
+                        <!-- Data aplikasi di-render dinamis -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 3: DAFTAR DASAR HUKUM (CRUD) -->
+        <div id="tabHukum" class="tab-panel">
+            <div class="panel-header">
+                <div>
+                    <h2 class="panel-title">Manajemen Dasar Hukum & Regulasi</h2>
+                    <p class="panel-desc">Kelola seluruh 33 regulasi, keterkaitan dengan sistem, dan tautan JDIH resmi.</p>
+                </div>
+                <button type="button" class="btn-add-primary" onclick="bukaModalLaw()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Tambah Dasar Hukum</button>
+            </div>
+
+            <div style="margin-bottom: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <label style="font-size: 0.88rem; font-weight: 600; color: #475569;">Filter Kategori:</label>
+                <select id="filterLawCategory" class="form-select" style="max-width: 240px;" onchange="renderTableLaws()">
+                    <option value="all">Semua Kategori (33 Regulasi)</option>
+                    <option value="spbe">1. Payung Yuridis Nasional & SPBE</option>
+                    <option value="sidimas">2. SiDiMAS (Tata Naskah & Arsip)</option>
+                    <option value="sipresdir">3. SiPreSDiR Plus (Presensi & BK)</option>
+                    <option value="sibukinstal">4. SiBukInSTal (Buku Induk & NISN)</option>
+                    <option value="siempus">5. SiE-MPuS (Perpustakaan)</option>
+                    <option value="simpeel">6. SiMPeEL (Kepegawaian PTK)</option>
+                    <option value="siladumas">7. SiLaDuMas (Pengaduan Publik)</option>
+                    <option value="sinbas">8. SINBAS (Sarpras & Aset BMD)</option>
+                </select>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">No</th>
+                            <th>Hierarki & Nomor</th>
+                            <th>Tentang / Substansi Regulasi</th>
+                            <th>Kategori</th>
+                            <th>Status</th>
+                            <th style="text-align: right; width: 100px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyHukum">
+                        <!-- Data regulasi di-render dinamis -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 4: KONEKSI SPREADSHEET (APPS SCRIPT) -->
+        <div id="tabKoneksi" class="tab-panel">
+            <div class="panel-header">
+                <div>
+                    <h2 class="panel-title">Pengaturan Koneksi Google Apps Script</h2>
+                    <p class="panel-desc">Hubungkan portal SiKoBaELah ke URL Web App Spreadsheet untuk sinkronisasi cloud realtime.</p>
+                </div>
+                <button type="button" class="btn-add-primary" onclick="simpanKoneksiGas(this)">Simpan URL API</button>
+            </div>
+
+            <div style="max-width: 720px;">
+                <div class="form-group">
+                    <label class="form-label">URL Web App Google Apps Script (Berakhiran /exec)</label>
+                    <input type="url" id="cfgGasUrl" class="form-input" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+                    <small style="color: #64748b; font-size: 0.8rem; display: block; margin-top: 5px;">
+                        Salin URL ini setelah melakukan <em>Deploy > New deployment > Web app (Who has access: Anyone)</em> pada spreadsheet Anda.
+                    </small>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" class="btn-submit" style="width: auto; padding: 10px 24px; background: #6366f1;" onclick="tesKoneksiGas(this)">
+                        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle;margin-right:4px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        Tes Koneksi (Ping)
+                    </button>
+                    <button type="button" class="btn-submit" style="width: auto; padding: 10px 24px; background: #0284c7;" onclick="kirimDataKeSpreadsheet(this)">
+                        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle;margin-right:4px;"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                        Kirim Data Offline ke Spreadsheet (Push 1-Arah)
+                    </button>
+                    <button type="button" class="btn-submit" style="width: auto; padding: 10px 24px; background: #10b981;" onclick="syncCloudNow(this)">
+                        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle;margin-right:4px;"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                        Tarik Data dari Spreadsheet (Pull ke Lokal)
+                    </button>
+                </div>
+
+                <div style="margin-top: 30px; padding: 18px; border-radius: 16px; background: #f8fafc; border: 1px solid #e2e8f0;">
+                    <h4 style="margin-bottom: 8px; color: #0f172a;">Petunjuk Menjalankan Database Baru:</h4>
+                    <ol style="padding-left: 20px; font-size: 0.88rem; color: #475569; line-height: 1.6;">
+                        <li>Buka spreadsheet Anda di Google Drive.</li>
+                        <li>Buka <strong>Ekstensi &gt; Apps Script</strong> lalu salin isi file <code>src/db kode gs/Code.gs</code>.</li>
+                        <li>Jalankan fungsi <strong>inisialisasiDatabase</strong> 1x untuk mengisi otomatis data 33 regulasi dan 7 modul aplikasi.</li>
+                        <li>Klik <strong>Deploy &gt; New Deployment &gt; Web app</strong> dan atur hak akses ke <em>Anyone (Siapa saja)</em>.</li>
+                        <li>Tempelkan URL Web App tersebut ke kotak di atas lalu simpan.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalSekolah" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalSekolahTitle">Tambah Sekolah</h3>
+                <button type="button" class="modal-close" onclick="tutupModalSekolah()">&times;</button>
+            </div>
+            <form id="formSekolahBaru" onsubmit="event.preventDefault(); simpanSekolah();">
+                <div class="form-group">
+                    <label class="form-label" for="schoolInputNama">Nama Sekolah</label>
+                    <input id="schoolInputNama" class="form-input" type="text" required maxlength="160" placeholder="SMA NEGERI 15 TEBO">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="schoolInputId">ID URL (unik)</label>
+                    <input id="schoolInputId" class="form-input" type="text" required maxlength="51" pattern="/?[a-z0-9]+(-[a-z0-9]+)*" placeholder="/sman15tebo" autocapitalize="off" spellcheck="false">
+                    <small style="display:block;margin-top:6px;color:#64748b;">Gunakan huruf kecil, angka, dan tanda hubung. Jika ID diubah, seluruh tautan aplikasi sekolah ini akan otomatis diperbarui.</small>
+                </div>
+                <div id="schoolSaveStatus" class="school-save-status" role="status" aria-live="polite" hidden>
+                    <span class="school-save-spinner" aria-hidden="true"></span>
+                    <span>Menyimpan data sekolah, mohon tunggu...</span>
+                </div>
+                <div style="display:flex;gap:10px;margin-top:20px;">
+                    <button type="submit" id="btnSimpanSekolah" class="btn-submit">Simpan Sekolah</button>
+                    <button type="button" id="btnBatalSekolah" class="btn-submit" style="background:#e2e8f0;color:#334155;" onclick="tutupModalSekolah()">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalAplikasiSekolah" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Aplikasi untuk Sekolah</h3>
+                <button type="button" class="modal-close" onclick="tutupModalAplikasiSekolah()">&times;</button>
+            </div>
+            <form id="formAplikasiSekolahBaru" onsubmit="event.preventDefault(); tambahAplikasiSekolah();">
+                <div class="form-group">
+                    <label class="form-label" for="schoolAppInputId">ID Aplikasi</label>
+                    <input id="schoolAppInputId" class="form-input" type="text" required pattern="[a-z0-9]+([\-][a-z0-9]+)*" placeholder="contoh: aplikasi-sekolah">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="schoolAppInputNama">Nama Aplikasi</label>
+                    <input id="schoolAppInputNama" class="form-input" type="text" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="schoolAppInputDeskripsi">Deskripsi</label>
+                    <input id="schoolAppInputDeskripsi" class="form-input" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="schoolAppInputUrl">URL Aplikasi</label>
+                    <input id="schoolAppInputUrl" class="form-input" type="url" required placeholder="https://aplikasi.sekolah.id">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="schoolAppInputLogo">Logo (nama file atau URL)</label>
+                    <input id="schoolAppInputLogo" class="form-input" type="text" placeholder="logo.png">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="schoolAppInputKategori">Kategori</label>
+                    <input id="schoolAppInputKategori" class="form-input" type="text" placeholder="Layanan Sekolah">
+                </div>
+                <div style="display:flex;gap:10px;margin-top:20px;">
+                    <button type="submit" class="btn-submit">Tambah Aplikasi</button>
+                    <button type="button" class="btn-submit" style="background:#e2e8f0;color:#334155;" onclick="tutupModalAplikasiSekolah()">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         3. MODAL TAMBAH / EDIT APLIKASI
+         ========================================================= -->
+    <div id="modalApp" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalAppTitle">Edit Modul Aplikasi</h3>
+                <button type="button" class="modal-close" onclick="tutupModalApp()">&times;</button>
+            </div>
+            <form id="formApp" onsubmit="event.preventDefault(); simpanDataApp(event.submitter);">
+                <input type="hidden" id="appInputIsEdit" value="0">
+                <div class="form-group">
+                    <label class="form-label">ID / Slug Aplikasi (Huruf kecil, tanpa spasi)</label>
+                    <input type="text" id="appInputId" class="form-input" required placeholder="contoh: sidimas">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nama Aplikasi</label>
+                    <input type="text" id="appInputNama" class="form-input" required placeholder="contoh: SiDiMAS">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Deskripsi / Subtitle</label>
+                    <input type="text" id="appInputDeskripsi" class="form-input" required placeholder="contoh: Sistem Digital Manajemen Arsip Surat">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kategori / Badge</label>
+                    <input type="text" id="appInputKategori" class="form-input" required placeholder="contoh: Persuratan">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL Online Eksternal</label>
+                    <input type="url" id="appInputUrl" class="form-input" required placeholder="https://sidimas.sman15tebo.sch.id">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">File / URL Logo</label>
+                    <input type="text" id="appInputLogo" class="form-input" required placeholder="./assets/img/logo-sidimas.png">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status Aplikasi</label>
+                    <select id="appInputStatus" class="form-select">
+                        <option value="aktif">Aktif (Dapat Dibuka)</option>
+                        <option value="dev">Dalam Pengembangan (Rilis Berikutnya)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Teks Pita (Ribbon - opsional)</label>
+                    <input type="text" id="appInputRibbon" class="form-input" placeholder="contoh: Rilis Berikutnya">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kata Kunci Pencarian</label>
+                    <input type="text" id="appInputKataKunci" class="form-input" placeholder="sidimas surat arsip agenda...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Urutan Tampilan</label>
+                    <input type="number" id="appInputUrutan" class="form-input" value="1">
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn-submit">Simpan Aplikasi</button>
+                    <button type="button" class="btn-submit" style="background:#e2e8f0;color:#334155;" onclick="tutupModalApp()">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         4. MODAL TAMBAH / EDIT DASAR HUKUM
+         ========================================================= -->
+    <div id="modalLaw" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalLawTitle">Tambah Dasar Hukum</h3>
+                <button type="button" class="modal-close" onclick="tutupModalLaw()">&times;</button>
+            </div>
+            <form id="formLaw" onsubmit="event.preventDefault(); simpanDataLaw(event.submitter);">
+                <input type="hidden" id="lawInputId" value="">
+                
+                <div class="form-group">
+                    <label class="form-label">Kategori Modul Aplikasi</label>
+                    <select id="lawInputCategory" class="form-select" required>
+                        <option value="spbe">1. Payung Yuridis Nasional & SPBE</option>
+                        <option value="sidimas">2. SiDiMAS (Persuratan)</option>
+                        <option value="sipresdir">3. SiPreSDiR Plus (Presensi & Disiplin)</option>
+                        <option value="sibukinstal">4. SiBukInSTal (Buku Induk Siswa)</option>
+                        <option value="siempus">5. SiE-MPuS (Perpustakaan)</option>
+                        <option value="simpeel">6. SiMPeEL (Kepegawaian)</option>
+                        <option value="siladumas">7. SiLaDuMas (Pengaduan)</option>
+                        <option value="sinbas">8. SINBAS (Sarpras & Aset)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Hierarki Peraturan</label>
+                    <input type="text" id="lawInputHierarki" class="form-input" required placeholder="contoh: Undang-Undang / Permendagri / Permendikbudristek">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nomor & Tahun Regulasi</label>
+                    <input type="text" id="lawInputNomor" class="form-input" required placeholder="contoh: Permendagri No. 1 Tahun 2023">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tentang / Judul Regulasi</label>
+                    <input type="text" id="lawInputJudul" class="form-input" required placeholder="contoh: Tentang Tata Naskah Dinas di Lingkungan Pemerintah Daerah">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Keterkaitan dengan Sistem SiKoBaELah</label>
+                    <textarea id="lawInputKeterkaitan" class="form-textarea" rows="3" required placeholder="Jelaskan hubungan yuridis dan urgensinya..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Lembaran Negara / Sumber Resmi</label>
+                    <input type="text" id="lawInputLembaran" class="form-input" placeholder="contoh: Berita Negara 2023 No. 78">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tautan Link JDIH Resmi</label>
+                    <input type="url" id="lawInputLinkJdih" class="form-input" placeholder="https://jdih.kemendagri.go.id">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Label Link JDIH</label>
+                    <input type="text" id="lawInputLabelJdih" class="form-input" placeholder="JDIH Kemendagri">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Status Regulasi</label>
+                    <select id="lawInputStatus" class="form-select">
+                        <option value="Berlaku">Berlaku</option>
+                        <option value="Revisi">Dalam Revisi</option>
+                        <option value="Dicabut">Dicabut / Tidak Berlaku</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kata Kunci Pencarian</label>
+                    <input type="text" id="lawInputKataKunci" class="form-input" placeholder="kata kunci untuk pencarian di portal...">
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn-submit">Simpan Dasar Hukum</button>
+                    <button type="button" class="btn-submit" style="background:#e2e8f0;color:#334155;" onclick="tutupModalLaw()">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST POPUP -->
+    <div id="toastBox" class="toast">Notifikasi pesan</div>
+
+    <script>
+        // --- 1. OTENTIKASI & INITIAL LOAD ---
+        let schoolRecords = [];
+        let currentSchoolData = null;
+        let editingSchoolId = '';
+        let isSavingSchool = false;
+        let pendingCropImage = null;
+        let pendingCropTarget = '';
+        let cropBaseScale = 1;
+        let cropZoom = 1;
+        let cropOffsetX = 0;
+        let cropOffsetY = 0;
+        let cropDragPointerId = null;
+        let cropDragX = 0;
+        let cropDragY = 0;
+        const LOGO_CROP_SIZE = 320;
+        const LOGO_OUTPUT_SIZE = 250;
+        const LOGO_MAX_DATA_URL_LENGTH = 48000;
+
+        function resolveImgPath(p, type) {
+            if (!p) return './assets/img/sikobaelah.png';
+            p = String(p).trim();
+            if (/^https?:\/\//i.test(p) || /^data:image\/(?:jpeg|png|webp|gif);base64,/i.test(p) || p.startsWith('blob:')) {
+                return p;
+            }
+            const clean = p.replace(/^(\.\/)?(src\/)?assets\/(img\/|img-sekolah\/)?/i, '');
+            let subfolder = 'assets/img/';
+            if (type === 'app' || type === 'aplikasi') {
+                subfolder = 'assets/img/';
+            } else if (type === 'sekolah' || type === 'instansi' || type === 'school') {
+                subfolder = 'assets/img-sekolah/';
+            } else {
+                const isApp = /sidimas|sipresdir|sibukinstal|siempus|simpeel|siladumas|sinbas|sikobaelah|fary|tutwuri/i.test(clean);
+                const isSchool = !isApp && (/sman|smkn|slbn|prov|ternate|tebo|sekolah|jambi/i.test(clean) || /img-sekolah/i.test(p));
+                subfolder = isSchool ? 'assets/img-sekolah/' : 'assets/img/';
+            }
+            return './' + subfolder + clean;
+        }
+
+        function populateSchoolLogoDropdowns() {
+            if (typeof SIKOBAELAH_DB === 'undefined' || !Array.isArray(SIKOBAELAH_DB.availableSchoolLogos)) return;
+            const logos = SIKOBAELAH_DB.availableSchoolLogos;
+
+            const selInstansi = document.getElementById('selectLogoInstansiQuick');
+            const selSekolah = document.getElementById('selectLogoSekolahQuick');
+
+            if (selInstansi) {
+                const currentVal = selInstansi.value;
+                selInstansi.innerHTML = '<option value="">-- Pilih Logo Instansi Tersedia --</option>';
+                const grpInstansi = document.createElement('optgroup');
+                grpInstansi.label = 'Pemerintah & Instansi';
+                const grpLain = document.createElement('optgroup');
+                grpLain.label = 'Semua Logo Lainnya';
+
+                logos.forEach(item => {
+                    if (!item || !item.file) return;
+                    const isInst = /prov|jambi|pemerintah|pemprov|dinas|kemenag/i.test(item.file) || /provinsi|pemerintah|dinas/i.test(item.label || '');
+                    const opt = document.createElement('option');
+                    opt.value = item.file;
+                    opt.textContent = (item.label || item.file) + ' (' + item.file + ')';
+                    if (isInst) {
+                        grpInstansi.appendChild(opt);
+                    } else {
+                        grpLain.appendChild(opt);
+                    }
+                });
+
+                if (grpInstansi.children.length) selInstansi.appendChild(grpInstansi);
+                if (grpLain.children.length) selInstansi.appendChild(grpLain);
+                if (currentVal) selInstansi.value = currentVal;
+            }
+
+            if (selSekolah) {
+                const currentVal = selSekolah.value;
+                selSekolah.innerHTML = '<option value="">-- Pilih Logo Sekolah Tersedia di img-sekolah --</option>';
+                const grpSekolah = document.createElement('optgroup');
+                grpSekolah.label = 'Logo Sekolah (SMA / SMK / SLB)';
+                const grpInstansi = document.createElement('optgroup');
+                grpInstansi.label = 'Logo Instansi / Pemerintah';
+
+                logos.forEach(item => {
+                    if (!item || !item.file) return;
+                    const isInst = /prov|jambi|pemerintah|pemprov|dinas|kemenag/i.test(item.file) || /provinsi|pemerintah|dinas/i.test(item.label || '');
+                    const opt = document.createElement('option');
+                    opt.value = item.file;
+                    opt.textContent = (item.label || item.file) + ' (' + item.file + ')';
+                    if (!isInst) {
+                        grpSekolah.appendChild(opt);
+                    } else {
+                        grpInstansi.appendChild(opt);
+                    }
+                });
+
+                if (grpSekolah.children.length) selSekolah.appendChild(grpSekolah);
+                if (grpInstansi.children.length) selSekolah.appendChild(grpInstansi);
+                if (currentVal) selSekolah.value = currentVal;
+            }
+        }
+
+        function setModeLogo(key, mode) {
+            const isInstansi = key === 'logo_instansi';
+            const isFile = mode === 'file';
+            const panelFile = document.getElementById(isInstansi ? 'panelLogoInstansiFile' : 'panelLogoSekolahFile');
+            const panelUpload = document.getElementById(isInstansi ? 'panelLogoInstansiUpload' : 'panelLogoSekolahUpload');
+            const tabFile = document.getElementById(isInstansi ? 'tabLogoInstansiFile' : 'tabLogoSekolahFile');
+            const tabUpload = document.getElementById(isInstansi ? 'tabLogoInstansiUpload' : 'tabLogoSekolahUpload');
+            if (panelFile) panelFile.style.display = isFile ? 'block' : 'none';
+            if (panelUpload) panelUpload.style.display = isFile ? 'none' : 'block';
+            if (tabFile) tabFile.classList.toggle('active', isFile);
+            if (tabUpload) tabUpload.classList.toggle('active', !isFile);
+        }
+
+        function handleLogoSelectChange(key, value) {
+            const isInstansi = key === 'logo_instansi';
+            const input = document.getElementById(isInstansi ? 'schoolCfgLogoInstansi' : 'schoolCfgLogo');
+            if (input) input.value = value || '';
+            setLogoLembagaValue(key, value);
+        }
+
+        function handleLogoManualInput(key, value) {
+            setLogoLembagaValue(key, value);
+        }
+
+        function setLogoLembagaValue(key, value) {
+            const isInstansi = key === 'logo_instansi';
+            const input = document.getElementById(isInstansi ? 'schoolCfgLogoInstansi' : 'schoolCfgLogo');
+            const preview = document.getElementById(isInstansi ? 'schoolCfgLogoInstansiPreview' : 'schoolCfgLogoSekolahPreview');
+            const removeButton = !isInstansi && document.getElementById('btnHapusLogoSekolah');
+            const quickSelect = document.getElementById(isInstansi ? 'selectLogoInstansiQuick' : 'selectLogoSekolahQuick');
+
+            if (input) input.value = value || '';
+
+            // Otomatis sesuaikan mode tampilan (file vs base64)
+            if (value && value.startsWith('data:image')) {
+                setModeLogo(key, 'upload');
+            } else {
+                setModeLogo(key, 'file');
+                if (quickSelect) {
+                    const matched = Array.from(quickSelect.options).some(opt => opt.value === value);
+                    if (!matched && value) {
+                        const opt = document.createElement('option');
+                        opt.value = value;
+                        opt.textContent = value + ' (Kustom)';
+                        quickSelect.appendChild(opt);
+                    }
+                    quickSelect.value = value;
+                }
+            }
+
+            if (preview) {
+                preview.style.display = value ? 'block' : 'none';
+                if (value) preview.src = resolveImgPath(value, 'sekolah');
+            }
+            if (removeButton) removeButton.hidden = !value;
+        }
+
+        function hapusLogoSekolah() {
+            setLogoLembagaValue('logo_sekolah', '');
+            const fileInput = document.getElementById('schoolCfgLogoSekolahFile');
+            if (fileInput) fileInput.value = '';
+            showToast('Logo dihapus dari formulir. Tekan "Simpan Data Lembaga" untuk menerapkan perubahan.', '');
+        }
+
+        function mulaiLoadingTombol(button, loadingText) {
+            if (!button && document.activeElement && document.activeElement.form) {
+                button = document.activeElement.form.querySelector('button[type="submit"]');
+            }
+            if (!button || button.disabled) return function() {};
+            const originalHtml = button.innerHTML;
+            button.disabled = true;
+            button.classList.add('is-loading');
+            button.setAttribute('aria-busy', 'true');
+            button.textContent = loadingText;
+            return function() {
+                button.disabled = false;
+                button.classList.remove('is-loading');
+                button.removeAttribute('aria-busy');
+                button.innerHTML = originalHtml;
+            };
+        }
+
+        async function pilihLogoSekolah(input, target) {
+            const file = input && input.files && input.files[0];
+            if (!file) return;
+            input.value = '';
+            if (!/^image\//i.test(file.type)) {
+                showToast('File harus berupa gambar.', 'error');
+                return;
+            }
+            if (file.size > 15 * 1024 * 1024) {
+                showToast('Ukuran gambar sumber maksimal 15 MB.', 'error');
+                return;
+            }
+
+            const objectUrl = URL.createObjectURL(file);
+            const image = new Image();
+            image.onload = () => {
+                URL.revokeObjectURL(objectUrl);
+                if (!image.naturalWidth || !image.naturalHeight) {
+                    showToast('Gambar tidak dapat dibaca.', 'error');
+                    return;
+                }
+                pendingCropImage = image;
+                pendingCropTarget = target;
+                cropBaseScale = LOGO_CROP_SIZE / Math.min(image.naturalWidth, image.naturalHeight);
+                cropZoom = 1;
+                const renderedWidth = image.naturalWidth * cropBaseScale;
+                const renderedHeight = image.naturalHeight * cropBaseScale;
+                cropOffsetX = (LOGO_CROP_SIZE - renderedWidth) / 2;
+                cropOffsetY = (LOGO_CROP_SIZE - renderedHeight) / 2;
+                document.getElementById('logoCropZoom').value = '1';
+                document.getElementById('logoCropModal').classList.add('show');
+                renderCropLogo();
+            };
+            image.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                showToast('Gambar gagal dibuka. Coba file PNG atau JPG.', 'error');
+            };
+            image.src = objectUrl;
+        }
+
+        function clampCropPosition() {
+            if (!pendingCropImage) return;
+            const scale = cropBaseScale * cropZoom;
+            const width = pendingCropImage.naturalWidth * scale;
+            const height = pendingCropImage.naturalHeight * scale;
+            cropOffsetX = Math.min(0, Math.max(LOGO_CROP_SIZE - width, cropOffsetX));
+            cropOffsetY = Math.min(0, Math.max(LOGO_CROP_SIZE - height, cropOffsetY));
+        }
+
+        function renderCropLogo() {
+            const canvas = document.getElementById('logoCropCanvas');
+            if (!canvas || !pendingCropImage) return;
+            clampCropPosition();
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, LOGO_CROP_SIZE, LOGO_CROP_SIZE);
+            const scale = cropBaseScale * cropZoom;
+            context.drawImage(
+                pendingCropImage,
+                cropOffsetX,
+                cropOffsetY,
+                pendingCropImage.naturalWidth * scale,
+                pendingCropImage.naturalHeight * scale
+            );
+        }
+
+        function tutupCropLogo() {
+            document.getElementById('logoCropModal').classList.remove('show');
+            pendingCropImage = null;
+            pendingCropTarget = '';
+        }
+
+        function blobKeDataUrl(blob) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ''));
+                reader.onerror = () => reject(new Error('Hasil crop logo gagal dibaca.'));
+                reader.readAsDataURL(blob);
+            });
+        }
+
+        async function terapkanCropLogo() {
+            if (!pendingCropImage || !pendingCropTarget) return;
+            const button = document.getElementById('btnTerapkanCropLogo');
+            const originalHtml = button.innerHTML;
+            button.disabled = true;
+            button.textContent = 'Memproses...';
+            try {
+                clampCropPosition();
+                const displayScale = cropBaseScale * cropZoom;
+                const sourceSize = LOGO_CROP_SIZE / displayScale;
+                const sourceX = -cropOffsetX / displayScale;
+                const sourceY = -cropOffsetY / displayScale;
+                const output = document.createElement('canvas');
+                output.width = LOGO_OUTPUT_SIZE;
+                output.height = LOGO_OUTPUT_SIZE;
+                const context = output.getContext('2d');
+                context.drawImage(
+                    pendingCropImage,
+                    sourceX,
+                    sourceY,
+                    sourceSize,
+                    sourceSize,
+                    0,
+                    0,
+                    LOGO_OUTPUT_SIZE,
+                    LOGO_OUTPUT_SIZE
+                );
+
+                let encodeCanvas = output;
+                let mimeType = 'image/webp';
+                let blob = await new Promise(resolve => output.toBlob(resolve, mimeType, 0.9));
+                if (!blob || blob.type !== 'image/webp') {
+                    encodeCanvas = document.createElement('canvas');
+                    encodeCanvas.width = LOGO_OUTPUT_SIZE;
+                    encodeCanvas.height = LOGO_OUTPUT_SIZE;
+                    const jpegContext = encodeCanvas.getContext('2d');
+                    jpegContext.fillStyle = '#ffffff';
+                    jpegContext.fillRect(0, 0, LOGO_OUTPUT_SIZE, LOGO_OUTPUT_SIZE);
+                    jpegContext.drawImage(output, 0, 0);
+                    mimeType = 'image/jpeg';
+                }
+
+                let dataUrl = '';
+                for (const quality of [0.9, 0.82, 0.74, 0.66, 0.58, 0.5, 0.42, 0.34]) {
+                    blob = await new Promise(resolve => encodeCanvas.toBlob(resolve, mimeType, quality));
+                    if (!blob) throw new Error('Browser tidak dapat mengolah gambar logo.');
+                    dataUrl = await blobKeDataUrl(blob);
+                    if (dataUrl.length <= LOGO_MAX_DATA_URL_LENGTH) break;
+                }
+                if (!dataUrl || dataUrl.length > LOGO_MAX_DATA_URL_LENGTH) {
+                    throw new Error('Ukuran logo masih melebihi 48 KB setelah dikompres. Coba gambar yang lebih sederhana.');
+                }
+                setLogoLembagaValue(pendingCropTarget, dataUrl);
+                tutupCropLogo();
+                showToast('Logo berhasil di-crop 1:1 dan dikompres di bawah 48 KB.', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                button.disabled = false;
+                button.innerHTML = originalHtml;
+            }
+        }
+
+        const logoCropCanvas = document.getElementById('logoCropCanvas');
+        const logoCropZoom = document.getElementById('logoCropZoom');
+        const logoCropViewport = document.getElementById('logoCropViewport');
+        if (logoCropZoom) {
+            logoCropZoom.addEventListener('input', () => {
+                if (!pendingCropImage) return;
+                const oldScale = cropBaseScale * cropZoom;
+                const focusX = (LOGO_CROP_SIZE / 2 - cropOffsetX) / oldScale;
+                const focusY = (LOGO_CROP_SIZE / 2 - cropOffsetY) / oldScale;
+                cropZoom = Number(logoCropZoom.value) || 1;
+                const newScale = cropBaseScale * cropZoom;
+                cropOffsetX = LOGO_CROP_SIZE / 2 - focusX * newScale;
+                cropOffsetY = LOGO_CROP_SIZE / 2 - focusY * newScale;
+                renderCropLogo();
+            });
+        }
+        if (logoCropCanvas && logoCropViewport) {
+            logoCropCanvas.addEventListener('pointerdown', event => {
+                if (!pendingCropImage) return;
+                cropDragPointerId = event.pointerId;
+                cropDragX = event.clientX;
+                cropDragY = event.clientY;
+                logoCropCanvas.setPointerCapture(event.pointerId);
+            });
+            logoCropCanvas.addEventListener('pointermove', event => {
+                if (event.pointerId !== cropDragPointerId) return;
+                const factor = LOGO_CROP_SIZE / logoCropCanvas.clientWidth;
+                cropOffsetX += (event.clientX - cropDragX) * factor;
+                cropOffsetY += (event.clientY - cropDragY) * factor;
+                cropDragX = event.clientX;
+                cropDragY = event.clientY;
+                renderCropLogo();
+            });
+            const stopCropDrag = event => {
+                if (event.pointerId === cropDragPointerId) cropDragPointerId = null;
+            };
+            logoCropCanvas.addEventListener('pointerup', stopCropDrag);
+            logoCropCanvas.addEventListener('pointercancel', stopCropDrag);
+        }
+
+        function perbaruiIdentitasLogin() {
+            if (typeof SIKOBAELAH_DB === 'undefined') return;
+            const cfg = SIKOBAELAH_DB.getConfig();
+            if (cfg) {
+                const lImg = document.getElementById('loginLogoImg');
+                if (lImg && cfg.logo_aplikasi) lImg.src = resolveImgPath(cfg.logo_aplikasi);
+                const lTitle = document.querySelector('.login-title');
+                if (lTitle && cfg.nama_portal) lTitle.textContent = 'Admin ' + cfg.nama_portal;
+            }
+        }
+
+        window.addEventListener('load', () => {
+            populateSchoolLogoDropdowns();
+            perbaruiIdentitasLogin();
+            if (typeof SIKOBAELAH_DB !== 'undefined' && SIKOBAELAH_DB.isLoggedIn()) {
+                tampilkanDashboard();
+            } else {
+                tampilkanLogin();
+            }
+        });
+
+        window.addEventListener('sikobaelah:data-updated', event => {
+            populateSchoolLogoDropdowns();
+            perbaruiIdentitasLogin();
+            const detail = event.detail || {};
+            if (typeof SIKOBAELAH_DB !== 'undefined' && SIKOBAELAH_DB.isLoggedIn() && (detail.apps || detail.laws)) {
+                muatSeluruhDataDashboard();
+            }
+        });
+
+        function tampilkanLogin() {
+            document.getElementById('loginContainer').style.display = 'flex';
+            document.getElementById('dashboardContainer').style.display = 'none';
+            perbaruiIdentitasLogin();
+        }
+
+        function tampilkanDashboard() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('dashboardContainer').style.display = 'block';
+            muatSeluruhDataDashboard();
+            muatDaftarSekolah();
+        }
+
+        async function handleLoginSubmit(event) {
+            event.preventDefault();
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value.trim();
+            const btn = document.getElementById('btnLoginSubmit');
+
+            btn.disabled = true;
+            btn.classList.add('is-loading');
+            btn.setAttribute('aria-busy', 'true');
+            btn.textContent = 'Memverifikasi...';
+
+            try {
+                const res = await SIKOBAELAH_DB.login(u, p);
+                if (res && res.success) {
+                    showToast('Login berhasil! Selamat datang.', 'success');
+                    tampilkanDashboard();
+                } else {
+                    showToast(res.message || 'Login gagal, periksa username dan password.', 'error');
+                }
+            } catch (err) {
+                showToast('Kesalahan: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('is-loading');
+                btn.removeAttribute('aria-busy');
+                btn.textContent = 'Masuk Dashboard';
+            }
+        }
+
+        function handleLogout() {
+            if (typeof SIKOBAELAH_DB !== 'undefined' && typeof SIKOBAELAH_DB.clearActiveSchoolId === 'function') {
+                SIKOBAELAH_DB.clearActiveSchoolId();
+            }
+            SIKOBAELAH_DB.logout();
+            showToast('Anda telah keluar dari dashboard admin.', 'success');
+            tampilkanLogin();
+        }
+
+        // --- 2. SWITCH TAB DASHBOARD ---
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.dash-tab-btn').forEach(b => b.classList.remove('active'));
+
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add('active');
+            if (btn) btn.classList.add('active');
+
+            // Selalu bersihkan konteks activeSchoolId saat berpindah ke tab master portal
+            if (typeof SIKOBAELAH_DB !== 'undefined') {
+                if (typeof SIKOBAELAH_DB.clearActiveSchoolId === 'function') {
+                    SIKOBAELAH_DB.clearActiveSchoolId();
+                } else {
+                    SIKOBAELAH_DB.activeSchoolId = '';
+                }
+            }
+
+            if (tabId === 'tabAplikasi') {
+                renderTableAplikasi();
+            }
+        }
+
+        function urlPortalSekolah(schoolId) {
+            let currentPath = window.location.pathname;
+            let basePath = '/';
+            const pageSuffixes = ['/src/login.html', '/login.html'];
+            const suffix = pageSuffixes.find(item => currentPath.endsWith(item));
+            if (suffix) basePath = currentPath.slice(0, -suffix.length) + '/';
+            return window.location.origin + basePath + encodeURIComponent(schoolId);
+        }
+
+        // ===== Pabrik tombol aksi modern (ikon SVG inline, statis & aman) =====
+        const AKSI_IKON = {
+            buka: '<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
+            web: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
+            edit: '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+            hapus: '<svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>',
+            tambah: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'
+        };
+
+        function buatTombolAksi(jenis, label, judul, href) {
+            const el = document.createElement(href ? 'a' : 'button');
+            if (href) {
+                el.href = href;
+                el.target = '_blank';
+                el.rel = 'noopener noreferrer';
+            } else {
+                el.type = 'button';
+            }
+            el.className = 'aksi-btn aksi-' + jenis;
+            el.title = judul || label;
+            el.setAttribute('aria-label', judul || label);
+            const ico = document.createElement('span');
+            ico.className = 'aksi-ico';
+            ico.innerHTML = AKSI_IKON[jenis] || '';
+            const teks = document.createElement('span');
+            teks.className = 'aksi-label';
+            teks.textContent = label;
+            el.append(ico, teks);
+            return el;
+        }
+
+        async function muatDaftarSekolah() {
+            const tbody = document.getElementById('tbodySekolah');
+            if (!tbody) return;
+            tbody.replaceChildren();
+            const loadingRow = document.createElement('tr');
+            const loadingCell = document.createElement('td');
+            loadingCell.colSpan = 5;
+            loadingCell.textContent = 'Memuat daftar sekolah dari Spreadsheet...';
+            loadingRow.appendChild(loadingCell);
+            tbody.appendChild(loadingRow);
+
+            try {
+                const result = await SIKOBAELAH_DB.getSchools();
+                if (!result || !result.success || !Array.isArray(result.data)) {
+                    const error = new Error(result && result.message ? result.message : 'Daftar sekolah gagal dimuat.');
+                    error.isApiVersionError = Boolean(result && result.isApiVersionError);
+                    throw error;
+                }
+                const compatibilityNotice = document.getElementById('schoolApiCompatibilityNotice');
+                if (compatibilityNotice) compatibilityNotice.hidden = true;
+                schoolRecords = result.data;
+                tbody.replaceChildren();
+                if (!schoolRecords.length) {
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.colSpan = 5;
+                    cell.textContent = 'Belum ada sekolah terdaftar.';
+                    row.appendChild(cell);
+                    tbody.appendChild(row);
+                    return;
+                }
+
+                schoolRecords.forEach(school => {
+                    const row = document.createElement('tr');
+                    const nameCell = document.createElement('td');
+                    const name = document.createElement('strong');
+                    name.textContent = school.nama || school.id;
+                    nameCell.appendChild(name);
+                    const idCell = document.createElement('td');
+                    const route = document.createElement('a');
+                    route.href = urlPortalSekolah(school.id);
+                    route.target = '_blank';
+                    route.rel = 'noopener noreferrer';
+                    route.className = 'school-url-link';
+                    route.title = 'Buka portal sekolah di tab baru: ' + urlPortalSekolah(school.id);
+                    route.style.cssText = 'color: #0d6efd; text-decoration: underline; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;';
+                    route.innerHTML = '/' + school.id + ' <svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+                    idCell.appendChild(route);
+                    const appsCell = document.createElement('td');
+                    appsCell.textContent = String(Number(school.aplikasi_aktif) || 0);
+                    const statusCell = document.createElement('td');
+                    const status = document.createElement('span');
+                    status.className = 'badge-status badge-active';
+                    status.textContent = 'Aktif';
+                    statusCell.appendChild(status);
+                    const actionCell = document.createElement('td');
+                    actionCell.style.textAlign = 'right';
+                    actionCell.style.whiteSpace = 'nowrap';
+                    actionCell.style.display = 'flex';
+                    actionCell.style.gap = '6px';
+                    actionCell.style.justifyContent = 'flex-end';
+                    actionCell.style.alignItems = 'center';
+
+                    // Tombol aksi modern (ikon SVG + gradasi warna)
+                    const openButton = buatTombolAksi('buka', 'Buka', 'Buka pengaturan lembaga & modul sekolah ini');
+                    openButton.addEventListener('click', () => bukaPengaturanSekolah(school.id, openButton));
+                    const visitLink = buatTombolAksi('web', 'Web', 'Buka halaman portal sekolah di tab baru', urlPortalSekolah(school.id));
+                    const editButton = buatTombolAksi('edit', 'Ubah', 'Ubah nama dan ID sekolah');
+                    editButton.addEventListener('click', () => bukaModalSekolah(school.id));
+                    const deleteButton = buatTombolAksi('hapus', 'Hapus', 'Nonaktifkan sekolah');
+                    deleteButton.addEventListener('click', () => hapusSekolah(school.id, school.nama, deleteButton));
+                    const aksiGroup = document.createElement('div');
+                    aksiGroup.className = 'aksi-group';
+                    aksiGroup.append(openButton, visitLink, editButton, deleteButton);
+                    actionCell.append(aksiGroup);
+                    row.append(nameCell, idCell, appsCell, statusCell, actionCell);
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                const compatibilityNotice = document.getElementById('schoolApiCompatibilityNotice');
+                if (compatibilityNotice) compatibilityNotice.hidden = !error.isApiVersionError;
+                tbody.replaceChildren();
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 5;
+                cell.textContent = 'Gagal memuat sekolah: ' + error.message;
+                row.appendChild(cell);
+                tbody.appendChild(row);
+                console.error('[Daftar Sekolah]', error);
+            }
+        }
+
+        function bukaModalSekolah(schoolId) {
+            if (isSavingSchool) return;
+            editingSchoolId = schoolId || '';
+            const school = schoolRecords.find(item => String(item.id) === String(editingSchoolId));
+            document.getElementById('modalSekolahTitle').textContent = school ? 'Edit Sekolah' : 'Tambah Sekolah';
+            document.getElementById('schoolInputNama').value = school ? school.nama : '';
+            document.getElementById('schoolInputId').value = school ? school.id : '';
+            document.getElementById('schoolInputId').disabled = false; // Boleh diedit agar ID URL dapat diperbarui
+            document.getElementById('schoolSaveStatus').hidden = true;
+            document.getElementById('modalSekolah').classList.add('show');
+        }
+
+        function tutupModalSekolah() {
+            if (isSavingSchool) return;
+            document.getElementById('modalSekolah').classList.remove('show');
+            document.getElementById('formSekolahBaru').reset();
+            document.getElementById('schoolInputId').disabled = false;
+            editingSchoolId = '';
+        }
+
+        async function simpanSekolah() {
+            if (isSavingSchool) return;
+            const inputSchoolId = document.getElementById('schoolInputId').value.trim().toLowerCase();
+            const cleanNewId = inputSchoolId.replace(/^\/+/, '').trim();
+            const namaSekolah = document.getElementById('schoolInputNama').value.trim();
+
+            if (!cleanNewId) {
+                showToast('ID URL sekolah wajib diisi.', 'error');
+                return;
+            }
+            if (!namaSekolah) {
+                showToast('Nama sekolah wajib diisi.', 'error');
+                return;
+            }
+
+            const school = {
+                id: cleanNewId,
+                nama: namaSekolah,
+                url_portal: urlPortalSekolah(cleanNewId)
+            };
+
+            const oldId = editingSchoolId ? String(editingSchoolId).replace(/^\/+/, '').trim().toLowerCase() : '';
+            if (oldId) {
+                school.old_id = oldId;
+            }
+
+            const form = document.getElementById('formSekolahBaru');
+            const status = document.getElementById('schoolSaveStatus');
+            const submitButton = document.getElementById('btnSimpanSekolah');
+            const closeButton = document.querySelector('#modalSekolah .modal-close');
+            const formControls = Array.from(form.querySelectorAll('input, button'));
+            const originalDisabledStates = formControls.map(control => control.disabled);
+            const originalButtonText = submitButton.textContent;
+            isSavingSchool = true;
+            form.setAttribute('aria-busy', 'true');
+            status.hidden = false;
+            submitButton.disabled = true;
+            submitButton.classList.add('is-loading');
+            submitButton.setAttribute('aria-busy', 'true');
+            submitButton.textContent = 'Menyimpan...';
+            document.getElementById('btnBatalSekolah').disabled = true;
+            if (closeButton) closeButton.disabled = true;
+            try {
+                const result = await SIKOBAELAH_DB.saveSchool(school);
+                if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Sekolah gagal disimpan.');
+                
+                // Jika ID berubah, hapus cache lokal lama
+                if (oldId && oldId !== cleanNewId && SIKOBAELAH_DB.clearSchoolDataCache) {
+                    SIKOBAELAH_DB.clearSchoolDataCache(oldId);
+                }
+
+                // Lepas kunci penyimpanan dulu, kalau tidak tutupModalSekolah() akan langsung berhenti (return) dan modal tetap terbuka
+                isSavingSchool = false;
+                tutupModalSekolah();
+                showToast(result.message || 'Data sekolah berhasil disimpan.', 'success');
+                await muatDaftarSekolah();
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                isSavingSchool = false;
+                form.removeAttribute('aria-busy');
+                status.hidden = true;
+                submitButton.textContent = originalButtonText;
+                submitButton.classList.remove('is-loading');
+                submitButton.removeAttribute('aria-busy');
+                formControls.forEach((control, index) => { control.disabled = originalDisabledStates[index]; });
+                if (closeButton) closeButton.disabled = false;
+            }
+        }
+
+        async function hapusSekolah(schoolId, schoolName, button) {
+            if (!confirm('Nonaktifkan sekolah "' + schoolName + '"? Data sekolah tetap disimpan dan tautan publiknya tidak lagi ditampilkan.')) return;
+            const restoreButton = mulaiLoadingTombol(button, 'Menonaktifkan...');
+            try {
+                const result = await SIKOBAELAH_DB.deleteSchool(schoolId);
+                if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Sekolah gagal dinonaktifkan.');
+                showToast(result.message || 'Sekolah berhasil dinonaktifkan.', 'success');
+                await muatDaftarSekolah();
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        function isiFormLembagaSekolah(data) {
+            if (!data) return;
+            const namaEl = document.getElementById('schoolCfgNamaLengkap');
+            if (namaEl && (data.nama || data.nama_sekolah)) {
+                namaEl.value = data.nama || data.nama_sekolah || '';
+            }
+            const pemprovEl = document.getElementById('schoolCfgPemprov');
+            if (pemprovEl) pemprovEl.value = data.pemprov || '';
+            const alamatEl = document.getElementById('schoolCfgAlamat');
+            if (alamatEl) alamatEl.value = data.alamat_sekolah || '';
+            const webEl = document.getElementById('schoolCfgWebsite');
+            if (webEl) webEl.value = data.url_web || '';
+            const emailEl = document.getElementById('schoolCfgEmail');
+            if (emailEl) emailEl.value = data.email_sekolah || '';
+            setLogoLembagaValue('logo_instansi', data.logo_instansi || '');
+            setLogoLembagaValue('logo_sekolah', data.logo_sekolah || '');
+            const c1 = document.getElementById('schoolCfgColor1');
+            if (c1) c1.value = data.theme_color_1 || '#ff007a';
+            const c2 = document.getElementById('schoolCfgColor2');
+            if (c2) c2.value = data.theme_color_2 || '#7000ff';
+            const c3 = document.getElementById('schoolCfgColor3');
+            if (c3) c3.value = data.theme_color_3 || '#00d2ff';
+        }
+
+        async function bukaPengaturanSekolah(schoolId, button) {
+            const cleanId = String(schoolId || '').trim().toLowerCase();
+            const schoolRecord = Array.isArray(schoolRecords) ? schoolRecords.find(item => String(item.id).toLowerCase() === cleanId) : null;
+            const schoolName = (schoolRecord && schoolRecord.nama) || cleanId;
+
+            // Beri umpan balik visual langsung pada tombol
+            const restoreBtn = button ? mulaiLoadingTombol(button, '⏳ Memuat...') : () => {};
+
+            // Muat opsi dropdown logo
+            populateSchoolLogoDropdowns();
+
+            // 1. CEK DATA LANGSUNG (schoolRecord + cache lokal) - Buka layar editor INSTAN (<5ms)!
+            const cached = SIKOBAELAH_DB.getCachedSchoolData ? SIKOBAELAH_DB.getCachedSchoolData(cleanId) : null;
+            const initialData = Object.assign({}, schoolRecord || {}, (cached && cached.config) ? cached.config : {});
+
+            currentSchoolData = {
+                school: { id: cleanId, nama: initialData.nama || schoolName },
+                config: initialData,
+                apps: (cached && cached.apps) ? cached.apps : []
+            };
+
+            document.getElementById('schoolEditorTitle').textContent = initialData.nama || schoolName;
+            const editorUrlEl = document.getElementById('schoolEditorUrl');
+            const initialPortalUrl = urlPortalSekolah(cleanId);
+            if (editorUrlEl) {
+                editorUrlEl.innerHTML = `<a href="${initialPortalUrl}" target="_blank" rel="noopener noreferrer" style="color:#0d6efd; text-decoration:underline; font-weight:500; display:inline-flex; align-items:center; gap:5px;" title="Buka halaman portal sekolah">${initialPortalUrl} <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`;
+            }
+
+            // Langsung isi form secara instan dari data spreadsheet yang sudah ada di memory
+            isiFormLembagaSekolah(initialData);
+            if (currentSchoolData.apps && currentSchoolData.apps.length) renderAplikasiSekolah();
+
+            document.getElementById('schoolListView').style.display = 'none';
+            document.getElementById('schoolEditorView').style.display = 'block';
+            switchSchoolEditorTab('config');
+
+            // 2. Ambil data terbaru dari Spreadsheet di latar belakang untuk memastikan modul apps & config selalu sinkron
+            try {
+                const result = await SIKOBAELAH_DB.getSchoolData(cleanId);
+                if (result && result.success && result.data) {
+                    currentSchoolData = result.data;
+                    const school = currentSchoolData.school || { id: cleanId, nama: schoolName };
+                    document.getElementById('schoolEditorTitle').textContent = school.nama;
+                    const freshPortalUrl = urlPortalSekolah(school.id);
+                    if (editorUrlEl) {
+                        editorUrlEl.innerHTML = `<a href="${freshPortalUrl}" target="_blank" rel="noopener noreferrer" style="color:#0d6efd; text-decoration:underline; font-weight:500; display:inline-flex; align-items:center; gap:5px;" title="Buka halaman portal sekolah">${freshPortalUrl} <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`;
+                    }
+                    const freshConfig = Object.assign({}, school, currentSchoolData.config || {});
+                    isiFormLembagaSekolah(freshConfig);
+                    renderAplikasiSekolah();
+                    if (SIKOBAELAH_DB.cacheSchoolData) {
+                        SIKOBAELAH_DB.cacheSchoolData(cleanId, result.data);
+                    }
+                }
+            } catch (error) {
+                console.warn('[Pengaturan Sekolah] Sinkronisasi background gagal, menggunakan data awal:', error);
+            } finally {
+                restoreBtn();
+            }
+        }
+
+        function kembaliKeDaftarSekolah() {
+            document.getElementById('schoolEditorView').style.display = 'none';
+            document.getElementById('schoolListView').style.display = 'block';
+            currentSchoolData = null;
+            if (typeof SIKOBAELAH_DB !== 'undefined') {
+                if (typeof SIKOBAELAH_DB.clearActiveSchoolId === 'function') {
+                    SIKOBAELAH_DB.clearActiveSchoolId();
+                } else {
+                    SIKOBAELAH_DB.activeSchoolId = '';
+                }
+            }
+            muatDaftarSekolah();
+        }
+
+        function switchSchoolEditorTab(tab) {
+            const showConfig = tab === 'config';
+            document.getElementById('schoolEditorConfigPanel').style.display = showConfig ? 'block' : 'none';
+            document.getElementById('schoolEditorAppsPanel').style.display = showConfig ? 'none' : 'block';
+            document.getElementById('schoolEditorTabConfig').classList.toggle('active', showConfig);
+            document.getElementById('schoolEditorTabApps').classList.toggle('active', !showConfig);
+        }
+
+        async function simpanDataLembagaSekolah(button) {
+            if (!currentSchoolData || !currentSchoolData.school) return;
+            const restoreButton = mulaiLoadingTombol(button, 'Menyimpan...');
+            const namaEl = document.getElementById('schoolCfgNamaLengkap');
+            const namaVal = namaEl ? namaEl.value.trim() : (currentSchoolData.school.nama || '');
+            const websiteInput = document.getElementById('schoolCfgWebsite').value.trim();
+            const websiteValue = websiteInput && !/^[a-z][a-z0-9+.-]*:/i.test(websiteInput)
+                ? 'https://' + websiteInput.replace(/^\/\//, '')
+                : websiteInput;
+
+            // HANYA simpan 10 atribut murni milik sekolah ke sheet Sekolah (1 baris)
+            const config = {
+                nama: namaVal,
+                nama_sekolah: namaVal,
+                pemprov: document.getElementById('schoolCfgPemprov').value.trim(),
+                alamat_sekolah: document.getElementById('schoolCfgAlamat').value.trim(),
+                url_web: websiteValue,
+                email_sekolah: document.getElementById('schoolCfgEmail').value.trim(),
+                logo_instansi: document.getElementById('schoolCfgLogoInstansi').value.trim(),
+                logo_sekolah: document.getElementById('schoolCfgLogo').value.trim(),
+                theme_color_1: document.getElementById('schoolCfgColor1').value,
+                theme_color_2: document.getElementById('schoolCfgColor2').value,
+                theme_color_3: document.getElementById('schoolCfgColor3').value
+            };
+            try {
+                const result = await SIKOBAELAH_DB.saveSchoolConfig(currentSchoolData.school.id, config);
+                if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Data lembaga gagal disimpan.');
+                currentSchoolData = result.data;
+                currentSchoolData.school.nama = namaVal;
+                document.getElementById('schoolEditorTitle').textContent = namaVal;
+                if (Array.isArray(schoolRecords)) {
+                    const rec = schoolRecords.find(item => String(item.id).toLowerCase() === String(currentSchoolData.school.id).toLowerCase());
+                    if (rec) Object.assign(rec, config);
+                }
+                showToast(result.message || 'Data lembaga berhasil disimpan ke Sheet Sekolah.', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        function renderAplikasiSekolah() {
+            const tbody = document.getElementById('tbodyAplikasiSekolah');
+            if (!tbody || !currentSchoolData) return;
+            tbody.replaceChildren();
+            const catalogIds = new Set(
+                (SIKOBAELAH_DB.getMasterApps ? SIKOBAELAH_DB.getMasterApps() : SIKOBAELAH_DB.getApps())
+                .map(app => String(app.id))
+            );
+            currentSchoolData.apps.forEach(app => {
+                const row = document.createElement('tr');
+                const enabledCell = document.createElement('td');
+                const enabled = document.createElement('input');
+                enabled.type = 'checkbox';
+                enabled.checked = app.enabled === true || app.enabled === 1 || app.enabled === 'true';
+                enabled.setAttribute('aria-label', 'Tampilkan ' + app.nama);
+                enabledCell.appendChild(enabled);
+                const appCell = document.createElement('td');
+                const appName = document.createElement('strong');
+                appName.textContent = app.nama || app.id;
+                const appInfo = document.createElement('div');
+                appInfo.style.cssText = 'font-size:.78rem;color:#64748b;';
+                appInfo.textContent = app.kategori || app.id;
+                appCell.append(appName, appInfo);
+                const urlCell = document.createElement('td');
+                const urlWrapper = document.createElement('div');
+                urlWrapper.style.cssText = 'display:flex; align-items:center; gap:6px;';
+                const url = document.createElement('input');
+                url.type = 'url';
+                url.value = app.url_online || '';
+                url.placeholder = 'https://aplikasi.sekolah.id';
+                url.className = 'form-input';
+                url.style.cssText = 'flex:1; padding:6px 10px; font-size:0.85rem;';
+                url.setAttribute('aria-label', 'URL ' + app.nama + ' untuk sekolah ini');
+                urlWrapper.appendChild(url);
+                if (app.url_online && /^https?:\/\//i.test(app.url_online)) {
+                    const testLink = document.createElement('a');
+                    testLink.href = app.url_online;
+                    testLink.target = '_blank';
+                    testLink.rel = 'noopener noreferrer';
+                    testLink.className = 'aksi-btn aksi-web';
+                    testLink.style.cssText = 'padding:6px; min-width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;';
+                    testLink.title = 'Buka tautan aplikasi di tab baru: ' + app.url_online;
+                    testLink.innerHTML = AKSI_IKON.web;
+                    urlWrapper.appendChild(testLink);
+                }
+                urlCell.appendChild(urlWrapper);
+                const actionCell = document.createElement('td');
+                actionCell.style.textAlign = 'right';
+                if (!catalogIds.has(String(app.id))) {
+                    const remove = buatTombolAksi('hapus', 'Hapus', 'Hapus aplikasi dari sekolah ini');
+                    remove.addEventListener('click', () => {
+                        currentSchoolData.apps = currentSchoolData.apps.filter(item => String(item.id) !== String(app.id));
+                        renderAplikasiSekolah();
+                    });
+                    actionCell.appendChild(remove);
+                } else {
+                    actionCell.textContent = 'Katalog';
+                }
+                row.dataset.appId = app.id;
+                row.append(enabledCell, appCell, urlCell, actionCell);
+                tbody.appendChild(row);
+            });
+        }
+
+        function bukaModalAplikasiSekolah() {
+            if (!currentSchoolData) return;
+            document.getElementById('formAplikasiSekolahBaru').reset();
+            document.getElementById('modalAplikasiSekolah').classList.add('show');
+        }
+
+        function tutupModalAplikasiSekolah() {
+            document.getElementById('modalAplikasiSekolah').classList.remove('show');
+        }
+
+        function tambahAplikasiSekolah() {
+            if (!currentSchoolData) return;
+            const app = {
+                id: document.getElementById('schoolAppInputId').value.trim().toLowerCase(),
+                nama: document.getElementById('schoolAppInputNama').value.trim(),
+                deskripsi: document.getElementById('schoolAppInputDeskripsi').value.trim(),
+                kategori: document.getElementById('schoolAppInputKategori').value.trim() || 'Umum',
+                url_online: document.getElementById('schoolAppInputUrl').value.trim(),
+                logo: document.getElementById('schoolAppInputLogo').value.trim() || 'sikobaelah.png',
+                logo_fallback: 'sikobaelah.png',
+                card_class: 'card-custom',
+                status: 'aktif',
+                enabled: true,
+                urutan: currentSchoolData.apps.length + 1
+            };
+            if (currentSchoolData.apps.some(item => String(item.id) === app.id)) {
+                showToast('ID aplikasi sudah ada pada sekolah ini.', 'error');
+                return;
+            }
+            currentSchoolData.apps.push(app);
+            tutupModalAplikasiSekolah();
+            renderAplikasiSekolah();
+        }
+
+        async function simpanAplikasiSekolah(button) {
+            if (!currentSchoolData) return;
+            const restoreButton = mulaiLoadingTombol(button, 'Menyimpan...');
+            const rows = Array.from(document.querySelectorAll('#tbodyAplikasiSekolah tr'));
+            const apps = rows.map(row => {
+                const app = currentSchoolData.apps.find(item => String(item.id) === row.dataset.appId);
+                return Object.assign({}, app, {
+                    enabled: row.querySelector('input[type="checkbox"]').checked,
+                    url_online: row.querySelector('input[type="url"]').value.trim()
+                });
+            });
+            const invalidApp = apps.find(app => app.enabled && !/^https?:\/\//i.test(app.url_online));
+            if (invalidApp) {
+                showToast('Isi URL HTTP/HTTPS untuk aplikasi aktif: ' + invalidApp.nama, 'error');
+                restoreButton();
+                return;
+            }
+            try {
+                const result = await SIKOBAELAH_DB.saveSchoolApps(currentSchoolData.school.id, apps);
+                if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Aplikasi sekolah gagal disimpan.');
+                currentSchoolData = result.data;
+                renderAplikasiSekolah();
+                const enabledCount = currentSchoolData.apps.filter(app =>
+                    app.enabled === true || app.enabled === 1 || app.enabled === 'true'
+                ).length;
+                schoolRecords = schoolRecords.map(school => String(school.id) === String(currentSchoolData.school.id)
+                    ? Object.assign({}, school, { aplikasi_aktif: enabledCount })
+                    : school);
+                showToast(result.message || 'Modul aplikasi berhasil disimpan.', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        // --- 3. MUAT DATA LENGKAP DASHBOARD ---
+        async function muatSeluruhDataDashboard() {
+            const cfg = SIKOBAELAH_DB.getConfig();
+            const schoolSubtitle = document.getElementById('dashSchoolSubtitle');
+            if (schoolSubtitle && cfg.nama_sekolah) schoolSubtitle.textContent = cfg.nama_sekolah;
+
+            // Isi pengaturan portal umum
+            document.getElementById('cfgNamaPortal').value = cfg.nama_portal || '';
+            document.getElementById('cfgSubJudul').value = cfg.sub_judul || '';
+            document.getElementById('cfgAdminUser').value = '';
+            document.getElementById('cfgAdminPass').value = '';
+
+            document.getElementById('cfgLogoApp').value = cfg.logo_aplikasi || 'sikobaelah.png';
+            updateLogoPreviews();
+
+            // Isi Form Profil Pengembang
+            document.getElementById('cfgDevNama').value = cfg.dev_nama || 'Pariyanto';
+            document.getElementById('cfgDevJabatan').value = cfg.dev_jabatan || 'Pengembang Sistem & Pranata Komputer';
+            document.getElementById('cfgDevFoto').value = cfg.dev_foto || 'sikobaelah.png';
+            document.getElementById('cfgDevWa').value = cfg.dev_wa || '6285219901909';
+            document.getElementById('cfgDevTelp').value = cfg.dev_telp || cfg.telp_helpdesk || '+6285219901909';
+            document.getElementById('cfgDevEmail').value = cfg.dev_email || cfg.email_resmi || 'sman15tebo.bos@gmail.com';
+            document.getElementById('cfgDevAlamat').value = cfg.dev_alamat || '';
+            document.getElementById('cfgDevKoordinat').value = cfg.dev_koordinat || '-1.218545, 102.327892';
+            updateDevPhotoPreview();
+
+            // Isi Form Koneksi GAS
+            document.getElementById('cfgGasUrl').value = SIKOBAELAH_DB.getGasUrl();
+
+            // Otomatis deteksi URL dari config-offline.js jika berjalan di Electron Desktop
+            if (window.electronAPI && typeof window.electronAPI.getOfflineConfig === 'function') {
+                try {
+                    const offCfg = await window.electronAPI.getOfflineConfig();
+                    if (offCfg && (offCfg.masterPortalExecUrl || offCfg.execUrl)) {
+                        const offUrl = String(offCfg.masterPortalExecUrl || offCfg.execUrl || '').trim();
+                        const inputGas = document.getElementById('cfgGasUrl');
+                        if (inputGas && offUrl) {
+                            inputGas.value = offUrl;
+                            SIKOBAELAH_DB.setGasUrl(offUrl);
+                        }
+                    }
+                } catch (error) {
+                    console.error('[Konfigurasi Desktop]', error);
+                    showToast('Konfigurasi koneksi Desktop gagal dibaca: ' + error.message, 'error');
+                }
+            }
+
+            // Render Tabel Modul Aplikasi & Tabel Dasar Hukum
+            renderTableAplikasi();
+            renderTableLaws();
+        }
+
+        // --- 4. CRUD PENGATURAN PORTAL UMUM ---
+        async function simpanPengaturanSekolah(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Menyimpan...');
+            const data = {
+                nama_portal: document.getElementById('cfgNamaPortal').value.trim(),
+                sub_judul: document.getElementById('cfgSubJudul').value.trim(),
+                logo_aplikasi: document.getElementById('cfgLogoApp').value.trim() || 'sikobaelah.png'
+            };
+
+            const newUser = document.getElementById('cfgAdminUser').value.trim();
+            const newPass = document.getElementById('cfgAdminPass').value.trim();
+            if (newUser) data.admin_user = newUser;
+            if (newPass) {
+                data.admin_pass = newPass;
+            }
+
+            try {
+                showToast('Menyimpan pengaturan portal umum...', '');
+                const res = await SIKOBAELAH_DB.saveConfigData(data);
+                if (!res || !res.success) throw new Error(res && res.message ? res.message : 'Pengaturan gagal disimpan.');
+                if (newPass) document.getElementById('cfgAdminPass').value = '';
+                document.getElementById('cfgAdminUser').value = '';
+                showToast(res && res.message ? res.message : 'Pengaturan portal umum berhasil disimpan!', 'success');
+            } catch (err) {
+                showToast('Gagal menyimpan: ' + err.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        // --- 4B. CRUD DATA PROFIL PENGEMBANG ---
+        async function simpanProfilPengembang(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Menyimpan...');
+            const data = {
+                dev_nama: document.getElementById('cfgDevNama').value.trim(),
+                dev_jabatan: document.getElementById('cfgDevJabatan').value.trim(),
+                dev_foto: document.getElementById('cfgDevFoto').value.trim() || 'sikobaelah.png',
+                dev_wa: document.getElementById('cfgDevWa').value.trim(),
+                dev_telp: document.getElementById('cfgDevTelp').value.trim(),
+                dev_email: document.getElementById('cfgDevEmail').value.trim(),
+                dev_alamat: document.getElementById('cfgDevAlamat').value.trim(),
+                dev_koordinat: document.getElementById('cfgDevKoordinat').value.trim(),
+                // Keep backward compatibility
+                creator: document.getElementById('cfgDevNama').value.trim(),
+                wa_helpdesk: document.getElementById('cfgDevWa').value.trim(),
+                telp_helpdesk: document.getElementById('cfgDevTelp').value.trim(),
+                email_resmi: document.getElementById('cfgDevEmail').value.trim()
+            };
+
+            try {
+                showToast('Menyimpan profil pengembang...', '');
+                const res = await SIKOBAELAH_DB.saveConfigData(data);
+                if (!res || !res.success) throw new Error(res && res.message ? res.message : 'Profil pengembang gagal disimpan.');
+                showToast(res && res.message ? res.message : 'Profil pengembang berhasil disimpan!', 'success');
+            } catch (err) {
+                showToast('Gagal menyimpan profil: ' + err.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        // --- 4C. HELPER PREVIEW LOGO APLIKASI ---
+        function updateLogoPreviews() {
+            const appInput = document.getElementById('cfgLogoApp');
+            if (!appInput) return;
+            const app = appInput.value.trim() || 'sikobaelah.png';
+            const pApp = document.getElementById('prevLogoApp');
+            if (pApp) pApp.src = resolveImgPath(app, 'app');
+            const tApp = document.getElementById('prevTextApp');
+            if (tApp) tApp.textContent = app;
+        }
+
+        function updateDevPhotoPreview() {
+            const foto = document.getElementById('cfgDevFoto').value.trim() || 'sikobaelah.png';
+            const p = document.getElementById('prevDevPhoto');
+            if (p) p.src = resolveImgPath(foto, 'app');
+            const t = document.getElementById('prevDevPhotoName');
+            if (t) t.textContent = foto;
+        }
+
+        // --- 4D. GPS GEOLOCATION & GOOGLE MAPS ---
+        function ambilKoordinatGps() {
+            const statusEl = document.getElementById('gpsStatusMessage');
+            if (!navigator.geolocation) {
+                if (statusEl) {
+                    statusEl.style.color = '#dc2626';
+                    statusEl.textContent = '❌ Peramban (Browser) Anda tidak mendukung fitur Geolocation GPS.';
+                }
+                return;
+            }
+
+            if (statusEl) {
+                statusEl.style.color = '#0284c7';
+                statusEl.textContent = '⏳ Mengakses sensor GPS lokasi saat ini... Mohon izinkan akses lokasi jika muncul permintaan.';
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(pos) {
+                    const lat = pos.coords.latitude.toFixed(6);
+                    const lng = pos.coords.longitude.toFixed(6);
+                    const coords = lat + ', ' + lng;
+                    document.getElementById('cfgDevKoordinat').value = coords;
+                    if (statusEl) {
+                        statusEl.style.color = '#15803d';
+                        statusEl.textContent = '✅ Titik koordinat GPS berhasil diperoleh: ' + coords + ' (Akurasi: ±' + Math.round(pos.coords.accuracy) + 'm)';
+                    }
+                    showToast('Titik koordinat berhasil diperoleh!', 'success');
+                },
+                function(err) {
+                    let msg = 'Gagal mengambil GPS: ' + err.message;
+                    if (err.code === 1) msg = 'Izin akses lokasi ditolak oleh pengguna/browser.';
+                    if (err.code === 2) msg = 'Posisi koordinat tidak dapat ditentukan.';
+                    if (err.code === 3) msg = 'Waktu permintaan GPS habis (timeout).';
+                    if (statusEl) {
+                        statusEl.style.color = '#dc2626';
+                        statusEl.textContent = '❌ ' + msg;
+                    }
+                    showToast(msg, 'error');
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            );
+        }
+
+        function bukaGoogleMapsPreview() {
+            const coords = document.getElementById('cfgDevKoordinat').value.trim();
+            const alamat = document.getElementById('cfgDevAlamat').value.trim();
+            const q = coords || alamat || '';
+            const url = 'https://www.google.com/maps?q=' + encodeURIComponent(q);
+            window.open(url, '_blank');
+        }
+
+        // --- 5. CRUD MODUL APLIKASI ---
+        function renderTableAplikasi() {
+            const tbody = document.getElementById('tbodyAplikasi');
+            if (!tbody) return;
+            // Selalu tampilkan SELURUH modul aplikasi katalog umum master admin
+            const apps = (SIKOBAELAH_DB.getMasterApps ? SIKOBAELAH_DB.getMasterApps() : SIKOBAELAH_DB.defaultApps);
+            tbody.replaceChildren();
+            apps.forEach(app => {
+                const row = document.createElement('tr');
+                const logoCell = document.createElement('td');
+                const logo = document.createElement('img');
+                logo.src = resolveImgPath(app.logo, 'app');
+                logo.alt = 'Logo ' + String(app.nama || app.id || 'aplikasi');
+                logo.style.cssText = 'width:36px;height:36px;object-fit:contain;';
+                logo.onerror = () => { logo.src = './assets/img/sikobaelah.png'; };
+                logoCell.appendChild(logo);
+
+                const infoCell = document.createElement('td');
+                const name = document.createElement('strong');
+                name.textContent = app.nama || '';
+                const appId = document.createElement('div');
+                appId.style.cssText = 'font-size:.78rem;color:#64748b;';
+                appId.textContent = 'ID: ' + String(app.id || '');
+                const description = document.createElement('div');
+                description.style.cssText = 'font-size:.8rem;color:#475569;';
+                description.textContent = app.deskripsi || '-';
+                infoCell.append(name, appId, description);
+
+                const categoryCell = document.createElement('td');
+                const category = document.createElement('span');
+                category.style.cssText = 'display:inline-block;padding:2px 8px;border-radius:4px;font-size:.78rem;font-weight:600;background:#e0f2fe;color:#0284c7;';
+                category.textContent = app.kategori || 'Umum';
+                categoryCell.appendChild(category);
+
+                const urlCell = document.createElement('td');
+                const appUrl = String(app.url_online || '');
+                let parsedUrl;
+                try { parsedUrl = new URL(appUrl); } catch (_) { parsedUrl = null; }
+                if (parsedUrl && (parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:')) {
+                    const link = document.createElement('a');
+                    link.href = parsedUrl.href;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.style.cssText = 'color:#0d6efd;text-decoration:none;font-size:.84rem;word-break:break-all;';
+                    link.textContent = appUrl;
+                    urlCell.appendChild(link);
+                } else {
+                    urlCell.textContent = appUrl;
+                }
+
+                const statusCell = document.createElement('td');
+                const status = document.createElement('span');
+                const isActive = app.status === 'aktif';
+                status.className = 'badge-status ' + (isActive ? 'badge-active' : 'badge-dev');
+                status.textContent = isActive ? 'Aktif' : 'Pengembangan';
+                statusCell.appendChild(status);
+
+                const actions = document.createElement('td');
+                actions.style.cssText = 'text-align:right;white-space:nowrap;';
+                const editButton = buatTombolAksi('edit', 'Ubah', 'Ubah modul aplikasi');
+                editButton.addEventListener('click', () => editApp(app.id));
+                const deleteButton = buatTombolAksi('hapus', 'Hapus', 'Hapus modul aplikasi');
+                deleteButton.addEventListener('click', () => hapusApp(app.id, app.nama, deleteButton));
+                const aksiGroup = document.createElement('div');
+                aksiGroup.className = 'aksi-group';
+                aksiGroup.append(editButton, deleteButton);
+                actions.append(aksiGroup);
+                row.append(logoCell, infoCell, categoryCell, urlCell, statusCell, actions);
+                tbody.appendChild(row);
+            });
+        }
+
+        function bukaModalApp(isEdit = false) {
+            document.getElementById('modalAppTitle').textContent = isEdit ? 'Edit Modul Aplikasi' : 'Tambah Modul Aplikasi Baru';
+            document.getElementById('appInputIsEdit').value = isEdit ? '1' : '0';
+            document.getElementById('appInputId').disabled = isEdit;
+            document.getElementById('modalApp').classList.add('show');
+        }
+
+        function tutupModalApp() {
+            document.getElementById('modalApp').classList.remove('show');
+            document.getElementById('formApp').reset();
+            document.getElementById('appInputId').disabled = false;
+        }
+
+        function editApp(appId) {
+            const apps = (SIKOBAELAH_DB.getMasterApps ? SIKOBAELAH_DB.getMasterApps() : SIKOBAELAH_DB.defaultApps);
+            const app = apps.find(a => String(a.id) === String(appId));
+            if (!app) return;
+
+            bukaModalApp(true);
+            document.getElementById('appInputId').value = app.id || '';
+            document.getElementById('appInputNama').value = app.nama || '';
+            document.getElementById('appInputDeskripsi').value = app.deskripsi || '';
+            document.getElementById('appInputKategori').value = app.kategori || '';
+            document.getElementById('appInputUrl').value = app.url_online || '';
+            document.getElementById('appInputLogo').value = app.logo || '';
+            document.getElementById('appInputStatus').value = app.status || 'aktif';
+            document.getElementById('appInputRibbon').value = app.ribbon || '';
+            document.getElementById('appInputKataKunci').value = app.kata_kunci || '';
+            document.getElementById('appInputUrutan').value = app.urutan || 1;
+        }
+
+        async function simpanDataApp(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Menyimpan...');
+            const appObj = {
+                id: document.getElementById('appInputId').value.trim(),
+                nama: document.getElementById('appInputNama').value.trim(),
+                deskripsi: document.getElementById('appInputDeskripsi').value.trim(),
+                kategori: document.getElementById('appInputKategori').value.trim(),
+                card_class: 'card-' + document.getElementById('appInputId').value.trim(),
+                url_online: document.getElementById('appInputUrl').value.trim(),
+                logo: document.getElementById('appInputLogo').value.trim(),
+                logo_fallback: './assets/img/sikobaelah.png',
+                kata_kunci: document.getElementById('appInputKataKunci').value.trim(),
+                status: document.getElementById('appInputStatus').value,
+                ribbon: document.getElementById('appInputRibbon').value.trim(),
+                urutan: Number(document.getElementById('appInputUrutan').value) || 1
+            };
+
+            try {
+                showToast('Menyimpan aplikasi...', '');
+                const result = await SIKOBAELAH_DB.saveAppData(appObj);
+                if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Aplikasi gagal disimpan.');
+                showToast('Modul aplikasi berhasil disimpan!', 'success');
+                tutupModalApp();
+                renderTableAplikasi();
+            } catch (err) {
+                showToast('Gagal menyimpan: ' + err.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        async function hapusApp(appId, appNama, button) {
+            if (confirm(`Apakah Anda yakin ingin menghapus modul "${appNama}" (${appId})?`)) {
+                const restoreButton = mulaiLoadingTombol(button, 'Menghapus...');
+                try {
+                    showToast('Menghapus modul...', '');
+                    const result = await SIKOBAELAH_DB.deleteAppData(appId);
+                    if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Aplikasi gagal dihapus.');
+                    showToast(`Modul "${appNama}" berhasil dihapus!`, 'success');
+                    renderTableAplikasi();
+                } catch (err) {
+                    showToast('Gagal menghapus: ' + err.message, 'error');
+                } finally {
+                    restoreButton();
+                }
+            }
+        }
+
+        // --- 6. CRUD DASAR HUKUM ---
+        function renderTableLaws() {
+            const tbody = document.getElementById('tbodyHukum');
+            if (!tbody) return;
+            const filterCat = document.getElementById('filterLawCategory').value;
+            let laws = SIKOBAELAH_DB.getLaws();
+
+            if (filterCat && filterCat !== 'all') {
+                laws = laws.filter(l => String(l.kategori_app).toLowerCase() === filterCat.toLowerCase());
+            }
+
+            tbody.replaceChildren();
+            laws.forEach((law, idx) => {
+                const row = document.createElement('tr');
+                const numberCell = document.createElement('td');
+                numberCell.style.cssText = 'color:#64748b;font-weight:600;';
+                numberCell.textContent = String(idx + 1);
+                const regulationCell = document.createElement('td');
+                const number = document.createElement('strong');
+                number.style.color = '#0f172a';
+                number.textContent = law.nomor_regulasi || '';
+                const hierarchy = document.createElement('div');
+                hierarchy.style.cssText = 'font-size:.75rem;color:#0284c7;font-weight:700;';
+                hierarchy.textContent = law.hierarki || '-';
+                const publication = document.createElement('div');
+                publication.style.cssText = 'font-size:.75rem;color:#64748b;';
+                publication.textContent = law.lembaran_negara || '';
+                regulationCell.append(number, hierarchy, publication);
+
+                const subjectCell = document.createElement('td');
+                const title = document.createElement('div');
+                title.style.cssText = 'font-weight:500;color:#1e293b;';
+                title.textContent = law.judul_regulasi || '';
+                const relation = document.createElement('div');
+                relation.style.cssText = 'font-size:.78rem;color:#64748b;margin-top:2px;';
+                const relationText = String(law.keterkaitan || '');
+                relation.textContent = relationText.length > 90 ? relationText.substring(0, 90) + '...' : relationText;
+                subjectCell.append(title, relation);
+
+                const categoryCell = document.createElement('td');
+                const category = document.createElement('span');
+                category.style.cssText = 'font-size:.78rem;font-weight:600;background:#f1f5f9;padding:2px 8px;border-radius:4px;text-transform:uppercase;';
+                category.textContent = law.kategori_app || '';
+                categoryCell.appendChild(category);
+                const statusCell = document.createElement('td');
+                const status = document.createElement('span');
+                status.className = 'badge-status badge-active';
+                status.textContent = law.status || 'Berlaku';
+                statusCell.appendChild(status);
+
+                const actions = document.createElement('td');
+                actions.style.cssText = 'text-align:right;white-space:nowrap;';
+                const editButton = buatTombolAksi('edit', 'Ubah', 'Ubah regulasi');
+                editButton.addEventListener('click', () => editLaw(law.id));
+                const deleteButton = buatTombolAksi('hapus', 'Hapus', 'Hapus regulasi');
+                deleteButton.addEventListener('click', () => hapusLaw(law.id, law.nomor_regulasi, deleteButton));
+                const aksiGroup = document.createElement('div');
+                aksiGroup.className = 'aksi-group';
+                aksiGroup.append(editButton, deleteButton);
+                actions.append(aksiGroup);
+                row.append(numberCell, regulationCell, subjectCell, categoryCell, statusCell, actions);
+                tbody.appendChild(row);
+            });
+
+            if (laws.length === 0) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 6;
+                cell.style.cssText = 'text-align:center;padding:25px;color:#64748b;';
+                cell.textContent = 'Tidak ada data regulasi untuk kategori ini.';
+                row.appendChild(cell);
+                tbody.appendChild(row);
+            }
+        }
+
+        function bukaModalLaw(isEdit = false) {
+            document.getElementById('modalLawTitle').textContent = isEdit ? 'Edit Dasar Hukum' : 'Tambah Dasar Hukum Baru';
+            document.getElementById('modalLaw').classList.add('show');
+        }
+
+        function tutupModalLaw() {
+            document.getElementById('modalLaw').classList.remove('show');
+            document.getElementById('formLaw').reset();
+            document.getElementById('lawInputId').value = '';
+        }
+
+        function editLaw(lawId) {
+            const laws = SIKOBAELAH_DB.getLaws();
+            const law = laws.find(l => Number(l.id) === Number(lawId));
+            if (!law) return;
+
+            bukaModalLaw(true);
+            document.getElementById('lawInputId').value = law.id || '';
+            document.getElementById('lawInputCategory').value = (law.kategori_app || 'spbe').toLowerCase();
+            document.getElementById('lawInputHierarki').value = law.hierarki || '';
+            document.getElementById('lawInputNomor').value = law.nomor_regulasi || '';
+            document.getElementById('lawInputJudul').value = law.judul_regulasi || '';
+            document.getElementById('lawInputKeterkaitan').value = law.keterkaitan || '';
+            document.getElementById('lawInputLembaran').value = law.lembaran_negara || '';
+            document.getElementById('lawInputLinkJdih').value = law.link_jdih || '';
+            document.getElementById('lawInputLabelJdih').value = law.label_jdih || '';
+            document.getElementById('lawInputStatus').value = law.status || 'Berlaku';
+            document.getElementById('lawInputKataKunci').value = law.kata_kunci || '';
+        }
+
+        async function simpanDataLaw(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Menyimpan...');
+            const idVal = document.getElementById('lawInputId').value;
+            const lawObj = {
+                id: idVal ? Number(idVal) : null,
+                kategori_app: document.getElementById('lawInputCategory').value,
+                hierarki: document.getElementById('lawInputHierarki').value.trim(),
+                nomor_regulasi: document.getElementById('lawInputNomor').value.trim(),
+                judul_regulasi: document.getElementById('lawInputJudul').value.trim(),
+                keterkaitan: document.getElementById('lawInputKeterkaitan').value.trim(),
+                lembaran_negara: document.getElementById('lawInputLembaran').value.trim(),
+                link_jdih: document.getElementById('lawInputLinkJdih').value.trim(),
+                label_jdih: document.getElementById('lawInputLabelJdih').value.trim() || 'JDIH Resmi',
+                status: document.getElementById('lawInputStatus').value,
+                kata_kunci: document.getElementById('lawInputKataKunci').value.trim()
+            };
+
+            try {
+                showToast('Menyimpan regulasi...', '');
+                const result = await SIKOBAELAH_DB.saveLawData(lawObj);
+                if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Regulasi gagal disimpan.');
+                showToast('Regulasi dasar hukum berhasil disimpan!', 'success');
+                tutupModalLaw();
+                renderTableLaws();
+            } catch (err) {
+                showToast('Gagal menyimpan: ' + err.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        async function hapusLaw(lawId, lawNomor, button) {
+            if (confirm(`Apakah Anda yakin ingin menghapus regulasi "${lawNomor}"?`)) {
+                const restoreButton = mulaiLoadingTombol(button, 'Menghapus...');
+                try {
+                    showToast('Menghapus regulasi...', '');
+                    const result = await SIKOBAELAH_DB.deleteLawData(lawId);
+                    if (!result || !result.success) throw new Error(result && result.message ? result.message : 'Regulasi gagal dihapus.');
+                    showToast('Regulasi berhasil dihapus!', 'success');
+                    renderTableLaws();
+                } catch (err) {
+                    showToast('Gagal menghapus: ' + err.message, 'error');
+                } finally {
+                    restoreButton();
+                }
+            }
+        }
+
+        // --- 7. KONEKSI & SINKRONISASI CLOUD ---
+        function simpanKoneksiGas(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Menyimpan...');
+            const url = document.getElementById('cfgGasUrl').value.trim();
+            if (!SIKOBAELAH_DB.isValidGasUrl(url)) {
+                showToast('Masukkan URL Web App Google Apps Script yang valid.', 'error');
+                restoreButton();
+                return;
+            }
+            SIKOBAELAH_DB.setGasUrl(url);
+            showToast('URL Google Apps Script berhasil disimpan!', 'success');
+            restoreButton();
+        }
+
+        async function tesKoneksiGas(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Menguji...');
+            const url = document.getElementById('cfgGasUrl').value.trim();
+            if (!SIKOBAELAH_DB.isValidGasUrl(url)) {
+                showToast('Masukkan URL Web App Google Apps Script yang valid.', 'error');
+                restoreButton();
+                return;
+            }
+            SIKOBAELAH_DB.setGasUrl(url);
+            showToast('Menghubungi server Apps Script...', '');
+            try {
+                const res = await SIKOBAELAH_DB.getSchools();
+                if (res && res.success && Array.isArray(res.data)) {
+                    showToast('✅ Koneksi berhasil dan API multi-sekolah tersedia!', 'success');
+                } else {
+                    showToast('Uji API multi-sekolah gagal: ' + (res && res.message ? res.message : 'Respons server tidak valid'), 'error');
+                }
+            } catch (err) {
+                showToast('Koneksi gagal: ' + err.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        async function kirimDataKeSpreadsheet(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Mengirim...');
+            const url = document.getElementById('cfgGasUrl').value.trim();
+            if (!SIKOBAELAH_DB.isValidGasUrl(url)) {
+                showToast('Masukkan URL Web App Google Apps Script yang valid.', 'error');
+                restoreButton();
+                return;
+            }
+            showToast('Mengirim seluruh data offline ke Google Spreadsheet...', '');
+            try {
+                const res = await SIKOBAELAH_DB.pushToCloud(url);
+                if (res && res.success) {
+                    showToast('✅ Seluruh data offline berhasil dikirim & disimpan ke Spreadsheet!', 'success');
+                } else {
+                    showToast('Gagal mengirim data: ' + (res.message || 'Error server'), 'error');
+                }
+            } catch (err) {
+                showToast('Gagal mengirim: ' + err.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        async function syncCloudNow(button) {
+            const restoreButton = mulaiLoadingTombol(button, 'Menyinkronkan...');
+            const url = document.getElementById('cfgGasUrl').value.trim();
+            showToast('Menyinkronkan data dengan Cloud Spreadsheet...', '');
+            try {
+                const res = await SIKOBAELAH_DB.syncFromCloud(url, { force: true });
+                if (res && res.success) {
+                    showToast('✅ Data dari Google Spreadsheet berhasil ditarik!', 'success');
+                    muatSeluruhDataDashboard();
+                } else {
+                    showToast('Gagal sinkron: ' + (res.message || 'Error jaringan'), 'error');
+                }
+            } catch (err) {
+                showToast('Gagal sinkron: ' + err.message, 'error');
+            } finally {
+                restoreButton();
+            }
+        }
+
+        // --- 8. TOAST NOTIFIKASI HELPER ---
+        let toastTimeout = null;
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toastBox');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // --- 9. TOGGLE LIHAT / SEMBUNYIKAN PASSWORD (TOMBOL MATA) ---
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+
+            const eyeOpen = btn.querySelector('.eye-open');
+            const eyeClosed = btn.querySelector('.eye-closed');
+            if (eyeOpen && eyeClosed) {
+                if (isPass) {
+                    eyeOpen.style.display = 'none';
+                    eyeClosed.style.display = 'block';
+                    btn.setAttribute('title', 'Sembunyikan Password');
+                } else {
+                    eyeOpen.style.display = 'block';
+                    eyeClosed.style.display = 'none';
+                    btn.setAttribute('title', 'Lihat Password');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

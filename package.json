@@ -1,0 +1,68 @@
+{
+  "name": "sikobaelah-hybrid",
+  "version": "1.0.0",
+  "description": "SiKoBaELah Hybrid - Sistem Kolaboratif berBasis Elektronik Sekolah",
+  "main": "desktop_offline/main.js",
+  "author": "Pariyanto",
+  "license": "ISC",
+  "scripts": {
+    "start": "electron .",
+    "build:exe": "node scripts/build-exe.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.0",
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^34.0.2",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "sch.id.sman15tebo.sikobaelah",
+    "productName": "SiKoBaELah Hybrid",
+    "copyright": "Copyright © 2026 SiKoBaELah Hybrid",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "src/assets/img/sikobaelah.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SiKoBaELah Hybrid v1.0.0",
+      "artifactName": "SiKoBaELah-Hybrid-Setup-v${version}.${ext}",
+      "differentialPackage": false
+    },
+    "portable": {
+      "artifactName": "SiKoBaELah-Hybrid-Portable-v${version}.${ext}"
+    },
+    "files": [
+      "index.html",
+      "dasar-hukum.html",
+      "login.html",
+      "src/**/*",
+      "desktop_offline/**/*",
+      "sidimas/src/**/*",
+      "sidimas/desktop_offline/**/*",
+      "sibukinstal/src/**/*",
+      "sibukinstal/desktop_offline/**/*",
+      "sie-mpus/src/**/*",
+      "sie-mpus/desktop_offline/**/*",
+      "sipresdir/src/**/*",
+      "sipresdir/desktop_offline/**/*",
+      "simpeel/src/**/*",
+      "simpeel/desktop_offline/**/*",
+      "sinbas/src/**/*",
+      "sinbas/desktop_offline/**/*",
+      "siladumas/**/*"
+    ],
+    "asar": true
+  }
+}

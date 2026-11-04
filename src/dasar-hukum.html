@@ -1,0 +1,3419 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Landasan Regulasi & Dasar Hukum - SiKoBaELah</title>
+    <link rel="icon" type="image/png" href="./assets/img/sikobaelah.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Philosopher:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="./assets/js/portal-database.js?v=20261104-school-data-mobile-fix"></script>
+
+
+    <style>
+        :root {
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0d6efd;
+            --primary-hover: #0b5ed7;
+            --secondary: #0dcaf0;
+            --accent-pink: #ff007a;
+            --accent-purple: #7000ff;
+            --card-border: rgba(255, 255, 255, 0.45);
+            --glass-bg: rgba(255, 255, 255, 0.92);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .brand-title {
+            font-family: 'Philosopher', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ff007a, #7000ff, #0055ff, #00d2ff);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 18% 25%, rgba(255, 255, 255, 0.16) 0%, transparent 40%),
+                radial-gradient(circle at 82% 78%, rgba(0, 242, 254, 0.18) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* --- STICKY TOP NAVBAR --- */
+        .navbar-top {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 12px 24px;
+        }
+
+        .navbar-inner {
+            max-width: 1250px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        }
+
+        .nav-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-brand-text .app-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+
+        .nav-brand-text .school-tag {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid transparent;
+        }
+
+        .btn-nav svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .btn-portal-back {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: white;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-portal-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(13, 110, 253, 0.45);
+            color: white;
+        }
+
+        .btn-website-link {
+            background: #f1f5f9;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        .btn-website-link:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+            transform: translateY(-2px);
+        }
+
+        .btn-print {
+            background: #ffffff;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-print:hover {
+            background: #f8fafc;
+            color: #0f172a;
+            transform: translateY(-2px);
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .container {
+            width: 100%;
+            max-width: 1250px;
+            padding: 24px 20px;
+            z-index: 1;
+        }
+
+        /* --- HERO BANNER --- */
+        .hero-banner {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 28px;
+            padding: 35px 30px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(13, 110, 253, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .hero-left {
+            flex: 1;
+            min-width: 290px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(13, 202, 240, 0.18));
+            color: #0d6efd;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(13, 110, 253, 0.25);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .hero-desc {
+            font-size: 0.98rem;
+            color: #475569;
+            line-height: 1.6;
+            max-width: 780px;
+        }
+
+        .hero-logos {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hero-logo-box {
+            width: 70px;
+            height: 70px;
+            background: #ffffff;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-logo-box:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        .hero-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* --- STATS BAR --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(248, 250, 252, 0.85);
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .stat-val {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1;
+        }
+
+        .stat-lbl {
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* --- SEARCH & FILTER TOOLBAR --- */
+        .toolbar-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 22px;
+            padding: 18px 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .search-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-box-large {
+            flex: 1;
+            min-width: 260px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box-large input {
+            width: 100%;
+            padding: 13px 44px 13px 46px;
+            border-radius: 50px;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.25s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .search-box-large input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+        }
+
+        .search-box-large .icon-cari {
+            position: absolute;
+            left: 16px;
+            width: 20px;
+            height: 20px;
+            fill: #94a3b8;
+            pointer-events: none;
+        }
+
+        .search-box-large .clear-btn {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: #94a3b8;
+            cursor: pointer;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-box-large .clear-btn:hover {
+            color: #1e293b;
+            background: #e2e8f0;
+        }
+
+        .filter-counter-badge {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: white;
+            font-size: 0.86rem;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 50px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+        }
+
+        .search-actions-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .accordion-quick-btns {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-acc-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 50px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: #334155;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-acc-toggle svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+        }
+
+        .btn-acc-toggle:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(13, 110, 253, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .accordion-mode-tip {
+            margin-top: 14px;
+            padding: 10px 16px;
+            background: rgba(13, 110, 253, 0.06);
+            border: 1px dashed rgba(13, 110, 253, 0.35);
+            border-radius: 14px;
+            font-size: 0.83rem;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.45;
+        }
+
+        /* Filter Pills Tabs */
+        .filter-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scrollbar-width: thin;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .filter-tabs::-webkit-scrollbar-thumb {
+            background: rgba(13, 110, 253, 0.2);
+            border-radius: 10px;
+        }
+
+        .filter-pill {
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .filter-pill:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(13, 110, 253, 0.05);
+        }
+
+        .filter-pill.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.35);
+        }
+
+        /* --- ACCORDION APP SECTIONS --- */
+        .app-section {
+            margin-bottom: 22px;
+            scroll-margin-top: 85px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 18px 24px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            border-left: 6px solid var(--primary);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .section-header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .section-header:active {
+            transform: translateY(0);
+        }
+
+        .section-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .section-app-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            padding: 6px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section-app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.25;
+            margin-bottom: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .section-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .law-count-chip {
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 50px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .section-badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 50px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .accordion-chevron-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(13, 110, 253, 0.08);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            flex-shrink: 0;
+        }
+
+        .accordion-chevron-box svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Active Accordion State */
+        .app-section.active .section-header {
+            border-radius: 20px 20px 10px 10px;
+            background: white;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+        }
+
+        .app-section.active .accordion-chevron-box {
+            background: var(--primary);
+            color: white;
+        }
+
+        .app-section.active .accordion-chevron-box svg {
+            transform: rotate(180deg);
+        }
+
+        /* Custom Accent Colors per Application Section */
+        .sec-spbe .section-header {
+            border-left-color: #6366f1;
+        }
+
+        .sec-sidimas .section-header {
+            border-left-color: #1e3c72;
+        }
+
+        .sec-sipresdir .section-header {
+            border-left-color: #0052d4;
+        }
+
+        .sec-sibukinstal .section-header {
+            border-left-color: #f857a6;
+        }
+
+        .sec-siempus .section-header {
+            border-left-color: #8e2de2;
+        }
+
+        .sec-simpeel .section-header {
+            border-left-color: #00b09b;
+        }
+
+        .sec-siladumas .section-header {
+            border-left-color: #475569;
+        }
+
+        .sec-sinbas .section-header {
+            border-left-color: #334155;
+        }
+
+        .sec-spbe.active .accordion-chevron-box {
+            background: #6366f1;
+            color: white;
+        }
+
+        .sec-sidimas.active .accordion-chevron-box {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .sec-sipresdir.active .accordion-chevron-box {
+            background: #0052d4;
+            color: white;
+        }
+
+        .sec-sibukinstal.active .accordion-chevron-box {
+            background: #f857a6;
+            color: white;
+        }
+
+        .sec-siempus.active .accordion-chevron-box {
+            background: #8e2de2;
+            color: white;
+        }
+
+        .sec-simpeel.active .accordion-chevron-box {
+            background: #00b09b;
+            color: white;
+        }
+
+        .sec-siladumas.active .accordion-chevron-box {
+            background: #475569;
+            color: white;
+        }
+
+        .sec-sinbas.active .accordion-chevron-box {
+            background: #334155;
+            color: white;
+        }
+
+        /* Accordion Collapsed Grid (Hides when section is not active) */
+        .app-section:not(.active) .laws-grid {
+            display: none !important;
+        }
+
+        .app-section.active .laws-grid {
+            display: grid !important;
+            animation: accordionSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes accordionSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- LAW CARDS GRID --- */
+        .laws-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 18px;
+        }
+
+        .law-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .law-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.14);
+            border-color: rgba(13, 110, 253, 0.4);
+        }
+
+        .law-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .law-hierarchy-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .tag-uu {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+
+        .tag-pp {
+            background: #fef3c7;
+            color: #d97706;
+            border: 1px solid #fcd34d;
+        }
+
+        .tag-perpres {
+            background: #f3e8ff;
+            color: #7e22ce;
+            border: 1px solid #d8b4fe;
+        }
+
+        .tag-permen {
+            background: #e0f2fe;
+            color: #0284c7;
+            border: 1px solid #7dd3fc;
+        }
+
+        .tag-perka {
+            background: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #86efac;
+        }
+
+        .law-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .law-status::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 6px #22c55e;
+        }
+
+        .law-number {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .law-title {
+            font-size: 0.91rem;
+            color: #334155;
+            line-height: 1.5;
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        .law-relevance-box {
+            background: #f8fafc;
+            border-left: 3px solid #0d6efd;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.84rem;
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .law-relevance-box strong {
+            color: #0f172a;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .law-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .btn-jdih-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #0d6efd;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 50px;
+            background: rgba(13, 110, 253, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .btn-jdih-link:hover {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .btn-jdih-link svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* --- EMPTY STATE --- */
+        .empty-search {
+            background: white;
+            border-radius: 24px;
+            padding: 45px 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .empty-search-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-search h3 {
+            font-size: 1.4rem;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .empty-search p {
+            color: #64748b;
+            font-size: 0.92rem;
+            margin-bottom: 18px;
+        }
+
+        /* --- FLOATING TO TOP BUTTON --- */
+        .btn-float-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: white;
+            border: none;
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-float-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .btn-float-top:hover {
+            transform: translateY(-4px) scale(1.1);
+        }
+
+        .btn-float-top svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        /* --- FOOTER --- */
+        .legal-footer {
+            text-align: center;
+            color: white;
+            font-size: 0.88rem;
+            margin-top: 35px;
+            line-height: 1.6;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .legal-footer a {
+            color: #ffeb3b;
+            text-decoration: underline;
+        }
+
+        /* --- TOMBOL PRATINJAU PDF CEPAT DI TOOLBAR --- */
+        .btn-acc-pdf {
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.1), rgba(13, 202, 240, 0.15)) !important;
+            border-color: rgba(13, 110, 253, 0.4) !important;
+            color: #0d6efd !important;
+            font-weight: 700 !important;
+        }
+
+        .btn-acc-pdf:hover {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0) !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+            box-shadow: 0 4px 14px rgba(13, 110, 253, 0.35) !important;
+        }
+
+        /* =========================================================
+           MODAL PRATINJAU DOKUMEN PDF (IFRAME, ZOOM, CETAK, UNDUH)
+           ========================================================= */
+        .modal-pdf-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeInModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-pdf-container {
+            width: 100%;
+            max-width: 1300px;
+            height: 94vh;
+            background: #0f172a;
+            border-radius: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* MODAL HEADER */
+        .modal-pdf-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 14px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            color: #ffffff;
+            z-index: 10;
+        }
+
+        .modal-pdf-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 260px;
+        }
+
+        .modal-pdf-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            box-shadow: 0 4px 14px rgba(13, 110, 253, 0.4);
+            flex-shrink: 0;
+        }
+
+        .modal-pdf-title {
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .modal-pdf-subtitle {
+            font-size: 0.76rem;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        /* MODAL TOOLBAR CENTER (ZOOM & SCOPE) */
+        .modal-pdf-toolbar-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .modal-pdf-scope-wrap {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .modal-pdf-scope-label {
+            font-size: 0.76rem;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        .modal-pdf-select {
+            background: transparent;
+            color: #ffffff;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .modal-pdf-select option {
+            background: #1e293b;
+            color: #ffffff;
+        }
+
+        /* ZOOM GROUP */
+        .modal-pdf-zoom-group {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            padding: 3px 6px;
+            gap: 3px;
+        }
+
+        .btn-zoom-ctrl {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-zoom-ctrl svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .btn-zoom-ctrl:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.08);
+        }
+
+        .btn-zoom-ctrl:active {
+            transform: scale(0.95);
+        }
+
+        .zoom-level-text {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #38bdf8;
+            min-width: 52px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .btn-zoom-reset {
+            font-size: 0.74rem;
+            font-weight: 700;
+            width: auto;
+            padding: 0 10px;
+            border-radius: 50px;
+            color: #94a3b8;
+        }
+
+        .btn-zoom-reset:hover {
+            color: #ffffff;
+        }
+
+        /* MODAL HEADER RIGHT (ACTIONS: PRINT, DOWNLOAD, CLOSE) */
+        .modal-pdf-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-modal-act {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 50px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+        }
+
+        .btn-modal-act svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .btn-modal-print {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+        }
+
+        .btn-modal-print:hover {
+            background: linear-gradient(135deg, #0369a1, #075985);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.5);
+        }
+
+        .btn-modal-download {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-modal-download:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-modal-download:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-modal-close {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: none;
+            color: #ffffff;
+            font-size: 1.45rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-left: 4px;
+        }
+
+        .btn-modal-close:hover {
+            background: #ef4444;
+            color: #ffffff;
+            transform: rotate(90deg) scale(1.05);
+        }
+
+        /* MODAL BODY */
+        .modal-pdf-body {
+            flex: 1;
+            background: #334155;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 18px 18px;
+            overflow: auto;
+            position: relative;
+            padding: 28px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* LOADING SPINNER */
+        .modal-pdf-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15, 23, 42, 0.94);
+            padding: 24px 36px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 25;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        .pdf-spinner {
+            width: 38px;
+            height: 38px;
+            border: 3.5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spinPdf 0.8s linear infinite;
+        }
+
+        @keyframes spinPdf {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* IFRAME ZOOM WRAPPER */
+        .iframe-zoom-wrapper {
+            display: flex;
+            justify-content: center;
+            min-height: 100%;
+            width: 100%;
+            transition: all 0.15s ease-out;
+        }
+
+        .iframe-doc-preview {
+            width: 860px;
+            height: 1200px;
+            background: #ffffff;
+            border: none;
+            border-radius: 6px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.15s ease-out;
+            transform-origin: top center;
+        }
+
+        /* RESPONSIVE MODAL */
+        @media (max-width: 900px) {
+            .modal-pdf-container {
+                height: 98vh;
+                border-radius: 18px;
+            }
+
+            .modal-pdf-header {
+                padding: 12px 14px;
+                gap: 10px;
+            }
+
+            .modal-pdf-header-left {
+                min-width: 100%;
+            }
+
+            .modal-pdf-toolbar-center {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .modal-pdf-header-right {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .modal-pdf-body {
+                padding: 12px 6px;
+            }
+
+            .iframe-doc-preview {
+                width: 100%;
+                min-width: 320px;
+            }
+        }
+
+        /* =========================================================
+           STYLES DOKUMEN CETAK / PDF (AGAR 100% IDENTIK DENGAN PRATINJAU)
+           ========================================================= */
+        #exportPdfSandbox,
+        .doc-page {
+            width: 100%;
+            max-width: 820px;
+            margin: 0 auto;
+            background: #ffffff !important;
+            color: #0f172a !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .kop-surat {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 14px !important;
+            padding-bottom: 8px !important;
+            border-bottom: 3px double #000000 !important;
+            margin-bottom: 14px !important;
+        }
+
+        .kop-logo {
+            width: 72px !important;
+            height: 72px !important;
+            max-width: 72px !important;
+            max-height: 72px !important;
+            object-fit: contain !important;
+            flex-shrink: 0 !important;
+        }
+
+        .kop-text {
+            text-align: center !important;
+            flex: 1 !important;
+            line-height: 1.25 !important;
+        }
+
+        .kop-text .instansi-prov {
+            font-family: Arial, sans-serif !important;
+            font-size: 12pt !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.5px !important;
+            text-transform: uppercase !important;
+            color: #111827 !important;
+        }
+
+        .kop-text .instansi-sekolah {
+            font-family: Arial, sans-serif !important;
+            font-size: 15pt !important;
+            font-weight: 900 !important;
+            color: #0b2e63 !important;
+            letter-spacing: 0.8px !important;
+            text-transform: uppercase !important;
+            margin: 3px 0 2px 0 !important;
+        }
+
+        .kop-text .instansi-meta {
+            font-family: Arial, sans-serif !important;
+            font-size: 8pt !important;
+            color: #334155 !important;
+            margin-top: 3px !important;
+            line-height: 1.35 !important;
+        }
+
+        .doc-header-block {
+            text-align: center !important;
+            margin-bottom: 14px !important;
+        }
+
+        .doc-main-title {
+            font-family: Arial, sans-serif !important;
+            font-size: 12pt !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            color: #0f172a !important;
+        }
+
+        .doc-sub-title {
+            font-family: Arial, sans-serif !important;
+            font-size: 10pt !important;
+            font-weight: 700 !important;
+            color: #1e293b !important;
+            margin-top: 2px !important;
+        }
+
+        .doc-intro {
+            font-size: 9pt !important;
+            text-align: justify !important;
+            line-height: 1.45 !important;
+            margin-bottom: 14px !important;
+            padding: 6px 10px !important;
+            background: #f8fafc !important;
+            border-left: 3.5px solid #0284c7 !important;
+            border-radius: 0 4px 4px 0 !important;
+            font-family: Arial, sans-serif !important;
+            color: #1e293b !important;
+        }
+
+        .section-block {
+            margin-bottom: 18px !important;
+            page-break-inside: auto !important;
+            break-inside: auto !important;
+        }
+
+        .section-title-bar {
+            background: #0f172a !important;
+            color: #ffffff !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 9.5pt !important;
+            font-weight: 700 !important;
+            padding: 6px 10px !important;
+            border-radius: 4px !important;
+            margin-bottom: 6px !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+        }
+
+        .section-title-bar .sec-count {
+            background: rgba(255, 255, 255, 0.2) !important;
+            padding: 1px 7px !important;
+            border-radius: 3px !important;
+            font-size: 8pt !important;
+            color: #ffffff !important;
+        }
+
+        .sec-sub-desc {
+            font-family: Arial, sans-serif !important;
+            font-size: 8pt !important;
+            color: #64748b !important;
+            font-style: italic !important;
+            margin-bottom: 6px !important;
+            padding-left: 4px !important;
+        }
+
+        .table-regulasi {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            font-size: 8.5pt !important;
+            margin-bottom: 10px !important;
+        }
+
+        .table-regulasi th {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+            font-family: Arial, sans-serif !important;
+            font-weight: 700 !important;
+            text-align: left !important;
+            padding: 6px 8px !important;
+            border: 1px solid #94a3b8 !important;
+            font-size: 8pt !important;
+            text-transform: uppercase !important;
+            vertical-align: middle !important;
+        }
+
+        .table-regulasi td {
+            border: 1px solid #cbd5e1 !important;
+            padding: 6px 8px !important;
+            vertical-align: top !important;
+            line-height: 1.35 !important;
+            color: #1e293b !important;
+        }
+
+        .table-regulasi tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .table-regulasi tr:nth-child(even) {
+            background: #f8fafc !important;
+        }
+
+        .cell-no {
+            text-align: center !important;
+            font-weight: bold !important;
+            font-family: Arial, sans-serif !important;
+            color: #475569 !important;
+        }
+
+        .cell-nama-reg {
+            font-family: Arial, sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 8.5pt !important;
+            color: #0f172a !important;
+            display: block !important;
+        }
+
+        .cell-tag-reg {
+            display: inline-block !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 7pt !important;
+            font-weight: 700 !important;
+            color: #0284c7 !important;
+            background: #e0f2fe !important;
+            padding: 1px 5px !important;
+            border-radius: 3px !important;
+        }
+
+        .cell-status-reg {
+            display: inline-block !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 7pt !important;
+            font-weight: 700 !important;
+            color: #15803d !important;
+            background: #dcfce7 !important;
+            padding: 1px 5px !important;
+            border-radius: 3px !important;
+            margin-left: 3px !important;
+        }
+
+        .cell-sumber-reg {
+            display: block !important;
+            font-size: 7.5pt !important;
+            color: #64748b !important;
+            margin-top: 3px !important;
+            font-style: italic !important;
+            font-family: Arial, sans-serif !important;
+        }
+
+        .cell-tentang {
+            color: #1e293b !important;
+        }
+
+        .cell-keterkaitan {
+            color: #334155 !important;
+        }
+
+        .doc-footer-legal {
+            margin-top: 20px !important;
+            padding-top: 8px !important;
+            border-top: 1px solid #cbd5e1 !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 7.5pt !important;
+            color: #94a3b8 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        /* =========================================================
+           PRINT MEDIA STYLES
+           ========================================================= */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                animation: none !important;
+            }
+
+            body::before {
+                display: none !important;
+            }
+
+            .navbar-top,
+            .toolbar-card,
+            .btn-float-top,
+            .btn-jdih-link,
+            .hero-logos,
+            .accordion-chevron-box,
+            .accordion-mode-tip,
+            .modal-pdf-overlay {
+                display: none !important;
+            }
+
+            .hero-banner,
+            .law-card,
+            .section-header {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                background: white !important;
+                page-break-inside: avoid;
+            }
+
+            .app-section .laws-grid {
+                display: grid !important;
+            }
+
+            .laws-grid {
+                grid-template-columns: 1fr 1fr !important;
+            }
+        }
+
+        /* =========================================================
+           RESPONSIVE MOBILE BREAKPOINTS
+           ========================================================= */
+        @media (max-width: 850px) {
+            .navbar-inner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-actions {
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .btn-nav {
+                flex: 1;
+                justify-content: center;
+                font-size: 0.82rem;
+                padding: 7px 10px;
+            }
+
+            .hero-title {
+                font-size: 1.7rem;
+            }
+
+            .hero-logos {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .laws-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 14px;
+                padding: 16px;
+            }
+
+            .section-header-right {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                border-top: 1px solid rgba(0, 0, 0, 0.06);
+                padding-top: 10px;
+            }
+
+            .search-actions-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- STICKY TOP NAVBAR -->
+    <header class="navbar-top">
+        <div class="navbar-inner">
+            <a id="lawPortalBrand" href="index.html" class="nav-brand">
+                <img src="./assets/img/sikobaelah.png" onerror="this.src='./logo-sidimas.png'" alt="Logo SiKoBaELah">
+                <div class="nav-brand-text">
+                    <span class="app-name">SiKoBaELah</span>
+                    <span class="school-tag">LANDASAN REGULASI</span>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <a id="lawPortalBack" href="index.html" class="btn-nav btn-portal-back" title="Kembali ke Portal Aplikasi">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                    </svg>
+                    <span>Kembali ke Portal</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- HERO BANNER -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-left">
+                    <div class="hero-badge">
+                        <span>⚖️ Tata Kelola Berbasis Regulasi RI</span>
+                    </div>
+                    <h1 class="hero-title">Landasan Hukum & Regulasi Modul Aplikasi SiKoBaELah</h1>
+                    <p class="hero-desc">
+                        Sistem Kolaboratif berBasis Elektronik Sekolah (<strong>SiKoBaELah</strong>) dibangun di atas
+                        landasan yuridis yang kokoh dan mengacu pada peraturan
+                        perundang-undangan Negara Republik Indonesia. Seluruh modul aplikasi menjamin legalitas tata
+                        kelola administrasi, transparansi operasional, serta keamanan data publik.
+                    </p>
+                </div>
+
+                <div class="hero-logos">
+                    <div id="lawAgencyLogoBox" class="hero-logo-box" title="Logo instansi">
+                        <img id="lawAgencyLogo" src="./assets/img/logo jambi 512.png"
+                            onerror="this.src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAdFm9jaTc1mVQN42x4KNCwi2YwzWz6NHhbDbsdlSBO97z3VkApM-nj_f1a_YWw7OG__0a0JJcDfHBH1Y6J7hL2T3JK8pV6mEeO_3iuogEHoCjQfWXz1WQl2PWU7UkewLOTkK583KLz7Tun-zRMkS4Aj-qxDvSuP9dYJ_zolGxw9vJNzMvmGBCsgO-B-Ae/s150/Logo%20Provinsi%20Jambi.png'"
+                            alt="Logo instansi">
+                    </div>
+                    <div id="lawSchoolLogoBox" class="hero-logo-box" title="Lembaga pendidikan">
+                        <img id="lawSchoolLogo" src="./assets/img/sikobaelah.png" alt="Logo lembaga pendidikan">
+                    </div>
+                    <div class="hero-logo-box" title="SiKoBaELah">
+                        <img src="./assets/img/sikobaelah.png" alt="Logo SiKoBaELah">
+                    </div>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: rgba(13, 110, 253, 0.15); color: #0d6efd;">📱</div>
+                    <div>
+                        <div class="stat-val">7</div>
+                        <div class="stat-lbl">Aplikasi Terintegrasi</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">📜</div>
+                    <div>
+                        <div class="stat-val">33</div>
+                        <div class="stat-lbl">Regulasi Resmi RI</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">🏛️</div>
+                    <div>
+                        <div class="stat-val">SPBE</div>
+                        <div class="stat-lbl">Standar Sistem Nasional</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">🛡️</div>
+                    <div>
+                        <div class="stat-val">UU PDP</div>
+                        <div class="stat-lbl">Pelindungan Data Pribadi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p id="schoolLawScopeStatus" role="status" aria-live="polite" hidden
+            style="margin: 0 0 12px; color: #7c2d12; font-size: 0.9rem;"></p>
+
+        <!-- SEARCH & FILTER TOOLBAR -->
+        <div class="toolbar-card">
+            <div class="search-row">
+                <div class="search-box-large">
+                    <svg class="icon-cari" viewBox="0 0 24 24">
+                        <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                    </svg>
+                    <input type="text" id="filterInput"
+                        placeholder="Cari peraturan (contoh: Kearsipan, Presensi, Dapodik, BMN, Permendagri, Permendikbud, UU...)"
+                        oninput="filterRegulasi(this.value)" autocomplete="off">
+                    <button type="button" id="clearBtn" class="clear-btn" onclick="clearPencarian()">&times;</button>
+                </div>
+                <div class="search-actions-right">
+                    <div id="counterBadge" class="filter-counter-badge">Menampilkan Semua Regulasi</div>
+                    <div class="accordion-quick-btns">
+
+                        <button type="button" class="btn-acc-toggle" onclick="bukaSemuaAccordion()"
+                            title="Buka seluruh panel regulasi">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                            </svg>
+                            <span>Buka Semua</span>
+                        </button>
+                        <button type="button" class="btn-acc-toggle" onclick="tutupSemuaAccordion()"
+                            title="Tutup seluruh panel regulasi">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 13H5v-2h14v2z" />
+                            </svg>
+                            <span>Tutup Semua</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-mode-tip">
+                <span>💡 Klik judul kategori di bawah untuk membuka daftar regulasi
+                    (kategori lain akan otomatis tertutup). Anda juga dapat menutup semuanya secara manual atau
+                    menggunakan tombol &quot;Buka Semua&quot;.</span>
+            </div>
+
+            <!-- TABS CATEGORIES -->
+            <div class="filter-tabs">
+                <button type="button" class="filter-pill active" onclick="pilihKategori('all', this)">
+                    <span>Semua Kategori</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('spbe', this)">
+                    <span>🏛️ Payung SPBE & Sisdiknas</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('sidimas', this)">
+                    <span>📁 SiDiMAS (Persuratan)</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('sipresdir', this)">
+                    <span>⏱️ SiPreSDiR (Presensi & Disiplin)</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('sibukinstal', this)">
+                    <span>📘 SiBukInSTal (Buku Induk)</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('siempus', this)">
+                    <span>📚 SiE-MPuS (Perpustakaan)</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('simpeel', this)">
+                    <span>👨‍🏫 SiMPeEL (Kepegawaian)</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('siladumas', this)">
+                    <span>📢 SiLaDuMas (Pengaduan)</span>
+                </button>
+                <button type="button" class="filter-pill" onclick="pilihKategori('sinbas', this)">
+                    <span>🏢 SINBAS (Aset & BMD)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             BAGIAN 1: PAYUNG HUKUM UMUM & SPBE NASIONAL
+             ========================================================= -->
+        
+        <!-- =========================================================
+             BAGIAN: 1. LANDASAN YURIDIS NASIONAL & SPBE SEKOLAH
+             ========================================================= -->
+        <section class="app-section sec-spbe" data-section="spbe">
+            <div class="section-header" onclick="toggleAccordion('spbe')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/sikobaelah.png" onerror="this.src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjSC7KELpD7pikc8nirJBThcELNDOZvc0uk_Xh_0-mAuwbk1kJYliH2b_c2U0Sn-bVKBDSwmrCHZ5YT6S0_sd6ukIkzZKnVqB9AX3sXYOMFXAJXxEVVVK_w05HC2AC0qfgEgDVzlhtO89fZD1hdGKQnOwW-aYSv9mxkrZMmZOZ5ZNkEY4LxO6AOAi84WO7/s150/sikobaelah.png'" alt="Logo spbe">
+                    </div>
+                    <div>
+                        <h2 class="section-title">1. Landasan Yuridis Nasional & SPBE Sekolah</h2>
+                        <p class="section-subtitle">Konstitusi RI, Sistem Pendidikan Nasional, SPBE, Pelindungan Data Pribadi (UU PDP), & UU ITE</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_spbe">Memuat...</span>
+                    <span class="section-badge" style="background: #e0e7ff; color: #3730a3;">Payung Hukum Utama</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_spbe">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             BAGIAN: 2. SIDIMAS (SISTEM DIGITAL MANAJEMEN ARSIP SURAT)
+             ========================================================= -->
+        <section class="app-section sec-sidimas" data-section="sidimas">
+            <div class="section-header" onclick="toggleAccordion('sidimas')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/logo-sidimas.png" onerror="this.src='./assets/img/sikobaelah.png'" alt="Logo sidimas">
+                    </div>
+                    <div>
+                        <h2 class="section-title">2. SiDiMAS (Sistem Digital Manajemen Arsip Surat)</h2>
+                        <p class="section-subtitle">Regulasi Tata Naskah Dinas, Kearsipan Digital Nasional, dan Surat Tugas Kedinasan</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_sidimas">Memuat...</span>
+                    <span class="section-badge" style="background: #ede9fe; color: #5b21b6;">Tata Naskah & Arsip</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_sidimas">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             BAGIAN: 3. SIPRESDIR PLUS (SISTEM PRESENSI SISWA DIGITAL REALTIME)
+             ========================================================= -->
+        <section class="app-section sec-sipresdir" data-section="sipresdir">
+            <div class="section-header" onclick="toggleAccordion('sipresdir')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/logo-sipresdir.png" onerror="this.src='./assets/img/sikobaelah.png'" alt="Logo sipresdir">
+                    </div>
+                    <div>
+                        <h2 class="section-title">3. SiPreSDiR Plus (Sistem Presensi Siswa Digital Realtime)</h2>
+                        <p class="section-subtitle">Regulasi Kedisiplinan Peserta Didik, Pencegahan Kekerasan (PPKSP), dan Layanan Bimbingan Konseling</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_sipresdir">Memuat...</span>
+                    <span class="section-badge" style="background: #e0f2fe; color: #0369a1;">Presensi & Disiplin Positif</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_sipresdir">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             BAGIAN: 4. SIBUKINSTAL (SISTEM BUKU INDUK SISWA DIGITAL LENGKAP)
+             ========================================================= -->
+        <section class="app-section sec-sibukinstal" data-section="sibukinstal">
+            <div class="section-header" onclick="toggleAccordion('sibukinstal')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/logo-sibukinstal.png" onerror="this.src='./assets/img/sikobaelah.png'" alt="Logo sibukinstal">
+                    </div>
+                    <div>
+                        <h2 class="section-title">4. SiBukInSTal (Sistem Buku Induk Siswa Digital Lengkap)</h2>
+                        <p class="section-subtitle">Regulasi Pengelolaan Satu Data Pendidikan, Nomor Induk Siswa Nasional (NISN), dan Dapodik</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_sibukinstal">Memuat...</span>
+                    <span class="section-badge" style="background: #fce7f3; color: #be185d;">Kesiswaan & Dokumen Abadi</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_sibukinstal">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             BAGIAN: 5. SIE-MPUS (SISTEM E-MANAJEMEN PERPUSTAKAAN SEKOLAH)
+             ========================================================= -->
+        <section class="app-section sec-siempus" data-section="siempus">
+            <div class="section-header" onclick="toggleAccordion('siempus')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/logo-siempus.png" onerror="this.src='./assets/img/sikobaelah.png'" alt="Logo siempus">
+                    </div>
+                    <div>
+                        <h2 class="section-title">5. SiE-MPuS (Sistem E-Manajemen Perpustakaan Sekolah)</h2>
+                        <p class="section-subtitle">Regulasi Penyelenggaraan Perpustakaan Sekolah, Gerakan Literasi Nasional, dan Standar Nasional Perpustakaan (SNP)</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_siempus">Memuat...</span>
+                    <span class="section-badge" style="background: #dcfce7; color: #15803d;">Literasi & Katalog Digital</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_siempus">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             BAGIAN: 6. SIMPEEL (SISTEM INFORMASI MANAJEMEN KEPEGAWAIAN ELEKTRONIK)
+             ========================================================= -->
+        <section class="app-section sec-simpeel" data-section="simpeel">
+            <div class="section-header" onclick="toggleAccordion('simpeel')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/logo-simpeel.png" onerror="this.src='./assets/img/sikobaelah.png'" alt="Logo simpeel">
+                    </div>
+                    <div>
+                        <h2 class="section-title">6. SiMPeEL (Sistem Informasi Manajemen Kepegawaian Elektronik)</h2>
+                        <p class="section-subtitle">Regulasi Manajemen ASN, Penilaian Kinerja Guru (PKG), Disiplin Pegawai, dan Layanan Kenaikan Pangkat/Gaji Berkala</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_simpeel">Memuat...</span>
+                    <span class="section-badge" style="background: #ffedd5; color: #c2410c;">Manajemen ASN & PTK</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_simpeel">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             BAGIAN: 7. SILADUMAS (SISTEM LAYANAN PENGADUAN MASYARAKAT)
+             ========================================================= -->
+        <section class="app-section sec-siladumas" data-section="siladumas">
+            <div class="section-header" onclick="toggleAccordion('siladumas')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/logo-siladumas.png" onerror="this.src='./assets/img/sikobaelah.png'" alt="Logo siladumas">
+                    </div>
+                    <div>
+                        <h2 class="section-title">7. SiLaDuMas (Sistem Layanan Pengaduan Masyarakat)</h2>
+                        <p class="section-subtitle">Regulasi Pelayanan Publik, Pengelolaan Pengaduan Masyarakat (SP4N LAPOR!), Whistleblowing System (WBS), dan Keterbukaan Informasi Publik</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_siladumas">Memuat...</span>
+                    <span class="section-badge" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1;">Pelayanan Publik & Transparansi</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_siladumas">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             BAGIAN: 8. SINBAS (SISTEM INVENTARISASI BARANG & ASET SEKOLAH)
+             ========================================================= -->
+        <section class="app-section sec-sinbas" data-section="sinbas">
+            <div class="section-header" onclick="toggleAccordion('sinbas')" role="button" tabindex="0"
+                title="Klik untuk membuka / menutup regulasi">
+                <div class="section-header-left">
+                    <div class="section-app-logo">
+                        <img src="./assets/img/logo-sinbas.png" onerror="this.src='./assets/img/sikobaelah.png'" alt="Logo sinbas">
+                    </div>
+                    <div>
+                        <h2 class="section-title">8. SINBAS (Sistem Inventarisasi Barang & Aset Sekolah)</h2>
+                        <p class="section-subtitle">Regulasi Pengelolaan Barang Milik Daerah (BMD), Standar Sarana Prasarana Pendidikan, Inventarisasi Kartu Inventaris Barang (KIB), dan Penghapusan Aset</p>
+                    </div>
+                </div>
+                <div class="section-header-right">
+                    <span class="law-count-chip" id="chipCount_sinbas">Memuat...</span>
+                    <span class="section-badge" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1;">Aset & Sarpras Sekolah</span>
+                    <div class="accordion-chevron-box">
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laws-grid" id="lawsGrid_sinbas">
+                <!-- Kartu regulasi dimuat dinamis dari database -->
+            </div>
+        </section>
+
+
+        <!-- EMPTY STATE SEARCH -->
+        <div id="emptySearchBox" class="empty-search">
+            <div class="empty-search-icon">🔍</div>
+            <h3>Regulasi Tidak Ditemukan</h3>
+            <p id="emptySearchQuery">Tidak ada dokumen peraturan yang cocok dengan pencarian Anda.</p>
+            <button type="button" class="btn-nav btn-portal-back" onclick="clearPencarian()">Reset Pencarian</button>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="legal-footer">
+            <p>&copy; 2026 <strong>SiKoBaELah</strong> &bull; Landasan Regulasi Umum. All Rights Reserved.</p>
+            <p>Sistem Kolaboratif berBasis Elektronik Sekolah &bull; Created by <strong>Pariyanto</strong></p>
+            <p style="margin-top: 6px; font-size: 0.82rem;">
+                <a id="lawFooterPortal" href="index.html">Kembali ke Portal Aplikasi</a>
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- FLOATING TO TOP BUTTON -->
+    <button id="btnScrollTop" class="btn-float-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        title="Kembali ke atas">
+        <svg viewBox="0 0 24 24">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+        </svg>
+    </button>
+
+    <!-- =========================================================
+         MODAL PRATINJAU DOKUMEN PDF (IFRAME, ZOOM, CETAK, UNDUH)
+         ========================================================= -->
+    <div id="modalPreviewPDF" class="modal-pdf-overlay" style="display: none;" role="dialog" aria-modal="true"
+        aria-labelledby="modalPdfTitle">
+        <div class="modal-pdf-container">
+            <!-- MODAL HEADER TOOLBAR -->
+            <div class="modal-pdf-header">
+                <div class="modal-pdf-header-left">
+                    <div class="modal-pdf-icon">📜</div>
+                    <div>
+                        <h3 id="modalPdfTitle" class="modal-pdf-title">Pratinjau Dokumen Dasar Hukum SiKoBaELah</h3>
+                        <p class="modal-pdf-subtitle">Format Standar Resmi Dokumen Administrasi &bull; SMA Negeri 15
+                            Tebo</p>
+                    </div>
+                </div>
+
+                <div class="modal-pdf-toolbar-center">
+                    <!-- Opsi Cakupan: Semua vs Kategori Terpilih -->
+                    <div class="modal-pdf-scope-wrap">
+                        <label for="modalScopeSelect" class="modal-pdf-scope-label">Cakupan:</label>
+                        <select id="modalScopeSelect" class="modal-pdf-select"
+                            onchange="gantiCakupanPratinjau(this.value)">
+                            <option value="all">Semua Kategori (Semua Regulasi)</option>
+                            <option value="filtered">Kategori / Filter Aktif Saat Ini</option>
+                        </select>
+                    </div>
+
+                    <!-- Kontrol Zoom -->
+                    <div class="modal-pdf-zoom-group">
+                        <button type="button" class="btn-zoom-ctrl" onclick="zoomDokumen(-0.15)"
+                            title="Perkecil Tampilan (Zoom Out)">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 13H5v-2h14v2z" />
+                            </svg>
+                        </button>
+                        <span id="zoomLevelDisplay" class="zoom-level-text" title="Tingkat Zoom">100%</span>
+                        <button type="button" class="btn-zoom-ctrl" onclick="zoomDokumen(0.15)"
+                            title="Perbesar Tampilan (Zoom In)">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                            </svg>
+                        </button>
+                        <button type="button" class="btn-zoom-ctrl btn-zoom-reset" onclick="resetZoomDokumen()"
+                            title="Kembalikan ke Ukuran Normal (100%)">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-pdf-header-right">
+                    <!-- Tombol Cetak -->
+                    <button type="button" class="btn-modal-act btn-modal-print" onclick="cetakDokumenDariIframe()"
+                        title="Cetak langsung ke Printer / PDF Browser">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
+                        </svg>
+                        <span>Cetak</span>
+                    </button>
+
+                    <!-- Tombol Unduh PDF -->
+                    <button type="button" id="btnUnduhPDFModal" class="btn-modal-act btn-modal-download"
+                        onclick="unduhDokumenPDF()" title="Unduh Berkas Dokumen PDF">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                        </svg>
+                        <span id="txtUnduhPDF">Unduh PDF</span>
+                    </button>
+
+                    <!-- Tombol Tutup -->
+                    <button type="button" class="btn-modal-close" onclick="tutupModalPratinjauPDF()"
+                        title="Tutup Pratinjau (ESC)">
+                        &times;
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODAL BODY DENGAN IFRAME -->
+            <div class="modal-pdf-body" id="modalPdfBodyWrap">
+                <!-- Loading Indicator -->
+                <div id="modalPdfLoading" class="modal-pdf-loading">
+                    <div class="pdf-spinner"></div>
+                    <p>Memuat dan menata daftar regulasi dasar hukum...</p>
+                </div>
+
+                <!-- Wrapper Iframe untuk Scrolling & Zooming -->
+                <div id="iframeZoomWrapper" class="iframe-zoom-wrapper">
+                    <iframe id="iframePreviewDokumen" class="iframe-doc-preview"
+                        title="Pratinjau Dokumen Dasar Hukum"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let kategoriAktif = 'all';
+        let kategoriSekolahAktif = null;
+
+        // Toggle Accordion per Section:
+        // "kalo salah satu dibuka yg lain tertutup, bsia kan, tapi kalo ditutp semua juga bisa"
+        
+        // --- DYNAMIC RENDERING DARI DATABASE SPREADSHEET (APPS SCRIPT) ---
+        function renderAllLawsFromDB() {
+            if (typeof SIKOBAELAH_DB === 'undefined') return;
+            const laws = SIKOBAELAH_DB.getLaws();
+
+            const sections = ['spbe', 'sidimas', 'sipresdir', 'sibukinstal', 'siempus', 'simpeel', 'siladumas', 'sinbas'];
+
+            sections.forEach(cat => {
+                const container = document.getElementById('lawsGrid_' + cat);
+                const chip = document.getElementById('chipCount_' + cat);
+                if (!container) return;
+
+                const catLaws = laws.filter(l => String(l.kategori_app).toLowerCase() === cat);
+                if (chip) chip.textContent = catLaws.length + ' Regulasi';
+
+                container.replaceChildren();
+                catLaws.forEach(l => {
+                    const hierarchyText = String(l.hierarki || '');
+                    const lowerHierarchy = hierarchyText.toLowerCase();
+                    const tagClass = lowerHierarchy.includes('uu') || lowerHierarchy.includes('undang')
+                        ? 'tag-uu'
+                        : lowerHierarchy.includes('perpres') ? 'tag-perpres' : 'tag-permen';
+                    const card = document.createElement('div');
+                    card.className = 'law-card';
+                    card.dataset.category = String(l.kategori_app || '');
+                    card.dataset.keywords = String(l.kata_kunci || '');
+                    const content = document.createElement('div');
+                    const top = document.createElement('div');
+                    top.className = 'law-top';
+                    const hierarchy = document.createElement('span');
+                    hierarchy.className = 'law-hierarchy-tag ' + tagClass;
+                    hierarchy.textContent = hierarchyText;
+                    const status = document.createElement('span');
+                    status.className = 'law-status';
+                    status.textContent = l.status || 'Berlaku';
+                    top.append(hierarchy, status);
+                    const number = document.createElement('h3');
+                    number.className = 'law-number';
+                    number.textContent = l.nomor_regulasi || '';
+                    const title = document.createElement('p');
+                    title.className = 'law-title';
+                    title.textContent = l.judul_regulasi || '';
+                    const relevance = document.createElement('div');
+                    relevance.className = 'law-relevance-box';
+                    const relevanceText = String(l.keterkaitan || '');
+                    const separator = relevanceText.indexOf(':');
+                    const relevanceHeading = document.createElement('strong');
+                    relevanceHeading.textContent = separator >= 0
+                        ? relevanceText.substring(0, separator) + ':'
+                        : 'Keterkaitan:';
+                    relevance.appendChild(relevanceHeading);
+                    relevance.appendChild(document.createTextNode(
+                        separator >= 0 ? relevanceText.substring(separator + 1) : relevanceText
+                    ));
+                    content.append(top, number, title, relevance);
+
+                    const footer = document.createElement('div');
+                    footer.className = 'law-card-footer';
+                    const publication = document.createElement('span');
+                    publication.textContent = l.lembaran_negara || 'Pemerintah RI';
+                    footer.appendChild(publication);
+                    const href = String(l.link_jdih || '');
+                    let safeHref;
+                    try { safeHref = new URL(href, window.location.href); } catch (_) { safeHref = null; }
+                    if (safeHref && (safeHref.protocol === 'https:' || safeHref.protocol === 'http:')) {
+                        const link = document.createElement('a');
+                        link.href = safeHref.href;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        link.className = 'btn-jdih-link';
+                        const label = document.createElement('span');
+                        label.textContent = l.label_jdih || 'JDIH Resmi';
+                        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                        icon.setAttribute('viewBox', '0 0 24 24');
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        path.setAttribute('d', 'M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z');
+                        icon.appendChild(path);
+                        link.append(label, icon);
+                        footer.appendChild(link);
+                    }
+                    card.append(content, footer);
+                    container.appendChild(card);
+                });
+            });
+
+            // Update badge total regulasi di header banner
+            const totalBadge = document.querySelector('.hero-stats-badge strong');
+            if (totalBadge) totalBadge.textContent = laws.length;
+
+            console.log('[SiKoBaELah Regulasi] Berhasil me-render ' + laws.length + ' regulasi dari database.');
+        }
+
+        function applySchoolLawScope(apps) {
+            const enabledIds = new Set((Array.isArray(apps) ? apps : [])
+                .filter(app => app.enabled === true || app.enabled === 1 || String(app.enabled).toLowerCase() === 'true')
+                .map(app => String(app.id || '').toLowerCase()));
+            kategoriSekolahAktif = enabledIds;
+            document.querySelectorAll('.app-section[data-section]').forEach(section => {
+                const category = section.dataset.section;
+                const visible = category === 'spbe' || enabledIds.has(category);
+                section.hidden = !visible;
+                section.style.display = visible ? '' : 'none';
+            });
+            document.querySelectorAll('.filter-pill').forEach(button => {
+                const match = String(button.getAttribute('onclick') || '').match(/pilihKategori\('([^']+)'/);
+                const category = match && match[1];
+                const visible = category === 'all' || category === 'spbe' || enabledIds.has(category);
+                button.hidden = !visible;
+                button.style.display = visible ? '' : 'none';
+            });
+            filterRegulasi(document.getElementById('filterInput')?.value || '');
+        }
+
+        function setLawIdentityLogo(imageId, value, fallback, altText) {
+            const logo = document.getElementById(imageId);
+            if (!logo) return;
+            const path = String(value || '').trim();
+            const clean = path.replace(/^(\.\/)?(src\/)?assets\/(img\/|img-sekolah\/)?/i, '');
+            const src = /^(?:https?:\/\/|data:image\/|blob:)/i.test(path)
+                ? path
+                : (path ? './assets/img-sekolah/' + clean : fallback);
+            logo.alt = altText;
+            logo.onerror = () => {
+                logo.onerror = null;
+                logo.src = fallback;
+            };
+            logo.src = src;
+        }
+
+        function applySchoolLawIdentity(config, schoolName) {
+            const schoolConfig = config || {};
+            const name = schoolConfig.nama_sekolah || schoolName;
+            if (name) {
+                document.querySelectorAll('.school-tag').forEach(el => {
+                    el.textContent = name + ' • LANDASAN REGULASI';
+                });
+                document.title = 'Landasan Regulasi & Dasar Hukum - ' + name;
+            }
+            setLawIdentityLogo(
+                'lawAgencyLogo',
+                schoolConfig.logo_instansi,
+                './assets/img/logo jambi 512.png',
+                'Logo ' + (schoolConfig.pemprov || 'Instansi')
+            );
+            setLawIdentityLogo(
+                'lawSchoolLogo',
+                schoolConfig.logo_sekolah,
+                './assets/img/sikobaelah.png',
+                'Logo ' + (name || 'Sekolah')
+            );
+            const agencyBox = document.getElementById('lawAgencyLogoBox');
+            if (agencyBox) {
+                agencyBox.title = schoolConfig.pemprov || 'Logo instansi';
+                agencyBox.style.display = schoolConfig.logo_instansi ? '' : 'none';
+            }
+            const schoolBox = document.getElementById('lawSchoolLogoBox');
+            if (schoolBox) {
+                schoolBox.title = name || 'Lembaga pendidikan';
+                schoolBox.style.display = schoolConfig.logo_sekolah ? '' : 'none';
+            }
+        }
+
+        async function loadSchoolLawScope() {
+            if (typeof SIKOBAELAH_DB === 'undefined') return;
+            const schoolId = SIKOBAELAH_DB.getSchoolIdFromUrl();
+            if (!schoolId) return;
+
+            SIKOBAELAH_DB.activeSchoolId = schoolId;
+            const brandLink = document.getElementById('lawPortalBrand');
+            const backLink = document.getElementById('lawPortalBack');
+            const footerLink = document.getElementById('lawFooterPortal');
+            const portalHref = 'index.html?id=' + encodeURIComponent(schoolId);
+            if (brandLink) brandLink.href = portalHref;
+            if (backLink) backLink.href = portalHref;
+            if (footerLink) footerLink.href = portalHref;
+
+            try {
+                const cachedConfig = localStorage.getItem(SIKOBAELAH_DB.getSchoolConfigStorageKey(schoolId));
+                if (cachedConfig) {
+                    applySchoolLawIdentity(JSON.parse(cachedConfig));
+                }
+            } catch (error) {
+                console.error('[Identitas Dasar Hukum] Cache sekolah tidak dapat dibaca:', error);
+            }
+
+            const status = document.getElementById('schoolLawScopeStatus');
+            if (status) {
+                status.hidden = true;
+                status.textContent = '';
+            }
+            applySchoolLawScope([]);
+            try {
+                const result = await SIKOBAELAH_DB.getSchoolData(schoolId);
+                if (!result || !result.success || !result.data || !Array.isArray(result.data.apps)) {
+                    throw new Error(result && result.message ? result.message : 'Daftar modul sekolah tidak dapat dimuat.');
+                }
+                SIKOBAELAH_DB.cacheSchoolData(schoolId, result.data);
+                applySchoolLawScope(result.data.apps);
+                applySchoolLawIdentity(
+                    result.data.config,
+                    result.data.school && result.data.school.nama
+                );
+            } catch (error) {
+                const cachedApps = localStorage.getItem(SIKOBAELAH_DB.getSchoolAppsStorageKey(schoolId));
+                if (cachedApps) {
+                    try {
+                        applySchoolLawScope(JSON.parse(cachedApps));
+                        if (status) {
+                            status.textContent = 'Koneksi Spreadsheet gagal. Daftar modul terakhir yang tersimpan digunakan.';
+                            status.hidden = false;
+                        }
+                    } catch (cacheError) {
+                        applySchoolLawScope([]);
+                        if (status) {
+                            status.textContent = 'Daftar modul sekolah tidak dapat dibaca; hanya dasar hukum umum yang ditampilkan.';
+                            status.hidden = false;
+                        }
+                        console.error('[Dasar Hukum Sekolah]', cacheError);
+                    }
+                } else {
+                    applySchoolLawScope([]);
+                    if (status) {
+                        status.textContent = 'Daftar modul sekolah tidak dapat dimuat; hanya dasar hukum umum yang ditampilkan.';
+                        status.hidden = false;
+                    }
+                }
+                const cachedConfig = localStorage.getItem(SIKOBAELAH_DB.getSchoolConfigStorageKey(schoolId));
+                if (cachedConfig) {
+                    try {
+                        const config = JSON.parse(cachedConfig);
+                        applySchoolLawIdentity(config);
+                    } catch (cacheError) {
+                        console.error('[Identitas Dasar Hukum]', cacheError);
+                    }
+                }
+                console.error('[Dasar Hukum Sekolah]', error);
+            }
+        }
+
+        window.addEventListener('sikobaelah:data-updated', () => {
+            renderAllLawsFromDB();
+        });
+
+        // Jalankan sebelum inisialisasi accordion
+        renderAllLawsFromDB();
+        loadSchoolLawScope();
+
+        function toggleAccordion(sectionKey) {
+            const targetSec = document.querySelector(`.app-section[data-section="${sectionKey}"]`);
+            if (!targetSec) return;
+
+            const isCurrentlyActive = targetSec.classList.contains('active');
+            if (targetSec.style.display === 'none') return;
+
+            // 1. Tutup SEMUA section (sehingga jika salah satu dibuka, yg lain otomatis tertutup)
+            document.querySelectorAll('.app-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+
+            // 2. Jika sebelumnya belum aktif, buka section yang diklik
+            // Jika sebelumnya sudah aktif, dibiarkan tertutup semua (sehingga bisa ditutup semua!)
+            if (!isCurrentlyActive) {
+                targetSec.classList.add('active');
+
+                // Scroll halus jika posisi header di luar pandangan nyaman
+                setTimeout(() => {
+                    const rect = targetSec.getBoundingClientRect();
+                    if (rect.top < 80 || rect.top > window.innerHeight - 150) {
+                        targetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
+            }
+        }
+
+        // Buka seluruh panel accordion
+        function bukaSemuaAccordion() {
+            document.querySelectorAll('.app-section').forEach(sec => {
+                if (sec.style.display !== 'none') sec.classList.add('active');
+            });
+        }
+
+        // Tutup seluruh panel accordion
+        function tutupSemuaAccordion() {
+            document.querySelectorAll('.app-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+        }
+
+        // Filter Regulasi berdasarkan Teks & Kategori
+        function filterRegulasi(query) {
+            const clearBtn = document.getElementById('clearBtn');
+            clearBtn.style.display = query ? 'flex' : 'none';
+
+            const q = query.toLowerCase().trim();
+            const cards = document.querySelectorAll('.law-card');
+            const sections = document.querySelectorAll('.app-section');
+            const emptyBox = document.getElementById('emptySearchBox');
+            const counterBadge = document.getElementById('counterBadge');
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                const cardKeywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+                const textContent = card.innerText.toLowerCase();
+
+                const cocokSekolah = !kategoriSekolahAktif || cardCat === 'spbe' || kategoriSekolahAktif.has(String(cardCat).toLowerCase());
+                const cocokKategori = (kategoriAktif === 'all' || cardCat === kategoriAktif);
+                const cocokQuery = !q || cardKeywords.includes(q) || textContent.includes(q);
+
+                if (cocokSekolah && cocokKategori && cocokQuery) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Sembunyikan section yang seluruh kartunya tersembunyi
+            sections.forEach(sec => {
+                const secCat = sec.getAttribute('data-section');
+                const hasVisibleCard = Array.from(sec.querySelectorAll('.law-card')).some(c => c.style.display !== 'none');
+                const cocokSekolah = !kategoriSekolahAktif || secCat === 'spbe' || kategoriSekolahAktif.has(String(secCat).toLowerCase());
+
+                if (!cocokSekolah || (kategoriAktif !== 'all' && secCat !== kategoriAktif)) {
+                    sec.style.display = 'none';
+                    sec.classList.remove('active');
+                } else if (!hasVisibleCard) {
+                    sec.style.display = 'none';
+                    sec.classList.remove('active');
+                } else {
+                    sec.style.display = 'block';
+                    // Jika user sedang mengetik kata kunci pencarian, buka otomatis accordion section yang cocok!
+                    if (q) {
+                        sec.classList.add('active');
+                    }
+                }
+            });
+
+            if (visibleCount === 0) {
+                emptyBox.style.display = 'block';
+                document.getElementById('emptySearchQuery').textContent = `Tidak ditemukan regulasi yang cocok dengan: "${query}"`;
+                counterBadge.textContent = '0 Regulasi';
+            } else {
+                emptyBox.style.display = 'none';
+                counterBadge.textContent = `Menampilkan ${visibleCount} Regulasi`;
+            }
+        }
+
+        function clearPencarian() {
+            const input = document.getElementById('filterInput');
+            input.value = '';
+            filterRegulasi('');
+            input.focus();
+        }
+
+        function pilihKategori(cat, el) {
+            kategoriAktif = cat;
+            document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            const sections = document.querySelectorAll('.app-section');
+            if (cat === 'all') {
+                sections.forEach(s => {
+                    const category = String(s.getAttribute('data-section') || '').toLowerCase();
+                    const allowed = !kategoriSekolahAktif || category === 'spbe' || kategoriSekolahAktif.has(category);
+                    s.style.display = allowed ? 'block' : 'none';
+                });
+            } else {
+                sections.forEach(s => {
+                    const secCat = s.getAttribute('data-section');
+                    if (secCat === cat) {
+                        s.style.display = 'block';
+                        s.classList.add('active'); // Buka section yang dipilih
+                    } else {
+                        s.style.display = 'none';
+                        s.classList.remove('active');
+                    }
+                });
+            }
+
+            const input = document.getElementById('filterInput');
+            filterRegulasi(input.value);
+        }
+
+        // Keyboard accessibility untuk Header Accordion (Enter & Spasi)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (document.activeElement && document.activeElement.classList.contains('section-header')) {
+                    e.preventDefault();
+                    document.activeElement.click();
+                }
+            }
+        });
+
+        // Tampilkan/Sembunyikan tombol Scroll Top
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('btnScrollTop');
+            if (window.scrollY > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        // Buka kategori sesuai hash URL jika ada (misal: #sidimas atau #simpeel)
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '').toLowerCase();
+            if (hash) {
+                const targetSec = document.querySelector(`.app-section[data-section="${hash}"]`);
+                if (targetSec) {
+                    toggleAccordion(hash);
+                }
+            }
+        });
+
+        /* =========================================================
+           LOGIKA PRATINJAU DOKUMEN PDF, IFRAME, ZOOM, CETAK & UNDUH
+           ========================================================= */
+        let currentPdfZoom = 1.0;
+        let currentPdfScope = 'all';
+
+        // Buka Modal Pratinjau Dokumen PDF
+        function bukaModalPratinjauPDF(scope = 'all') {
+            currentPdfScope = scope;
+            const modal = document.getElementById('modalPreviewPDF');
+            const loading = document.getElementById('modalPdfLoading');
+            const iframe = document.getElementById('iframePreviewDokumen');
+            const scopeSelect = document.getElementById('modalScopeSelect');
+
+            if (scopeSelect) {
+                scopeSelect.value = scope;
+            }
+
+            if (!modal || !iframe) return;
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Kunci scroll latar belakang
+
+            // Reset zoom
+            resetZoomDokumen();
+
+            if (loading) loading.style.display = 'flex';
+
+            // Beri sedikit jeda agar DOM render halus
+            setTimeout(() => {
+                try {
+                    const htmlContent = buatHtmlDokumenDasarHukum(currentPdfScope);
+                    iframe.srcdoc = htmlContent;
+                } catch (err) {
+                    console.error('[Pratinjau PDF] Gagal memuat konten dokumen:', err);
+                } finally {
+                    if (loading) loading.style.display = 'none';
+                }
+            }, 100);
+        }
+
+        // Ganti Cakupan Pratinjau Dokumen (Semua vs Filter Aktif)
+        function gantiCakupanPratinjau(scope) {
+            bukaModalPratinjauPDF(scope);
+        }
+
+        // Tutup Modal Pratinjau
+        function tutupModalPratinjauPDF() {
+            const modal = document.getElementById('modalPreviewPDF');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Kontrol Zoom Tampilan Iframe
+        function zoomDokumen(delta) {
+            currentPdfZoom = Math.max(0.5, Math.min(2.0, +(currentPdfZoom + delta).toFixed(2)));
+            const zoomText = document.getElementById('zoomLevelDisplay');
+            if (zoomText) {
+                zoomText.textContent = `${Math.round(currentPdfZoom * 100)}%`;
+            }
+
+            const iframe = document.getElementById('iframePreviewDokumen');
+            const wrapper = document.getElementById('iframeZoomWrapper');
+            if (iframe) {
+                iframe.style.transform = `scale(${currentPdfZoom})`;
+                if (wrapper) {
+                    const baseH = 1200;
+                    wrapper.style.minHeight = (baseH * currentPdfZoom + 80) + 'px';
+                    wrapper.style.width = currentPdfZoom > 1 ? (860 * currentPdfZoom + 40) + 'px' : '100%';
+                }
+            }
+        }
+
+        // Kembalikan Zoom ke Ukuran Normal (100%)
+        function resetZoomDokumen() {
+            currentPdfZoom = 1.0;
+            const zoomText = document.getElementById('zoomLevelDisplay');
+            if (zoomText) {
+                zoomText.textContent = '100%';
+            }
+            const iframe = document.getElementById('iframePreviewDokumen');
+            const wrapper = document.getElementById('iframeZoomWrapper');
+            if (iframe) {
+                iframe.style.transform = 'scale(1)';
+            }
+            if (wrapper) {
+                wrapper.style.minHeight = '100%';
+                wrapper.style.width = '100%';
+            }
+        }
+
+        // Cetak Dokumen Langsung dari Iframe (Hanya Dokumen yang Tercetak Rapi)
+        function cetakDokumenDariIframe() {
+            const iframe = document.getElementById('iframePreviewDokumen');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+            }
+        }
+
+        // Unduh Dokumen sebagai PDF Resmi (100% Identik dengan Pratinjau Iframe)
+        async function unduhDokumenPDF() {
+            const btn = document.getElementById('btnUnduhPDFModal');
+            const txt = document.getElementById('txtUnduhPDF');
+            const originalText = txt ? txt.textContent : 'Unduh PDF';
+
+            const pulihkanTombol = () => {
+                if (btn) btn.disabled = false;
+                if (txt) txt.textContent = originalText;
+            };
+
+            if (btn) btn.disabled = true;
+            if (txt) txt.textContent = 'Membuat PDF...';
+
+            const iframe = document.getElementById('iframePreviewDokumen');
+            if (!iframe || !iframe.contentDocument) {
+                alert('Pratinjau dokumen belum selesai dimuat. Silakan tunggu sesaat.');
+                pulihkanTombol();
+                return;
+            }
+
+            const idoc = iframe.contentDocument;
+            const docEl = idoc.getElementById('paperContainer') || idoc.body;
+
+            // Sandbox ditaruh di (0,0) -- BUKAN di left:-9999px -- agar html2canvas
+            // memotret area yang benar dan lebar elemen terukur (tidak 0 / blank).
+            const wrapper = document.createElement('div');
+            wrapper.id = 'exportPdfSandbox';
+            wrapper.style.cssText = 'position:absolute;left:0;top:0;width:700px;opacity:0;pointer-events:none;z-index:-1;background:#ffffff;';
+
+            // Ambil CSS pratinjau dan batasi (scope) ke #exportPdfNode agar tidak mengubah halaman utama
+            let scopedCss = '';
+            try {
+                Array.from(idoc.styleSheets).forEach(sheet => {
+                    Array.from(sheet.cssRules).forEach(rule => {
+                        if (rule.type !== 1) return; // hanya CSSStyleRule (abaikan @page, @media print)
+                        const sels = rule.selectorText.split(',').map(s => s.trim()).filter(Boolean);
+                        const out = [];
+                        sels.forEach(s => {
+                            if (s === 'body' || s === 'html') {
+                                out.push('#exportPdfNode');
+                            } else if (s === '*') {
+                                out.push('#exportPdfNode', '#exportPdfNode *');
+                            } else {
+                                out.push('#exportPdfNode ' + s);
+                                if (s.startsWith('.doc-page')) out.push('#exportPdfNode' + s);
+                            }
+                        });
+                        scopedCss += out.join(',') + '{' + rule.style.cssText + '}\n';
+                    });
+                });
+            } catch (e) {
+                console.warn('[PDF] Gagal membaca stylesheet pratinjau:', e);
+            }
+            const styleEl = document.createElement('style');
+            styleEl.textContent = scopedCss;
+            wrapper.appendChild(styleEl);
+
+            // Kloning konten dokumen
+            const exportNode = docEl.cloneNode(true);
+            exportNode.id = 'exportPdfNode';
+            exportNode.style.cssText = 'width:700px;max-width:700px;margin:0 auto;padding:10px 14px;box-sizing:border-box;background:#ffffff;color:#0f172a;font-family:"Times New Roman",Times,serif;';
+
+            // Logo: kunci ukuran & ubah ke Data URI dari gambar yang sudah termuat di iframe
+            const srcImgs = Array.from(idoc.querySelectorAll('.kop-logo'));
+            exportNode.querySelectorAll('.kop-logo').forEach((img, idx) => {
+                img.removeAttribute('onerror');
+                img.style.cssText = 'width:72px;height:72px;max-width:72px;max-height:72px;object-fit:contain;flex-shrink:0;';
+                const src = srcImgs[idx];
+                if (src && src.complete && src.naturalWidth > 0) {
+                    try {
+                        const c = document.createElement('canvas');
+                        c.width = src.naturalWidth;
+                        c.height = src.naturalHeight;
+                        c.getContext('2d').drawImage(src, 0, 0);
+                        img.src = c.toDataURL('image/png');
+                    } catch (e) {
+                        img.src = src.currentSrc || src.src;
+                    }
+                }
+            });
+
+            // Atur pemotongan halaman: judul seksi + header kolom + baris pertama dijaga satu grup,
+            // sisa baris dipisah ke tabel kedua agar tiap baris bisa turun utuh ke halaman berikutnya.
+            const lebarKolom = ['5%', '28%', '32%', '35%'];
+            const buatColgroup = () => {
+                const cg = document.createElement('colgroup');
+                lebarKolom.forEach(w => {
+                    const col = document.createElement('col');
+                    col.style.width = w;
+                    cg.appendChild(col);
+                });
+                return cg;
+            };
+            exportNode.querySelectorAll('.section-block').forEach(block => {
+                const title = block.querySelector('.section-title-bar');
+                const desc = block.querySelector('.sec-sub-desc');
+                const table = block.querySelector('.table-regulasi');
+                if (!title || !table) return;
+
+                const rows = Array.from(table.querySelectorAll('tbody tr'));
+                // Tetapkan warna selang-seling secara eksplisit (agar tidak bergeser setelah tabel dipecah)
+                rows.forEach((r, i) => { r.style.background = (i % 2 === 1) ? '#f8fafc' : '#ffffff'; });
+
+                table.style.tableLayout = 'fixed';
+                table.insertBefore(buatColgroup(), table.firstChild);
+
+                if (rows.length > 1) {
+                    const rest = table.cloneNode(false);
+                    rest.style.tableLayout = 'fixed';
+                    rest.appendChild(buatColgroup());
+                    const tb = document.createElement('tbody');
+                    rows.slice(1).forEach(r => tb.appendChild(r));
+                    rest.appendChild(tb);
+                    table.after(rest);
+                    table.style.marginBottom = '0';
+                }
+
+                const group = document.createElement('div');
+                group.className = 'keep-group-pdf';
+                block.insertBefore(group, title);
+                group.appendChild(title);
+                if (desc) group.appendChild(desc);
+                group.appendChild(table);
+            });
+
+            wrapper.appendChild(exportNode);
+            document.body.appendChild(wrapper);
+
+            // Tunggu semua gambar siap sebelum dirender
+            await Promise.all(Array.from(exportNode.querySelectorAll('img')).map(im =>
+                (im.complete && im.naturalWidth > 0) ? Promise.resolve() :
+                    new Promise(res => { im.onload = im.onerror = res; setTimeout(res, 2500); })
+            ));
+            await new Promise(r => setTimeout(r, 100));
+
+            if (window.html2pdf) {
+                try {
+                    const opt = {
+                        margin: [10, 8, 12, 8],
+                        filename: 'Dasar_Hukum_SiKoBaELah_SMAN15Tebo.pdf',
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: {
+                            scale: 2,
+                            useCORS: true,
+                            allowTaint: true,
+                            backgroundColor: '#ffffff',
+                            logging: false,
+                            scrollX: 0,
+                            scrollY: 0
+                        },
+                        jsPDF: {
+                            unit: 'mm',
+                            format: 'a4',
+                            orientation: 'portrait'
+                        },
+                        pagebreak: {
+                            mode: ['css', 'legacy'],
+                            avoid: ['.kop-surat', '.doc-header-block', '.doc-intro', '.keep-group-pdf', '.table-regulasi tr', '.doc-footer-legal']
+                        }
+                    };
+                    await window.html2pdf().set(opt).from(exportNode).save();
+                } catch (err) {
+                    console.warn('[PDF] html2pdf gagal, beralih ke dialog cetak browser:', err);
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                } finally {
+                    wrapper.remove();
+                    pulihkanTombol();
+                }
+            } else {
+                wrapper.remove();
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+                pulihkanTombol();
+            }
+        }
+
+        // Generator HTML Dokumen Rapi Berformat Resmi untuk Iframe & PDF
+        function buatHtmlDokumenDasarHukum(scope = 'all') {
+            const today = new Date();
+            const tglIndo = today.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            const config = SIKOBAELAH_DB.getConfig();
+            const escapeHtml = value => String(value || '').replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+            const tenantId = SIKOBAELAH_DB.getSchoolIdFromUrl();
+            const displayedSchoolName = document.querySelector('.school-tag')?.textContent
+                .replace(/\s*•.*$/, '')
+                .trim();
+            const schoolName = escapeHtml(tenantId
+                ? (displayedSchoolName && displayedSchoolName !== 'LANDASAN REGULASI' ? displayedSchoolName : 'Satuan Pendidikan')
+                : (config.nama_sekolah || 'Satuan Pendidikan'));
+            const schoolLogo = escapeHtml(document.getElementById('lawSchoolLogo')?.src || '');
+
+            // Ambil semua seksi kategori
+            const sections = Array.from(document.querySelectorAll('.app-section'))
+                .filter(sec => getComputedStyle(sec).display !== 'none');
+            let selectedSections = [];
+
+            if (scope === 'filtered') {
+                selectedSections = sections.filter(sec => {
+                    const isVisible = sec.style.display !== 'none';
+                    const cards = Array.from(sec.querySelectorAll('.law-card'));
+                    const hasVisibleCard = cards.some(c => c.style.display !== 'none');
+                    return isVisible && hasVisibleCard;
+                });
+                if (selectedSections.length === 0) {
+                    selectedSections = sections;
+                }
+            } else {
+                selectedSections = sections;
+            }
+
+            let totalRegulasi = 0;
+            let sectionHtmlRows = '';
+
+            selectedSections.forEach((sec, sIdx) => {
+                const secTitle = sec.querySelector('.section-title')?.textContent?.trim() || `Bagian ${sIdx + 1}`;
+                const secSubtitle = sec.querySelector('.section-subtitle')?.textContent?.trim() || '';
+
+                const allCards = Array.from(sec.querySelectorAll('.law-card'));
+                const cardsToInclude = (scope === 'filtered')
+                    ? allCards.filter(c => c.style.display !== 'none')
+                    : allCards;
+
+                if (cardsToInclude.length === 0) return;
+
+                let rowsHtml = '';
+                cardsToInclude.forEach((card) => {
+                    totalRegulasi++;
+                    const tag = card.querySelector('.law-hierarchy-tag')?.textContent?.trim() || 'Regulasi';
+                    const status = card.querySelector('.law-status')?.textContent?.trim() || 'Berlaku';
+                    const number = card.querySelector('.law-number')?.textContent?.trim() || '-';
+                    const title = card.querySelector('.law-title')?.textContent?.trim() || '-';
+
+                    // Keterkaitan
+                    const relBox = card.querySelector('.law-relevance-box');
+                    let relevance = '';
+                    if (relBox) {
+                        const clone = relBox.cloneNode(true);
+                        const strong = clone.querySelector('strong');
+                        if (strong) strong.remove();
+                        relevance = clone.textContent.trim();
+                    }
+
+                    // Sumber
+                    const footerSpan = card.querySelector('.law-card-footer span')?.textContent?.trim() || 'Pemerintah RI';
+
+                    rowsHtml += `
+                        <tr>
+                            <td class="cell-no">${totalRegulasi}</td>
+                            <td class="cell-regulasi">
+                                <span class="cell-nama-reg">${number}</span>
+                                <div style="margin-top:4px;">
+                                    <span class="cell-tag-reg">${tag}</span>
+                                    <span class="cell-status-reg">${status}</span>
+                                </div>
+                                <span class="cell-sumber-reg">${footerSpan}</span>
+                            </td>
+                            <td class="cell-tentang">${title}</td>
+                            <td class="cell-keterkaitan">${relevance || '-'}</td>
+                        </tr>
+                    `;
+                });
+
+                sectionHtmlRows += `
+                    <div class="section-block">
+                        <div class="section-title-bar">
+                            <span>${secTitle}</span>
+                            <span class="sec-count">${cardsToInclude.length} Regulasi</span>
+                        </div>
+                        ${secSubtitle ? `<div class="sec-sub-desc">${secSubtitle}</div>` : ''}
+                        <table class="table-regulasi">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">No</th>
+                                    <th style="width: 28%;">Nama & Nomor Regulasi</th>
+                                    <th style="width: 32%;">Tentang / Substansi Regulasi</th>
+                                    <th style="width: 35%;">Keterkaitan dengan Sistem SiKoBaELah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rowsHtml}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            return `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Daftar Landasan Regulasi & Dasar Hukum SiKoBaELah</title>
+<style>
+    @page {
+        size: A4 portrait;
+        margin: 12mm 14mm 14mm 14mm;
+    }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        color: #0f172a;
+        background: #ffffff;
+        font-size: 10pt;
+        line-height: 1.45;
+        padding: 10px 14px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .doc-page {
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto;
+        background: #ffffff;
+    }
+
+    /* KOP SURAT */
+    .kop-surat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding-bottom: 8px;
+        border-bottom: 3px double #000000;
+        margin-bottom: 14px;
+    }
+    .kop-logo {
+        width: 72px;
+        height: 72px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+    .kop-text {
+        text-align: center;
+        flex: 1;
+        line-height: 1.25;
+    }
+    .kop-text .instansi-prov {
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #111827;
+    }
+    .kop-text .instansi-sekolah {
+        font-family: Arial, sans-serif;
+        font-size: 15pt;
+        font-weight: 900;
+        color: #0b2e63;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin: 3px 0 2px 0;
+    }
+    .kop-text .instansi-meta {
+        font-family: Arial, sans-serif;
+        font-size: 8pt;
+        color: #334155;
+        margin-top: 3px;
+        line-height: 1.35;
+    }
+
+    /* JUDUL DOKUMEN */
+    .doc-header-block {
+        text-align: center;
+        margin-bottom: 14px;
+    }
+    .doc-main-title {
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #0f172a;
+    }
+    .doc-sub-title {
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+        font-weight: 700;
+        color: #1e293b;
+        margin-top: 2px;
+    }
+
+    /* PENGANTAR */
+    .doc-intro {
+        font-size: 9pt;
+        text-align: justify;
+        line-height: 1.45;
+        margin-bottom: 14px;
+        padding: 6px 10px;
+        background: #f8fafc;
+        border-left: 3.5px solid #0284c7;
+        border-radius: 0 4px 4px 0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* SECTION */
+    .section-block {
+        margin-bottom: 18px;
+        page-break-inside: auto;
+    }
+    .section-title-bar {
+        background: #0f172a;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        font-size: 9.5pt;
+        font-weight: 700;
+        padding: 6px 10px;
+        border-radius: 4px;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        page-break-after: avoid;
+    }
+    .section-title-bar .sec-count {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1px 7px;
+        border-radius: 3px;
+        font-size: 8pt;
+    }
+    .sec-sub-desc {
+        font-family: Arial, sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+        font-style: italic;
+        margin-bottom: 6px;
+        padding-left: 4px;
+    }
+
+    /* TABEL */
+    .table-regulasi {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 8.5pt;
+        margin-bottom: 10px;
+    }
+    .table-regulasi th {
+        background: #e2e8f0;
+        color: #0f172a;
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        text-align: left;
+        padding: 6px 8px;
+        border: 1px solid #94a3b8;
+        font-size: 8pt;
+        text-transform: uppercase;
+        vertical-align: middle;
+    }
+    .table-regulasi td {
+        border: 1px solid #cbd5e1;
+        padding: 6px 8px;
+        vertical-align: top;
+        line-height: 1.35;
+    }
+    .table-regulasi tr {
+        page-break-inside: avoid;
+    }
+    .table-regulasi tr:nth-child(even) {
+        background: #f8fafc;
+    }
+    .cell-no {
+        text-align: center;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        color: #475569;
+    }
+    .cell-nama-reg {
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        font-size: 8.5pt;
+        color: #0f172a;
+        display: block;
+    }
+    .cell-tag-reg {
+        display: inline-block;
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+        font-weight: 700;
+        color: #0284c7;
+        background: #e0f2fe;
+        padding: 1px 5px;
+        border-radius: 3px;
+    }
+    .cell-status-reg {
+        display: inline-block;
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+        font-weight: 700;
+        color: #15803d;
+        background: #dcfce7;
+        padding: 1px 5px;
+        border-radius: 3px;
+        margin-left: 3px;
+    }
+    .cell-sumber-reg {
+        display: block;
+        font-size: 7.5pt;
+        color: #64748b;
+        margin-top: 3px;
+        font-style: italic;
+        font-family: Arial, sans-serif;
+    }
+    .cell-tentang {
+        color: #1e293b;
+    }
+    .cell-keterkaitan {
+        color: #334155;
+    }
+
+    /* FOOTER */
+    .doc-footer-legal {
+        margin-top: 20px;
+        padding-top: 8px;
+        border-top: 1px solid #cbd5e1;
+        font-family: Arial, sans-serif;
+        font-size: 7.5pt;
+        color: #94a3b8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        page-break-inside: avoid;
+    }
+
+    @media print {
+        body {
+            background: #ffffff !important;
+            padding: 0 !important;
+        }
+        .doc-page {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="doc-page" id="paperContainer">
+    <!-- KOP SURAT RESMI -->
+    <div class="kop-surat">
+        <img src="./assets/img/logo jambi 512.png" onerror="this.src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAdFm9jaTc1mVQN42x4KNCwi2YwzWz6NHhbDbsdlSBO97z3VkApM-nj_f1a_YWw7OG__0a0JJcDfHBH1Y6J7hL2T3JK8pV6mEeO_3iuogEHoCjQfWXz1WQl2PWU7UkewLOTkK583KLz7Tun-zRMkS4Aj-qxDvSuP9dYJ_zolGxw9vJNzMvmGBCsgO-B-Ae/s150/Logo%20Provinsi%20Jambi.png'" alt="Logo Provinsi Jambi" class="kop-logo">
+        <div class="kop-text">
+            <div class="instansi-prov">PEMERINTAH PROVINSI JAMBI</div>
+            <div class="instansi-sekolah">${schoolName}</div>
+            <div class="instansi-meta">Dokumen landasan regulasi umum SiKoBaELah</div>
+        </div>
+        <img src="${schoolLogo}" alt="Logo ${schoolName}" class="kop-logo">
+    </div>
+
+    <!-- JUDUL -->
+    <div class="doc-header-block">
+        <h1 class="doc-main-title">DAFTAR LANDASAN REGULASI & DASAR HUKUM APLIKASI</h1>
+        <h2 class="doc-sub-title">SISTEM KOLABORATIF BERBASIS ELEKTRONIK SEKOLAH (SIKOBAELAH)</h2>
+    </div>
+
+    <!-- PENGANTAR -->
+    <div class="doc-intro">
+        <strong>Pernyataan Kepatuhan Yuridis:</strong> Seluruh modul dan subsistem dalam platform SiKoBaELah ${schoolName} berpedoman pada hierarki peraturan perundang-undangan Negara Republik Indonesia, standar Sistem Pemerintahan Berbasis Elektronik (SPBE), serta Undang-Undang Pelindungan Data Pribadi (UU PDP).
+    </div>
+
+    <!-- DAFTAR SECTION -->
+    ${sectionHtmlRows}
+                      
+
+    <!-- FOOTER RESMI -->
+    <div class="doc-footer-legal">
+        <span>&copy; 2026 SiKoBaELah &bull; ${schoolName} &bull; Landasan Regulasi Umum</span>
+        <span>Dokumen Informasi Landasan Yuridis Sistem</span>
+    </div>
+</div>
+</body>
+</html>`;
+        }
+
+        // Pintasan Keyboard: ESC untuk menutup modal, Ctrl+P untuk membuka pratinjau rapi
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                tutupModalPratinjauPDF();
+            } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+                const modal = document.getElementById('modalPreviewPDF');
+                if (!modal || modal.style.display === 'none') {
+                    e.preventDefault();
+                    bukaModalPratinjauPDF();
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,4540 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SiKoBaELah - Portal Aplikasi Sekolah</title>
+    <link rel="icon" type="image/png" href="./assets/img/sikobaelah.png">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Philosopher:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./assets/js/portal-database.js?v=20261104-school-data-mobile-fix"></script>
+
+
+    <style>
+        :root {
+            --text-dark: #1e293b;
+            --primary-color: #0d6efd;
+            --secondary-color: #0dcaf0;
+            --accent-pink: #ff007a;
+            --accent-purple: #7000ff;
+            --glass-bg: rgba(255, 255, 255, 0.90);
+            --glass-border: rgba(255, 255, 255, 0.45);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1,
+        h2,
+        h3,
+        .school-name,
+        .app-title,
+        .landing-title {
+            font-family: 'Philosopher', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ff007a, #7000ff, #0055ff, #00d2ff);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient floating light particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 18% 25%, rgba(255, 255, 255, 0.16) 0%, transparent 40%),
+                radial-gradient(circle at 82% 78%, rgba(0, 242, 254, 0.18) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* --- SOUND TOGGLE FLOATING BUTTON --- */
+        .sound-toggle-btn {
+            position: fixed;
+            top: 18px;
+            right: 20px;
+            z-index: 3500;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #333;
+            font-size: 1.15rem;
+        }
+
+        .sound-toggle-btn:hover {
+            transform: scale(1.12) rotate(8deg);
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.35);
+        }
+
+        .sound-toggle-btn.muted {
+            opacity: 0.7;
+            background: rgba(255, 255, 255, 0.65);
+        }
+
+        /* --- Landing Page --- */
+        #landing-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .landing-content {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 45px 38px;
+            border-radius: 35px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.6);
+            max-width: 92%;
+            width: 440px;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* =========================================================
+           LOGO 3D BERPUTAR DI HALAMAN DEPAN
+           ========================================================= */
+        .logo-3d-stage {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 22px auto;
+            perspective: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Orbital Hologram Rings */
+        .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .orbit-ring-outer {
+            width: 156px;
+            height: 156px;
+            border: 2px dashed rgba(0, 191, 255, 0.55);
+            box-shadow: 0 0 25px rgba(0, 191, 255, 0.35), inset 0 0 15px rgba(255, 0, 122, 0.25);
+            animation: rotateOrbit 22s linear infinite;
+        }
+
+        .orbit-ring-inner {
+            width: 140px;
+            height: 140px;
+            border: 1.5px solid rgba(112, 0, 255, 0.45);
+            box-shadow: 0 0 15px rgba(112, 0, 255, 0.25);
+            animation: rotateOrbitReverse 14s linear infinite;
+        }
+
+        @keyframes rotateOrbit {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateOrbitReverse {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        /* 3D Coin Badge di Landing */
+        .logo-3d-card {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            transform-style: preserve-3d;
+            animation: spin3DLogo 9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            cursor: pointer;
+            transition: filter 0.4s ease, transform 0.2s ease;
+        }
+
+        .logo-3d-card:hover {
+            animation-play-state: paused;
+            transform: scale(1.1) rotateY(15deg) rotateX(10deg);
+            filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.9));
+        }
+
+        @keyframes spin3DLogo {
+            0% {
+                transform: rotateY(0deg) rotateX(8deg);
+            }
+
+            45% {
+                transform: rotateY(180deg) rotateX(-8deg);
+            }
+
+            50% {
+                transform: rotateY(180deg) rotateX(-8deg);
+            }
+
+            95% {
+                transform: rotateY(360deg) rotateX(8deg);
+            }
+
+            100% {
+                transform: rotateY(360deg) rotateX(8deg);
+            }
+        }
+
+        .logo-face {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.2),
+                0 0 0 3px rgba(255, 255, 255, 0.9),
+                0 0 25px rgba(13, 110, 253, 0.35);
+            overflow: hidden;
+            backface-visibility: visible;
+        }
+
+        .logo-face img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 20px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        /* Shimmering specular reflection light */
+        .logo-face::after {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -80%;
+            width: 250%;
+            height: 220%;
+            background: linear-gradient(115deg,
+                    transparent 35%,
+                    rgba(255, 255, 255, 0.85) 50%,
+                    rgba(0, 242, 254, 0.5) 54%,
+                    transparent 68%);
+            transform: rotate(25deg);
+            animation: sweepShine 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sweepShine {
+            0% {
+                transform: translateX(-100%) rotate(25deg);
+            }
+
+            40%,
+            100% {
+                transform: translateX(100%) rotate(25deg);
+            }
+        }
+
+        .landing-title {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            background: linear-gradient(135deg, #0d6efd, #7000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .school-load-status {
+            color: #b91c1c;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            margin: 0 auto 12px;
+            max-width: 1200px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .school-picker-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 4000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.62);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .school-picker-modal.show {
+            display: flex;
+        }
+
+        .school-picker-card {
+            width: min(100%, 440px);
+            padding: 30px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.97);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .school-picker-card h2 {
+            margin-bottom: 8px;
+            color: #0f172a;
+            font-size: 1.65rem;
+        }
+
+        .school-picker-card p {
+            margin-bottom: 18px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .school-picker-card label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .school-picker-card input {
+            width: 100%;
+            min-height: 48px;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: #fff;
+            color: #0f172a;
+            font: inherit;
+        }
+
+        .school-picker-card input:focus {
+            outline: 3px solid rgba(13, 110, 253, 0.18);
+            border-color: #0d6efd;
+        }
+
+        .school-picker-status {
+            min-height: 22px;
+            margin: 10px 0 16px;
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+
+        .school-picker-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .school-picker-actions button {
+            min-height: 42px;
+            padding: 9px 16px;
+            border: 0;
+            border-radius: 12px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .school-picker-cancel {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .school-picker-open {
+            background: linear-gradient(135deg, #0d6efd, #7000ff);
+            color: #fff;
+        }
+
+        /* --- Tombol Landing Desktop --- */
+        .desktop-action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .row-btns {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .btn-portal {
+            background: linear-gradient(135deg, #0d6efd 0%, #00d2ff 100%);
+            background-size: 200% 200%;
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.45);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-portal:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(13, 110, 253, 0.65);
+            background-position: 100% 100%;
+        }
+
+        .btn-portal:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid rgba(13, 110, 253, 0.4);
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(13, 110, 253, 0.25);
+        }
+
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        /* =========================================================
+           PORTAL UTAMA
+           ========================================================= */
+        #main-portal {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+            min-height: 100vh;
+            padding-bottom: 25px;
+            z-index: 10;
+        }
+
+        #main-portal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Header Portal Versi Bersih & Mewah - Sejajar dengan Top Bar & App Grid */
+        .header {
+            width: calc(100% - 50px);
+            max-width: 1250px;
+            margin: 0 auto 30px auto;
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 24px 34px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            box-sizing: border-box;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3.5px;
+            background: linear-gradient(to right, #ff007a, #7000ff, #0055ff, #00d2ff);
+            pointer-events: none;
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 60%;
+        }
+
+        /* 3D Kapsul Badge untuk Logo Instansi & Sekolah */
+        .logo-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            align-items: center;
+            perspective: 800px;
+        }
+
+        .logo-badge-3d {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.12),
+                0 0 0 2px rgba(255, 255, 255, 0.9),
+                inset 0 1px 3px rgba(255, 255, 255, 0.8);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .logo-badge-3d:hover {
+            transform: translateY(-5px) rotateX(10deg) scale(1.08);
+            box-shadow:
+                0 14px 28px rgba(0, 0, 0, 0.18),
+                0 0 18px rgba(13, 110, 253, 0.35);
+        }
+
+        .logo-badge-3d img {
+            width: 54px;
+            height: 54px;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
+            transform: translateZ(15px);
+        }
+
+        .logo-badge-3d::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 220%;
+            height: 200%;
+            background: linear-gradient(115deg,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.75) 50%,
+                    transparent 60%);
+            transform: rotate(25deg);
+            animation: sweepShine 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .agency-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 1.5px;
+        }
+
+        .school-name {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .school-address {
+            font-size: 0.92rem;
+            color: #475569;
+        }
+
+        /* =========================================================
+           BAGIAN KANAN HEADER: LOGO SIKOBAELAH 3D + NAMA APLIKASI
+           ========================================================= */
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            position: relative;
+        }
+
+        /* Wadah 3D Logo SiKoBaELah di Header */
+        .header-logo-3d-wrapper {
+            position: relative;
+            perspective: 800px;
+            display: inline-block;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .header-logo-3d {
+            width: 82px;
+            height: 82px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(240, 248, 255, 0.92));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            box-shadow:
+                0 10px 25px rgba(13, 110, 253, 0.25),
+                0 0 0 2px rgba(255, 255, 255, 0.95),
+                inset 0 0 12px rgba(255, 255, 255, 0.8);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+            animation: headerLogoFloat 5s ease-in-out infinite alternate;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes headerLogoFloat {
+            0% {
+                transform: perspective(800px) rotateY(-8deg) rotateX(6deg) translateY(0px);
+                box-shadow: 0 10px 24px rgba(13, 110, 253, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.85);
+            }
+
+            100% {
+                transform: perspective(800px) rotateY(12deg) rotateX(-6deg) translateY(-6px);
+                box-shadow: 0 18px 35px rgba(0, 191, 255, 0.4), 0 0 0 2px rgba(255, 255, 255, 1);
+            }
+        }
+
+        .header-logo-3d img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+            transform: translateZ(20px);
+            transition: transform 0.3s ease;
+        }
+
+        /* Specular sweeping light shine over header logo */
+        .header-logo-3d::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 220%;
+            height: 200%;
+            background: linear-gradient(115deg,
+                    transparent 35%,
+                    rgba(255, 255, 255, 0.85) 50%,
+                    rgba(0, 242, 254, 0.45) 55%,
+                    transparent 65%);
+            transform: rotate(25deg);
+            animation: sweepShine 3.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .header-logo-3d-wrapper:hover .header-logo-3d {
+            transform: perspective(800px) rotateY(360deg) scale(1.12);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 40px rgba(13, 110, 253, 0.5), 0 0 25px rgba(0, 242, 254, 0.6);
+        }
+
+        .app-title {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            background: linear-gradient(135deg, #0d6efd, #7000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-subtitle {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        /* =========================================================
+           5 KARTU APLIKASI SUPER MODERN & COLOR MORPHING
+           ========================================================= */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 26px;
+            width: 100%;
+            max-width: 1250px;
+            padding: 0 25px;
+            margin-bottom: 40px;
+            flex: 1;
+            perspective: 1200px;
+        }
+
+        @media (max-width: 900px) {
+            .app-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 560px) {
+            .app-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .app-card {
+            position: relative;
+            border-radius: 24px;
+            padding: 34px 22px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-style: preserve-3d;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background-size: 220% 220%;
+            transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, filter 0.3s ease;
+            will-change: transform, box-shadow;
+        }
+
+        .card-custom {
+            background: linear-gradient(135deg, #0f766e, #0d9488, #38bdf8);
+            box-shadow: 0 10px 25px rgba(13, 148, 136, 0.35);
+            --glow-color: rgba(56, 189, 248, 0.7);
+            --flash-color: #67e8f9;
+        }
+
+        #appGridContainer.school-loading {
+            visibility: hidden;
+        }
+
+        /* Dynamic Theme Palette for the 5 Apps */
+        .card-presensi {
+            background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc, #00f2fe);
+            box-shadow: 0 10px 25px rgba(0, 82, 212, 0.35);
+            --glow-color: rgba(0, 191, 255, 0.75);
+            --flash-color: #00f2fe;
+        }
+
+        .card-arsip {
+            background: linear-gradient(135deg, #1e3c72, #2a5298, #3a7bd5, #00d2ff);
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.35);
+            --glow-color: rgba(58, 123, 213, 0.75);
+            --flash-color: #6fb1fc;
+        }
+
+        .card-buku-induk {
+            background: linear-gradient(135deg, #f857a6, #ff5858, #ff9900, #ff5e62);
+            box-shadow: 0 10px 25px rgba(248, 87, 166, 0.35);
+            --glow-color: rgba(255, 120, 60, 0.75);
+            --flash-color: #ffca28;
+        }
+
+        .card-perpus {
+            background: linear-gradient(135deg, #8a2387, #e94057, #8e2de2, #4a00e0);
+            box-shadow: 0 10px 25px rgba(142, 45, 226, 0.35);
+            --glow-color: rgba(233, 64, 87, 0.75);
+            --flash-color: #f382f6;
+        }
+
+        .card-pegawai {
+            background: linear-gradient(135deg, #0575e6, #00f260, #11998e, #38ef7d);
+            box-shadow: 0 10px 25px rgba(0, 242, 96, 0.35);
+            --glow-color: rgba(0, 242, 120, 0.75);
+            --flash-color: #00ffaa;
+        }
+
+        .card-aset {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #00f2fe);
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.35);
+            --glow-color: rgba(0, 242, 254, 0.75);
+            --flash-color: #00f2fe;
+        }
+
+        /* 6 & 7. KARTU APLIKASI DALAM PENGEMBANGAN (WARNA ABU-ABU TETAP GRADIEN) */
+        .card-dev-gray {
+            background: linear-gradient(135deg, #334155 0%, #475569 35%, #64748b 70%, #475569 100%) !important;
+            box-shadow: 0 10px 25px rgba(51, 65, 85, 0.35);
+            --glow-color: rgba(148, 163, 184, 0.6);
+            --flash-color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            position: relative;
+        }
+
+        .card-dev-gray:hover {
+            background-position: 100% 100%;
+            box-shadow: 0 20px 45px rgba(100, 116, 139, 0.55), 0 0 25px rgba(255, 255, 255, 0.4);
+            filter: brightness(1.1) saturate(1.1);
+        }
+
+        .card-dev-ribbon {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 50px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 4;
+            transform: translateZ(25px);
+        }
+
+        .card-badge.badge-gray-dev {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #f8fafc;
+        }
+
+        /* =========================================================
+           HEADER POLOS / TOP BAR DI HALAMAN DAFTAR APLIKASI
+           ========================================================= */
+        .portal-top-bar {
+            position: sticky;
+            top: 0;
+            width: calc(100% - 50px);
+            max-width: 1250px;
+            padding: 7px 18px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 0 0 18px 18px;
+            margin: 0 auto 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top: none;
+            z-index: 1000;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .top-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid transparent;
+            line-height: 1;
+            height: 34px;
+        }
+
+        .top-action-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .btn-top-web {
+            background: #f1f5f9;
+            color: #1e293b;
+            border-color: #cbd5e1;
+        }
+
+        .btn-top-web:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-top-hukum {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: white;
+            box-shadow: 0 4px 14px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-top-hukum:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.45);
+            color: white;
+        }
+
+        .top-bar-search-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            max-width: 470px;
+            justify-content: flex-end;
+        }
+
+        .top-search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top-search-box input {
+            width: 100%;
+            height: 34px;
+            padding: 6px 32px 6px 36px;
+            border-radius: 50px;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            font-size: 0.85rem;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.25s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .top-search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.18);
+        }
+
+        .top-search-box .search-icon-svg {
+            position: absolute;
+            left: 12px;
+            width: 15px;
+            height: 15px;
+            fill: #94a3b8;
+            pointer-events: none;
+        }
+
+        .top-search-box .search-clear-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.15rem;
+            color: #94a3b8;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .top-search-box .search-clear-btn:hover {
+            color: #0f172a;
+            background: #e2e8f0;
+        }
+
+        /* Not found container */
+        .no-app-result {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            margin: 20px auto;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .no-app-result .no-app-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .no-app-result h3 {
+            font-size: 1.35rem;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .no-app-result p {
+            font-size: 0.92rem;
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+
+        .btn-reset-app-search {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset-app-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.45);
+        }
+
+        /* =========================================================
+           MODAL ALERT APLIKASI DALAM PENGEMBANGAN
+           ========================================================= */
+        .modal-dev-content {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 38px 28px;
+            border-radius: 32px;
+            width: 92%;
+            max-width: 440px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.9);
+        }
+
+        .modal.show .modal-dev-content {
+            transform: scale(1);
+        }
+
+        .dev-modal-icon-badge {
+            width: 72px;
+            height: 72px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+            position: relative;
+        }
+
+        .dev-modal-icon-badge img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        }
+
+        .dev-modal-title {
+            font-size: 1.65rem;
+            color: #0f172a;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .dev-modal-subtitle {
+            font-size: 0.92rem;
+            color: #475569;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .dev-modal-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(245, 158, 11, 0.12);
+            color: #d97706;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .dev-modal-tag .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f59e0b;
+            box-shadow: 0 0 8px #f59e0b;
+            animation: pulseDot 1.5s infinite;
+        }
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(1.3);
+            }
+        }
+
+        .dev-modal-notice {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+            text-align: left;
+            font-size: 0.88rem;
+            color: #334155;
+            line-height: 1.55;
+        }
+
+        .dev-modal-notice strong {
+            color: #0f172a;
+        }
+
+        .btn-dev-close {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 13px 32px;
+            border-radius: 50px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(13, 110, 253, 0.35);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-dev-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(13, 110, 253, 0.5);
+        }
+
+        .btn-dev-prototype {
+            background: #fff;
+            color: #2563eb;
+            border: 1px solid #93c5fd;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-dev-prototype:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
+        }
+
+        /* Hover: Color Morphing + Glowing Backlight */
+        .app-card:hover {
+            background-position: 100% 100%;
+            box-shadow: 0 20px 45px var(--glow-color), 0 0 25px rgba(255, 255, 255, 0.35);
+            filter: brightness(1.08) saturate(1.15);
+        }
+
+        /* Cursor Glare Specular Highlight */
+        .card-glare {
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.4), transparent 70%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .app-card:hover .card-glare {
+            opacity: 1;
+        }
+
+        /* Tactile Bounce & Shockwave on Click */
+        .app-card.card-clicking {
+            animation: cardPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes cardPop {
+            0% {
+                transform: scale(1);
+            }
+
+            35% {
+                transform: scale(0.93);
+                filter: brightness(1.3) contrast(1.1);
+            }
+
+            100% {
+                transform: scale(1.02);
+            }
+        }
+
+        .card-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.65);
+            transform: scale(0);
+            animation: rippleWave 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleWave {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Floating App Logo inside Card */
+        .app-logo-wrapper {
+            width: 82px;
+            height: 82px;
+            background-color: white;
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16), inset 0 0 0 2px rgba(255, 255, 255, 0.8);
+            padding: 12px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            transform: translateZ(25px);
+        }
+
+        .app-card:hover .app-logo-wrapper {
+            transform: translateZ(40px) scale(1.15) rotate(6deg);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.28), 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .app-logo-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .app-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+            transform: translateZ(20px);
+        }
+
+        .app-card p {
+            font-size: 0.92rem;
+            opacity: 0.94;
+            line-height: 1.45;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+            transform: translateZ(15px);
+        }
+
+        /* Tag Chip Mini di Kartu */
+        .card-badge {
+            margin-top: 14px;
+            padding: 4px 14px;
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transform: translateZ(15px);
+            transition: background 0.3s;
+        }
+
+        .app-card:hover .card-badge {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .btn-kembali-desktop {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            padding: 14px 34px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-kembali-desktop:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .footer {
+            padding: 24px 20px;
+            text-align: center;
+            color: #ffffff;
+            font-size: 0.92rem;
+            width: 100%;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-creator {
+            font-size: 0.96rem;
+            letter-spacing: 0.5px;
+            margin: 2px 0 6px 0;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .creator-name {
+            font-weight: 700;
+            color: #ffeb3b;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+
+        /* --- TOMBOL GEMBOK LOGIN ADMIN (FOOTER) --- */
+        .btn-admin-lock {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
+            background: rgba(255, 255, 255, 0.28) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.65) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18) !important;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            vertical-align: middle !important;
+        }
+
+        .btn-admin-lock:hover {
+            background: #ffffff !important;
+            color: #0d6efd !important;
+            transform: translateY(-3px) scale(1.12) !important;
+            box-shadow: 0 8px 22px rgba(13, 110, 253, 0.4) !important;
+        }
+
+        .btn-admin-lock:hover svg {
+            fill: #0d6efd !important;
+        }
+
+        .btn-admin-lock svg {
+            width: 18px !important;
+            height: 18px !important;
+            fill: #ffffff !important;
+            transition: fill 0.25s ease !important;
+        }
+
+        .btn-privacy {
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 7px 18px;
+            border-radius: 50px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: all 0.25s ease;
+        }
+
+        .btn-privacy:hover,
+        .btn-admin-login:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-privacy svg,
+        .btn-admin-login svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+        }
+
+        /* --- LENCANA LIVE ONLINE (TENGAH HEADER) --- */
+        .live-online-badge {
+            flex-shrink: 0;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 14px 0 11px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border: 1px solid #6ee7b7;
+            color: #065f46;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.22);
+            z-index: 5;
+            user-select: none;
+        }
+
+        .live-dot {
+            position: relative;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #10b981;
+            flex-shrink: 0;
+        }
+
+        .live-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid rgba(16, 185, 129, 0.55);
+            animation: livePulse 1.6s ease-out infinite;
+        }
+
+        @keyframes livePulse {
+            0% {
+                transform: scale(0.6);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        .live-online-badge svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+        }
+
+        .live-online-badge .live-label {
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            color: #059669;
+        }
+
+        .live-online-badge .live-count {
+            font-weight: 800;
+            font-size: 0.9rem;
+            font-variant-numeric: tabular-nums;
+            color: #047857;
+        }
+
+        /* --- PENGHITUNG PENGUNJUNG (FOOTER) --- */
+        .visitor-counter {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .visitor-counter-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .visitor-counter-label svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+        }
+
+        .visitor-digits {
+            display: inline-flex;
+            gap: 3px;
+            padding: 5px 7px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .visitor-digit {
+            min-width: 19px;
+            padding: 4px 0;
+            text-align: center;
+            font-family: ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
+            font-size: 1.05rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #fef08a;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 52%, #1e293b 100%);
+            border-radius: 5px;
+            text-shadow: 0 0 8px rgba(254, 240, 138, 0.55);
+        }
+
+        .visitor-digit.pop {
+            animation: digitPop 0.5s ease;
+        }
+
+        @keyframes digitPop {
+            0% {
+                transform: translateY(-5px);
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .landing-footer-note {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 0.85rem;
+            color: #64748b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-privacy-landing {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.84rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-privacy-landing:hover {
+            background: rgba(13, 110, 253, 0.08);
+            text-decoration: underline;
+        }
+
+        .btn-privacy-landing svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* --- MODAL KEBIJAKAN PRIVASI --- */
+        .modal-privacy-content {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 34px 28px;
+            border-radius: 28px;
+            width: 92%;
+            max-width: 660px;
+            position: relative;
+            transform: scale(0.88);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            max-height: 85vh;
+            text-align: center;
+        }
+
+        .modal.show .modal-privacy-content {
+            transform: scale(1);
+        }
+
+        .privacy-badge {
+            display: inline-block;
+            background: rgba(13, 110, 253, 0.1);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            margin: 6px auto 14px auto;
+        }
+
+        .privacy-body {
+            overflow-y: auto;
+            padding: 0 12px 0 4px;
+            margin: 10px 0 20px 0;
+            text-align: left;
+            font-size: 0.92rem;
+            line-height: 1.65;
+            color: #334155;
+        }
+
+        .privacy-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .privacy-body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .privacy-body::-webkit-scrollbar-thumb {
+            background: rgba(13, 110, 253, 0.3);
+            border-radius: 10px;
+        }
+
+        .privacy-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(13, 110, 253, 0.6);
+        }
+
+        .privacy-section {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        }
+
+        .privacy-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .privacy-section h4 {
+            font-size: 1.05rem;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .privacy-section h4 svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .btn-privacy-close {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.35);
+            transition: all 0.25s ease;
+            align-self: center;
+        }
+
+        .btn-privacy-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.55);
+        }
+
+        /* --- POPUP HELPDESK --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 4000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+
+        /* =========================================================
+           MEGA MODAL PROFIL PENGEMBANG & DUKUNGAN SISTEM
+           ========================================================= */
+        .modal-profile-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 36px 32px;
+            border-radius: 32px;
+            width: 95%;
+            max-width: 820px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .modal.show .modal-profile-content {
+            transform: scale(1);
+        }
+
+        .profile-layout {
+            display: flex;
+            gap: 28px;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 768px) {
+            .profile-layout {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 20px;
+            }
+        }
+
+        /* SISI KIRI: FOTO PENGEMBANG (RASIO 3:4) & QUICK ACTION */
+        .profile-left {
+            flex-shrink: 0;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-avatar-frame {
+            position: relative;
+            width: 174px;
+            height: 232px;
+            aspect-ratio: 3 / 4;
+            border-radius: 24px;
+            padding: 5px;
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0, #ff007a);
+            box-shadow: 0 12px 30px rgba(13, 110, 253, 0.35);
+            animation: avatarGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes avatarGlow {
+            0% {
+                box-shadow: 0 10px 25px rgba(13, 110, 253, 0.35);
+            }
+
+            100% {
+                box-shadow: 0 15px 35px rgba(255, 0, 122, 0.45);
+            }
+        }
+
+        .profile-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 19px;
+            object-fit: cover;
+            aspect-ratio: 3 / 4;
+            background: #ffffff;
+            display: block;
+        }
+
+        .profile-badge-verified {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 3px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .profile-badge-verified svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+        }
+
+        .profile-status-pill {
+            margin-top: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 4px 12px;
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .pulse-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulseGreen 1.6s infinite;
+        }
+
+        @keyframes pulseGreen {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
+
+        .btn-profile-quick-wa {
+            margin-top: 14px;
+            width: 100%;
+            padding: 11px 16px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #ffffff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+            transition: all 0.25s;
+        }
+
+        .btn-profile-quick-wa:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(37, 211, 102, 0.5);
+            color: #ffffff;
+        }
+
+        .btn-profile-quick-wa svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+        }
+
+        /* SISI KANAN: META PROFIL & INFO INTERAKTIF */
+        .profile-right {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .profile-right {
+                text-align: center;
+            }
+        }
+
+        .profile-tag {
+            display: inline-block;
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0d6efd;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        .profile-name {
+            font-size: 1.85rem;
+            color: #0f172a;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .profile-role {
+            font-size: 1.05rem;
+            color: #2563eb;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-org {
+            font-size: 0.84rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        /* SUSUNAN 3 BARIS: (1) HP & WA (SEJAJAR), (2) ALAMAT (PENUH), (3) EMAIL & KOORDINAT (SEJAJAR) */
+        .profile-info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .profile-two-col-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (max-width: 620px) {
+            .profile-two-col-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-card-full {
+            width: 100%;
+        }
+
+        .profile-info-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 18px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 18px;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+        }
+
+        .profile-info-card:hover {
+            border-color: #0d6efd;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(13, 110, 253, 0.15);
+            background: #f8fafc;
+        }
+
+        .profile-info-card .info-card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-info-card .info-card-icon.telp-icon {
+            background: #eff6ff;
+            color: #0d6efd;
+        }
+
+        .profile-info-card .info-card-icon.wa-icon {
+            background: #ecfdf5;
+            color: #10b981;
+        }
+
+        .profile-info-card .info-card-icon.map-icon {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .profile-info-card .info-card-icon.email-icon {
+            background: #fef2f2;
+            color: #ef4444;
+        }
+
+        .profile-info-card .info-card-icon.gps-icon {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .profile-info-card .info-card-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .profile-info-card .info-card-text {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
+
+        .profile-info-card .info-card-label {
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+        }
+
+        .profile-info-card .info-card-val {
+            font-size: 0.90rem;
+            font-weight: 600;
+            color: #0f172a;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.35;
+        }
+
+        .profile-info-card .card-arrow {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            transition: transform 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .profile-info-card:hover .card-arrow {
+            transform: translateX(4px);
+            color: #0d6efd;
+        }
+
+        /* 3 CONTACT PILLS SEJAJAR (WA, TELP, EMAIL) */
+        .profile-contacts-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .contact-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #0f172a;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            transition: all 0.25s;
+            text-align: left;
+        }
+
+        .contact-pill svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .contact-pill .pill-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .contact-pill .pill-val {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pill-wa svg {
+            fill: #25D366;
+        }
+
+        .pill-wa:hover {
+            border-color: #25D366;
+            background: #f0fdf4;
+            transform: translateY(-2px);
+        }
+
+        .pill-telp svg {
+            fill: #0d6efd;
+        }
+
+        .pill-telp:hover {
+            border-color: #0d6efd;
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+
+        .pill-email svg {
+            fill: #ea4335;
+        }
+
+        .pill-email:hover {
+            border-color: #ea4335;
+            background: #fef2f2;
+            transform: translateY(-2px);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 35px 28px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 370px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.8);
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            font-size: 1.8rem;
+            color: #94a3b8;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #1e293b;
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 12px;
+            color: #0f172a;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 18px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .contact-btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-wa {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        .btn-telp {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+        }
+
+        .btn-email {
+            background: linear-gradient(135deg, #ea4335, #c5221f);
+        }
+
+        .contact-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* --- BOTTOM NAVIGATION (MENU BAWAH KHUSUS HP) --- */
+        .bottom-nav {
+            display: none;
+        }
+
+        /* =========================================================
+           PENGATURAN RESPONSIVE KHUSUS MOBILE (HP)
+           ========================================================= */
+        @media (max-width: 850px) {
+
+            /* Sembunyikan Tombol Suara Melayang Khusus di HP agar Tidak Mengganggu Tampilan */
+            .sound-toggle-btn {
+                display: none !important;
+            }
+
+            /* Header Polos di Mobile */
+            .portal-top-bar {
+                position: sticky;
+                top: 0;
+                margin: 0;
+                width: 100%;
+                border-radius: 0 0 16px 16px;
+                padding: 6px 10px;
+                flex-direction: column;
+                gap: 6px;
+                z-index: 1000;
+            }
+
+            .top-bar-actions {
+                width: 100%;
+                display: flex;
+                gap: 6px;
+            }
+
+            .top-action-btn {
+                flex: 1 1 0;
+                min-width: 0;
+                justify-content: center;
+                font-size: 0.78rem;
+                padding: 5px 8px;
+                height: 30px;
+                white-space: nowrap;
+            }
+
+            .top-bar-search-wrapper {
+                width: 100%;
+                max-width: 100%;
+                gap: 6px;
+            }
+
+            .top-search-box {
+                flex: 1;
+            }
+
+            .top-search-box input {
+                height: 30px;
+                font-size: 0.8rem;
+                padding: 4px 28px 4px 30px;
+            }
+
+            .card-dev-ribbon {
+                top: 8px;
+                right: 8px;
+                font-size: 0.58rem;
+                padding: 2px 7px;
+            }
+
+            #main-portal {
+                padding-top: 20px;
+                padding-bottom: 25px;
+            }
+
+            /* Lencana live di samping kolom cari (HP) */
+            .live-online-badge {
+                height: 30px;
+                padding: 0 10px 0 9px;
+                font-size: 0.72rem;
+                gap: 6px;
+            }
+
+            .visitor-digit {
+                min-width: 16px;
+                font-size: 0.9rem;
+            }
+
+            .visitor-counter {
+                gap: 8px;
+            }
+
+            .visitor-counter-label {
+                font-size: 0.7rem;
+                letter-spacing: 0.3px;
+            }
+
+            /* Header Versi Mobile yang Rapi */
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 15px;
+                border-bottom: none;
+                background: rgba(255, 255, 255, 0.88);
+                border-radius: 24px;
+                margin: 15px auto;
+                width: calc(100% - 30px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                gap: 15px;
+            }
+
+            .header-left {
+                align-items: center;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .header-right {
+                align-items: center;
+                text-align: center;
+                width: 100%;
+                border-top: 1px solid rgba(0, 0, 0, 0.08);
+                padding-top: 15px;
+            }
+
+            .logo-container {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 16px;
+                margin-bottom: 10px;
+            }
+
+            .logo-badge-3d {
+                width: 60px;
+                height: 60px;
+            }
+
+            .logo-badge-3d img {
+                width: 44px;
+                height: 44px;
+            }
+
+            .header-logo-3d {
+                width: 68px;
+                height: 68px;
+            }
+
+            .header-logo-3d img {
+                width: 52px;
+                height: 52px;
+            }
+
+            .agency-name {
+                display: block;
+                color: #64748b;
+                font-size: 0.85rem;
+                margin-bottom: 4px;
+            }
+
+            .school-name {
+                display: block;
+                font-size: 1.65rem;
+                margin-bottom: 4px;
+                color: #0f172a;
+            }
+
+            .school-address {
+                display: block;
+                font-size: 0.82rem;
+                color: #64748b;
+            }
+
+            .app-title {
+                font-size: 1.7rem;
+            }
+
+            .app-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .desktop-action-btns,
+            .btn-kembali-desktop {
+                display: none !important;
+            }
+
+            .footer {
+                padding-bottom: 110px;
+                border: none;
+                background: transparent;
+                color: white;
+            }
+
+            /* Grid Aplikasi di HP (2 Kolom) */
+            .app-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+                padding: 0 14px;
+            }
+
+            .app-card {
+                padding: 20px 12px;
+            }
+
+            .app-logo-wrapper {
+                width: 58px;
+                height: 58px;
+                margin-bottom: 12px;
+                border-radius: 16px;
+                padding: 8px;
+            }
+
+            .app-card h3 {
+                font-size: 1.05rem;
+                margin-bottom: 6px;
+            }
+
+            .app-card p {
+                font-size: 0.74rem;
+                line-height: 1.3;
+                margin: 0;
+            }
+
+            .card-badge {
+                display: none;
+            }
+
+            /* Bottom Navigation */
+            .bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 75px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15);
+                z-index: 2000;
+                justify-content: space-around;
+                align-items: center;
+                border-top-left-radius: 25px;
+                border-top-right-radius: 25px;
+                padding: 0 10px;
+            }
+
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                color: #64748b;
+                background: none;
+                border: none;
+                cursor: pointer;
+                flex: 1;
+                transition: color 0.2s;
+            }
+
+            .nav-item:active {
+                color: var(--primary-color);
+            }
+
+            .nav-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 3px;
+            }
+
+            .nav-icon svg {
+                width: 22px;
+                height: 22px;
+                fill: currentColor;
+            }
+
+            .nav-label {
+                font-size: 0.75rem;
+                font-weight: 600;
+            }
+
+            .nav-center-wrapper {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex: 1;
+            }
+
+            .nav-center-btn {
+                position: absolute;
+                top: -35px;
+                width: 65px;
+                height: 65px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                border: 4px solid white;
+                box-shadow: 0 6px 18px rgba(13, 110, 253, 0.45);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2001;
+                color: white;
+            }
+
+            .nav-center-btn:active {
+                transform: scale(0.9);
+            }
+
+            .nav-center-btn svg {
+                width: 28px;
+                height: 28px;
+                fill: white;
+            }
+
+            .center-label {
+                position: absolute;
+                bottom: -20px;
+                color: var(--primary-color);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Tombol Pengatur Suara -->
+    <button id="soundToggle" class="sound-toggle-btn" onclick="toggleMuteAudio()" title="Suara Efek (Aktif)">
+        <span id="soundIcon">🔊</span>
+    </button>
+
+    <!-- Audio Element untuk Kompatibilitas -->
+    <audio id="suara-sorakan" src="https://assets.mixkit.co/active_storage/sfx/518/518-preview.mp3"
+        preload="auto"></audio>
+
+    <!-- =========================================================
+         HALAMAN DEPAN (LANDING PAGE DENGAN LOGO 3D BERPUTAR)
+         ========================================================= -->
+    <div id="landing-page">
+        <div class="landing-content">
+
+            <!-- STAGE LOGO 3D BERPUTAR -->
+            <div class="logo-3d-stage">
+                <div class="orbit-ring orbit-ring-outer"></div>
+                <div class="orbit-ring orbit-ring-inner"></div>
+                <div id="logo3D" class="logo-3d-card" onclick="interaksiLogo3D()" title="Klik untuk memutar logo!">
+                    <div class="logo-face">
+                        <img id="landingLogoImg" src="./assets/img/sikobaelah.png"
+                            onerror="this.src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjSC7KELpD7pikc8nirJBThcELNDOZvc0uk_Xh_0-mAuwbk1kJYliH2b_c2U0Sn-bVKBDSwmrCHZ5YT6S0_sd6ukIkzZKnVqB9AX3sXYOMFXAJXxEVVVK_w05HC2AC0qfgEgDVzlhtO89fZD1hdGKQnOwW-aYSv9mxkrZMmZOZ5ZNkEY4LxO6AOAi84WO7/s250/sikobaelah.png'"
+                            alt="Logo SiKoBaELah 3D">
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="landing-title">SiKoBaELah</h1>
+
+            <div class="desktop-action-btns">
+                <button class="btn-portal" onclick="eksekusiMasuk()">
+                    <span>Masuk Aplikasi</span>
+                    <svg style="width:20px;height:20px;fill:currentColor" viewBox="0 0 24 24">
+                        <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z" />
+                    </svg>
+                </button>
+                <div class="row-btns">
+                    <a href="login.html" class="btn-secondary">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2a5 5 0 0 0-5 5v2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 7V7a3 3 0 0 1 6 0v2H9zm3 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+                        </svg>
+                        <span>Login Admin</span>
+                    </a>
+                    <button class="btn-secondary" onclick="bukaHelpdesk()">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 1c-4.97 0-9 4.03-9 9v7c0 2.76 2.24 5 5 5h8c2.76 0 5-2.24 5-5v-7c0-4.97-4.03-9-9-9zm7 16c0 1.66-1.34 3-3 3H8c-1.66 0-3-1.34-3-3v-7c0-3.87 3.13-7 7-7s7 3.13 7 7v7z" />
+                            <circle cx="9" cy="13" r="1.5" />
+                            <circle cx="15" cy="13" r="1.5" />
+                        </svg>
+                        <span>Helpdesk</span>
+                    </button>
+                </div>
+                <div class="landing-footer-note">
+                    <div>Created by : <strong style="color: #0d6efd;">Pariyanto</strong></div>
+                    <button type="button" class="btn-privacy-landing" onclick="bukaPrivacy()">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                        </svg>
+                        <span>Kebijakan Privasi</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="schoolPickerModal" class="school-picker-modal" role="dialog" aria-modal="true" aria-labelledby="schoolPickerTitle">
+        <div class="school-picker-card">
+            <h2 id="schoolPickerTitle">Masuk ke Sekolah</h2>
+            <p>Masukkan ID sekolah yang Anda miliki untuk membuka daftar aplikasinya.</p>
+            <form id="schoolPickerForm" onsubmit="event.preventDefault(); bukaSekolahDenganId();">
+                <label for="schoolPickerId">ID sekolah</label>
+                <input id="schoolPickerId" name="schoolId" type="text" required maxlength="51"
+                    pattern="/?[a-z0-9]+(-[a-z0-9]+)*" placeholder="/sman5tebo"
+                    autocapitalize="off" autocomplete="off" spellcheck="false"
+                    aria-describedby="schoolPickerHint schoolPickerStatus">
+                <small id="schoolPickerHint" style="display:block;margin-top:7px;color:#64748b;">Contoh: /sman5tebo</small>
+                <p id="schoolPickerStatus" class="school-picker-status" role="status" aria-live="polite"></p>
+                <div class="school-picker-actions">
+                    <button type="button" class="school-picker-cancel" onclick="tutupPilihSekolah()">Batal</button>
+                    <button type="submit" class="school-picker-open">Masuk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         PORTAL UTAMA DENGAN HEADER 3D & 5 KARTU APLIKASI MODERN
+         ========================================================= -->
+    <div id="main-portal">
+
+        <!-- =========================================================
+             HEADER POLOS / TOP UTILITY BAR (WEB UTAMA, DASAR HUKUM, CARI)
+             ========================================================= -->
+        <div class="portal-top-bar">
+            <div class="top-bar-actions">
+                <a id="schoolWebsiteLink" href="#" class="top-action-btn btn-top-web"
+                    style="display:none;" target="_blank" rel="noopener noreferrer"
+                    onclick="return bukaWebsiteSekolah(event)" title="Buka website sekolah">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"
+                        style="fill:none;stroke:currentColor;stroke-width:1.8;">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path>
+                    </svg>
+                    <span>Website Sekolah</span>
+                </a>
+                <a id="schoolLawLink" href="dasar-hukum.html" class="top-action-btn btn-top-hukum"
+                    title="Daftar Lengkap Landasan Regulasi & Dasar Hukum Aplikasi">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                    </svg>
+                    <span>Dasar Hukum</span>
+                </a>
+            </div>
+
+            <div class="top-bar-search-wrapper">
+                <!-- Lencana Live: jumlah orang yang sedang membuka aplikasi -->
+                <div class="live-online-badge" id="liveOnlineBadge"
+                    title="Jumlah pengguna yang sedang membuka SiKoBaELah saat ini">
+                    <span class="live-dot"></span>
+                    <span class="live-label">Live</span>
+                    <span class="live-count" id="liveOnlineCount">1</span>
+                    <span>orang</span>
+                </div>
+                <div class="top-search-box">
+                    <svg class="search-icon-svg" viewBox="0 0 24 24">
+                        <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                    </svg>
+                    <input type="text" id="appSearchInput" placeholder="Cari aplikasi..."
+                        oninput="filterAplikasi(this.value)" autocomplete="off">
+                    <button type="button" id="appSearchClearBtn" class="search-clear-btn" onclick="clearSearchApp()"
+                        title="Reset pencarian">&times;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header Versi Laptop & Bersih -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo-container">
+                    <div class="logo-badge-3d" title="Logo Instansi">
+                        <img id="headerLogoInstansi" src="./assets/img/sikobaelah.png"
+                            onerror="this.style.display='none';"
+                            alt="Logo Instansi">
+                    </div>
+                    <div id="schoolLogoBadge" class="logo-badge-3d" title="Logo Sekolah">
+                        <img id="headerLogoSekolah" src="./assets/img/sikobaelah.png"
+                            onerror="this.src='./assets/img/sikobaelah.png';"
+                            alt="Logo Sekolah">
+                    </div>
+                </div>
+                <div class="agency-name">PEMERINTAH .......</div>
+                <h2 class="school-name">SEMUA SEKOLAH</h2>
+                <p class="school-address">Alamat Sekolah
+                </p>
+            </div>
+
+            <!-- Bagian Kanan: Logo SiKoBaELah 3D & Nama Aplikasi -->
+            <div class="header-right">
+                <div class="header-logo-3d-wrapper" onclick="interaksiLogoHeader3D()"
+                    title="SiKoBaELah - Klik untuk berputar!">
+                    <div id="headerLogo3D" class="header-logo-3d">
+                        <img id="headerLogoApp" src="./assets/img/sikobaelah.png"
+                            onerror="this.src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjSC7KELpD7pikc8nirJBThcELNDOZvc0uk_Xh_0-mAuwbk1kJYliH2b_c2U0Sn-bVKBDSwmrCHZ5YT6S0_sd6ukIkzZKnVqB9AX3sXYOMFXAJXxEVVVK_w05HC2AC0qfgEgDVzlhtO89fZD1hdGKQnOwW-aYSv9mxkrZMmZOZ5ZNkEY4LxO6AOAi84WO7/s150/sikobaelah.png'"
+                            alt="Logo SiKoBaELah Header">
+                    </div>
+                </div>
+                <h1 class="app-title">SiKoBaELah</h1>
+                <p class="app-subtitle">Sistem Kolaboratif berBasis Elektronik Sekolah</p>
+            </div>
+        </div>
+        <p id="schoolLoadStatus" class="school-load-status" hidden></p>
+
+        <!-- GRID 7 KARTU APLIKASI DENGAN EFEK 3D TILT & COLOR MORPHING -->
+        <div class="app-grid" id="appGridContainer">
+
+            <!-- 1. SiDiMAS -->
+            <a href="https://sidimas.my.id/?id=sman15tebo" target="_blank" data-app="sidimas"
+                data-search="sidimas sistem digital manajemen arsip surat dinas persuratan agenda disposisi arsip digital"
+                data-online="https://sidimas.my.id/?id=sman15tebo"
+                onclick="bukaAplikasi('sidimas', this, event); return false;" class="app-card card-arsip">
+                <div class="card-glare"></div>
+                <div class="app-logo-wrapper">
+                    <img src="./assets/img/logo-sidimas.png" onerror="this.src='./assets/img/sikobaelah.png'"
+                        alt="Logo SiDiMAS">
+                </div>
+                <h3>SiDiMAS</h3>
+                <p>Sistem Digital Manajemen Arsip Surat</p>
+                <span class="card-badge">Persuratan</span>
+            </a>
+
+            <!-- 2. SiPreSDiR Plus -->
+            <a href="https://sipresdir.my.id/?id=sman15tebo" target="_blank" data-app="sipresdir"
+                data-search="sipresdir plus sistem presensi siswa digital realtime absensi kehadiran disiplin bk siswa konseling tata tertib"
+                data-online="https://sipresdir.my.id/?id=sman15tebo"
+                onclick="bukaAplikasi('sipresdir', this, event); return false;" class="app-card card-presensi">
+                <div class="card-glare"></div>
+                <div class="app-logo-wrapper">
+                    <img src="./assets/img/logo-sipresdir.png" onerror="this.src='./assets/img/sikobaelah.png'"
+                        alt="Logo SiPreSDir">
+                </div>
+                <h3>SiPreSDiR Plus</h3>
+                <p>Sistem Presensi Siswa Digital Realtime</p>
+                <span class="card-badge">Presensi & Disiplin</span>
+            </a>
+
+            <!-- 3. SiBukInSTal -->
+            <a href="https://sibukinstal.my.id/?id=sman15tebo" target="_blank" data-app="sibukinstal"
+                data-search="sibukinstal sistem buku induk siswa digital lengkap kesiswaan nisn biodata siswa mutasi alumni dapodik"
+                data-online="https://sibukinstal.my.id/?id=sman15tebo"
+                onclick="bukaAplikasi('sibukinstal', this, event); return false;" class="app-card card-buku-induk">
+                <div class="card-glare"></div>
+                <div class="app-logo-wrapper">
+                    <img src="./assets/img/logo-sibukinstal.png" onerror="this.src='./assets/img/sikobaelah.png'"
+                        alt="Logo SiBukInSTal">
+                </div>
+                <h3>SiBukInSTal</h3>
+                <p>Sistem Buku Induk Siswa Digital Lengkap</p>
+                <span class="card-badge">Kesiswaan</span>
+            </a>
+
+            <!-- 4. SiE-MPus -->
+            <a href="https://siempus.my.id/?id=sman15tebo" target="_blank" data-app="siempus"
+                data-search="siempus sie-mpus si-empus sistem e-manajemen perpustakaan sekolah literasi katalog buku peminjaman sirkulasi perpus"
+                data-online="https://siempus.my.id/?id=sman15tebo"
+                onclick="bukaAplikasi('siempus', this, event); return false;" class="app-card card-perpus">
+                <div class="card-glare"></div>
+                <div class="app-logo-wrapper">
+                    <img src="./assets/img/logo-siempus.png" onerror="this.src='./assets/img/sikobaelah.png'"
+                        alt="Logo SiE-MPuS">
+                </div>
+                <h3>SiE-MPuS</h3>
+                <p>Sistem E-Manajemen Perpustakaan Sekolah</p>
+                <span class="card-badge">Perpustakaan</span>
+            </a>
+
+            <!-- 5. SiMPeEL -->
+            <a href="https://simpeel.my.id/?id=sman15tebo" target="_blank" data-app="simpeel"
+                data-search="simpeel sistem informasi manajemen kepegawaian elektronik guru tenaga kependidikan ptk pns pppk asn simpeg bkn"
+                data-online="https://simpeel.my.id/?id=sman15tebo"
+                onclick="bukaAplikasi('simpeel', this, event); return false;" class="app-card card-pegawai">
+                <div class="card-glare"></div>
+                <div class="app-logo-wrapper">
+                    <img src="./assets/img/logo-simpeel.png" onerror="this.src='./assets/img/sikobaelah.png'"
+                        alt="Logo SiMPeEL">
+                </div>
+                <h3>SiMPeEL</h3>
+                <p>Sistem Informasi Manajemen Kepegawaian Elektronik</p>
+                <span class="card-badge">Kepegawaian</span>
+            </a>
+
+            <!-- 6. SiLaDuMas (Dalam Pengembangan - Gradien Abu-abu) -->
+            <a href="javascript:void(0)" data-app="siladumas"
+                data-search="siladumas siladuman sistem layanan pengaduan masyarakat aspirasi publik saran aduan sekolah lapor wbs"
+                onclick="bukaAplikasiPengembangan('SiLaDuMas', 'Sistem Layanan Pengaduan Masyarakat', './assets/img/logo-siladumas.png', 'siladumas'); return false;"
+                class="app-card card-dev-gray">
+                <div class="card-glare"></div>
+                <div class="card-dev-ribbon">Rilis Berikutnya</div>
+                <div class="app-logo-wrapper">
+                    <img src="./assets/img/logo-siladumas.png" onerror="this.src='./assets/img/sikobaelah.png'"
+                        alt="Logo SiLaDuMas">
+                </div>
+                <h3>SiLaDuMas</h3>
+                <p>Sistem Layanan Pengaduan Masyarakat</p>
+                <span class="card-badge badge-gray-dev">Dalam Pengembangan</span>
+            </a>
+
+            <!-- 7. SINBAS (Dalam Pengembangan - Gradien Abu-abu) -->
+            <a href="javascript:void(0)" data-app="sinbas"
+                data-search="sinbas sistem inventarisasi barang dan aset sekolah sarana prasarana sarpras kib bmd permendagri aset inventaris"
+                onclick="bukaAplikasiPengembangan('SINBAS', 'Sistem Inventarisasi Barang & Aset Sekolah', './assets/img/logo-sinbas.png', 'sinbas'); return false;"
+                class="app-card card-dev-gray">
+                <div class="card-glare"></div>
+                <div class="card-dev-ribbon">Rilis Berikutnya</div>
+                <div class="app-logo-wrapper">
+                    <img src="./assets/img/logo-sinbas.png" onerror="this.src='./assets/img/sikobaelah.png'"
+                        alt="Logo SINBAS">
+                </div>
+                <h3>SINBAS</h3>
+                <p>Sistem Inventarisasi Barang & Aset Sekolah</p>
+                <span class="card-badge badge-gray-dev">Dalam Pengembangan</span>
+            </a>
+
+            <!-- Kotak Notifikasi Pencarian Kosong -->
+            <div id="noAppResult" class="no-app-result" style="display: none;">
+                <div class="no-app-icon">🔍</div>
+                <h3>Aplikasi Tidak Ditemukan</h3>
+                <p id="noAppQueryText">Tidak ditemukan aplikasi yang cocok dengan kata kunci.</p>
+                <button type="button" class="btn-reset-app-search" onclick="clearSearchApp()">Tampilkan Semua Aplikasi</button>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <div>&copy; 2026 SiKoBaELah - <span id="schoolFooterName">Satuan Pendidikan</span>. All Rights Reserved.</div>
+            <div class="footer-creator">Created by : <span class="creator-name">Pariyanto</span></div>
+            <div class="footer-action-row"
+                style="display: flex; align-items: center; justify-content: center; gap: 12px; margin: 6px 0 12px 0; flex-wrap: wrap;">
+                <button type="button" class="btn-privacy" onclick="bukaPrivacy()">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                    </svg>
+                    <span>Kebijakan Privasi</span>
+                </button>
+                <button type="button" class="btn-privacy" onclick="bukaHelpdesk()" aria-label="Buka Helpdesk">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2a9 9 0 0 0-9 9v7a3 3 0 0 0 3 3h2v-8H5v-2a7 7 0 0 1 14 0v2h-3v8h2a3 3 0 0 0 3-3v-7a9 9 0 0 0-9-9zm-4 18H6a1 1 0 0 1-1-1v-4h3zm11-1a1 1 0 0 1-1 1h-2v-5h3z" />
+                    </svg>
+                    <span>Helpdesk</span>
+                </button>
+            </div>
+            <div class="visitor-counter" title="Total kunjungan ke SiKoBaELah">
+                <div class="visitor-counter-label">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                    </svg>
+                    <span>Jumlah Pengunjung</span>
+                </div>
+                <div class="visitor-digits" id="visitorDigits" aria-label="Jumlah pengunjung"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL HELPDESK
+         ========================================================= -->
+    <!-- =========================================================
+         MODAL KEBIJAKAN PRIVASI LENGKAP & PROFESIONAL
+         ========================================================= -->
+    <div id="modalPrivacy" class="modal">
+        <div class="modal-privacy-content">
+            <span class="close-btn" onclick="tutupPrivacy()">&times;</span>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 4px;">
+                <svg style="width: 26px; height: 26px; fill: var(--primary-color);" viewBox="0 0 24 24">
+                    <path
+                        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                </svg>
+                <h2 style="font-size: 1.55rem; color: #0f172a; margin: 0;">Kebijakan Privasi</h2>
+            </div>
+            <div style="font-size: 0.88rem; color: #64748b;">Portal SiKoBaELah &bull; <span id="schoolPrivacyName">Satuan Pendidikan</span></div>
+            <span class="privacy-badge">Kepatuhan UU No. 27 Tahun 2022 (Pelindungan Data Pribadi)</span>
+
+            <div class="privacy-body">
+                <div class="privacy-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                        </svg>
+                        1. Pendahuluan & Komitmen
+                    </h4>
+                    <p>Selamat datang di <strong>SiKoBaELah</strong> (Sistem Kolaboratif berBasis Elektronik Sekolah),
+                        portal layanan digital untuk satuan pendidikan yang diciptakan dan dikembangkan oleh <strong>Pariyanto</strong>. Kebijakan
+                        Privasi ini menjelaskan komitmen kami dalam menghormati dan melindungi data pribadi seluruh
+                        sivitas akademika, baik Peserta Didik, Tenaga Pendidik (Guru), Tenaga Kependidikan (Staf TU),
+                        maupun Orang Tua/Wali Murid.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                        </svg>
+                        2. Ruang Lingkup Data pada 5 Aplikasi Layanan
+                    </h4>
+                    <p>SiKoBaELah mengelola data secara terintegrasi untuk 5 modul aplikasi:</p>
+                    <ul style="padding-left: 20px; margin-top: 6px;">
+                        <li><strong>SiDiMAS:</strong> Registrasi nomor agenda surat dinas, arsip digital surat
+                            masuk/keluar, dan lembar disposisi kedinasan.</li>
+                        <li><strong>SiPreSDiR Plus:</strong> Pencatatan presensi kehadiran digital realtime harian dan
+                            per jam pelajaran, rekapitulasi ketidakhadiran, serta catatan pembinaan ketertiban siswa
+                            oleh Guru BK.</li>
+                        <li><strong>SiBukInsTal:</strong> Buku induk digital peserta didik yang mencakup NISN, biodata
+                            lengkap siswa, riwayat keluarga, dan data riwayat mutasi/akademik.</li>
+                        <li><strong>Si-EMPuS:</strong> Manajemen katalog literasi sekolah, data anggota perpustakaan,
+                            serta log sirkulasi peminjaman buku.</li>
+                        <li><strong>SiMPeEL:</strong> Manajemen data identitas kepegawaian guru & staf, riwayat
+                            penugasan, dan administrasi kepegawaian sekolah.</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+                        </svg>
+                        3. Tujuan Penggunaan Data
+                    </h4>
+                    <p>Data yang dihimpun melalui modul yang digunakan sekolah hanya dipergunakan untuk kepentingan operasional pendidikan resmi, meliputi:</p>
+                    <ul style="padding-left: 20px; margin-top: 6px;">
+                        <li>Pemantauan kedisiplinan dan kehadiran siswa secara transparan kepada pihak sekolah dan wali
+                            murid.</li>
+                        <li>Penyelenggaraan tata kelola administrasi surat-menyurat dan kearsipan sekolah yang rapi,
+                            cepat, dan akuntabel.</li>
+                        <li>Pengelolaan data pokok pendidikan yang akurat demi kelancaran administrasi Dapodik dan
+                            laporan dinas terkait.</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                        </svg>
+                        4. Keamanan & Kerahasiaan Data
+                    </h4>
+                    <p>Kami menerapkan standar keamanan informasi yang ketat:</p>
+                    <ul style="padding-left: 20px; margin-top: 6px;">
+                        <li><strong>Enkripsi & Proteksi:</strong> Transmisi data pada versi online dilindungi oleh
+                            protokol keamanan SSL/HTTPS.</li>
+                        <li><strong>Kontrol Hak Akses (RBAC):</strong> Hak akses data dibatasi secara ketat berdasarkan
+                            kewenangan peran (Admin Sekolah, Petugas TU, Guru Piket/BK, dan Tenaga Perpustakaan).</li>
+                        <li><strong>Larangan Komersialisasi:</strong> Kami menjamin <strong>TIDAK AKAN PERNAH menjual,
+                                menyewakan, atau memperjualbelikan</strong> data sekolah kepada pihak ketiga manapun
+                            untuk tujuan komersial atau periklanan.</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                        5. Pengembang & Kontak Resmi
+                    </h4>
+                    <p>Apabila terdapat pertanyaan mengenai kebijakan privasi atau permohonan koreksi data, silakan
+                        hubungi:</p>
+                    <p style="margin-top: 6px; font-weight: 500;">
+                        <strong>Application Engineered:</strong> Pariyanto<br>
+                        <strong>Dikelola:</strong> <span id="schoolPrivacyManaged">Tata Usaha Sekolah</span><br>
+                        <strong>Alamat Sekolah:</strong> <span id="schoolPrivacyAddress">-</span><br>
+                        <strong>Website:</strong> <span id="schoolPrivacyWebsite">-</span>
+                    </p>
+                </div>
+            </div>
+
+            <button type="button" class="btn-privacy-close" onclick="tutupPrivacy()">Tutup & Kembali</button>
+        </div>
+    </div>
+
+    <div id="modalHelpdesk" class="modal">
+        <div class="modal-profile-content">
+            <span class="close-btn" onclick="tutupHelpdesk()">&times;</span>
+
+            <div class="profile-layout">
+                <!-- SISI KIRI: FOTO PENGEMBANG (RASIO 3:4) & QUICK CHAT -->
+                <div class="profile-left">
+                    <div class="profile-avatar-frame">
+                        <img id="modalDevFoto" class="profile-avatar-img" src="./assets/img/sikobaelah.png"
+                            onerror="this.src='./assets/img/sikobaelah.png'" alt="Foto Pengembang">
+                        <div class="profile-badge-verified" title="Pengembang Resmi Terverifikasi">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="profile-status-pill">
+                        <span class="pulse-indicator"></span>
+                        <span>Pengembang Teknologi Pendidikan</span>
+                    </div>
+                    <a id="modalQuickWa" href="https://wa.me/6285219901909" target="_blank"
+                        class="btn-profile-quick-wa">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+                        </svg>
+                        <span>Chat WhatsApp</span>
+                    </a>
+                </div>
+
+                <!-- SISI KANAN: DATA PROFIL LENGKAP -->
+                <div class="profile-right">
+                    <span class="profile-tag">PENGEMBANG SISTEM</span>
+                    <h2 id="modalDevNama" class="profile-name">Pariyanto</h2>
+                    <div id="modalDevJabatan" class="profile-role">Pengembang Sistem &amp; Tenaga Adminsitrasi Sekolah
+                    </div>
+                    <div id="modalDevInstansi" class="profile-org">PENDIDIKAN UNTUK SEMUA
+                    </div>
+
+                    <!-- KARTU INFORMASI INTERAKTIF (SUSUNAN SESUAI PERMINTAAN: HP & WA ATAS, ALAMAT TENGAH, EMAIL & KOORDINAT BAWAH) -->
+                    <div class="profile-info-grid">
+                        <!-- BARIS 1 (PALING ATAS): NO HP & WA SEJAJAR KANAN KIRI -->
+                        <div class="profile-two-col-row">
+                            <!-- 1. No HP / Telepon -->
+                            <a id="modalDevTelpLink" href="tel:+6285219901909" class="profile-info-card"
+                                title="Klik untuk memanggil nomor telepon">
+                                <div class="info-card-icon telp-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                                    </svg>
+                                </div>
+                                <div class="info-card-text">
+                                    <div class="info-card-label">No. HP / Telepon</div>
+                                    <div id="modalDevTelp" class="info-card-val">+6285219901909</div>
+                                </div>
+                                <div class="card-arrow">&rarr;</div>
+                            </a>
+
+                            <!-- 2. WhatsApp -->
+                            <a id="modalDevWaLink" href="https://wa.me/6285219901909" target="_blank"
+                                class="profile-info-card" title="Klik untuk membuka chat WhatsApp">
+                                <div class="info-card-icon wa-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+                                    </svg>
+                                </div>
+                                <div class="info-card-text">
+                                    <div class="info-card-label">WhatsApp</div>
+                                    <div id="modalDevWa" class="info-card-val">0852-1990-1909</div>
+                                </div>
+                                <div class="card-arrow">&rarr;</div>
+                            </a>
+                        </div>
+
+                        <!-- BARIS 2 (TENGAH): ALAMAT LENGKAP PENGEMBANG (PENUH) -->
+                        <a id="modalDevAlamatLink" href="https://www.google.com/maps?q=-1.218545,102.327892"
+                            target="_blank" class="profile-info-card profile-card-full"
+                            title="Klik untuk membuka rute alamat di Google Maps">
+                            <div class="info-card-icon map-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <div class="info-card-text">
+                                <div class="info-card-label">Alamat Lengkap Pengembang</div>
+                                <div id="modalDevAlamat" class="info-card-val">Jl. Yogyakarta, SP2, Sekutur Jaya,
+                                    Kecamatan Serai Serumpun, Kab. Tebo, Jambi</div>
+                            </div>
+                            <div class="card-arrow">&rarr;</div>
+                        </a>
+
+                        <!-- BARIS 3 (BAWAH): EMAIL & TITIK KOORDINAT SEJAJAR KANAN KIRI -->
+                        <div class="profile-two-col-row">
+                            <!-- 3. Email Pengembang -->
+                            <a id="modalDevEmailLink" href="mailto:sman15tebo.bos@gmail.com" class="profile-info-card"
+                                title="Klik untuk mengirim email">
+                                <div class="info-card-icon email-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                    </svg>
+                                </div>
+                                <div class="info-card-text">
+                                    <div class="info-card-label">Email Pengembang</div>
+                                    <div id="modalDevEmail" class="info-card-val">sman15tebo.bos@gmail.com</div>
+                                </div>
+                                <div class="card-arrow">&rarr;</div>
+                            </a>
+
+                            <!-- 4. Titik Koordinat GPS (Klik -> Google Maps) -->
+                            <a id="modalDevCoordsLink" href="https://www.google.com/maps?q=-1.218545,102.327892"
+                                target="_blank" class="profile-info-card"
+                                title="Klik untuk navigasi ke Titik Koordinat GPS di Google Maps">
+                                <div class="info-card-icon gps-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+                                    </svg>
+                                </div>
+                                <div class="info-card-text">
+                                    <div class="info-card-label">Titik Koordinat GPS</div>
+                                    <div id="modalDevCoords" class="info-card-val">-1.218545, 102.327892</div>
+                                </div>
+                                <div class="card-arrow">&rarr;</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL ALERT APLIKASI DALAM PENGEMBANGAN
+         ========================================================= -->
+    <div id="modalDevAlert" class="modal">
+        <div class="modal-dev-content">
+            <span class="close-btn" onclick="tutupAlertDev()">&times;</span>
+            <div class="dev-modal-icon-badge">
+                <img id="devModalLogo" src="./assets/img/sikobaelah.png" alt="Logo Aplikasi">
+            </div>
+            <h2 id="devModalTitle" class="dev-modal-title">Aplikasi</h2>
+            <p id="devModalSubtitle" class="dev-modal-subtitle">Sistem Dalam Pengembangan</p>
+
+            <div class="dev-modal-tag">
+                <span class="pulse-dot"></span>
+                <span>Tahap R&amp;D &bull; Rilis Berikutnya</span>
+            </div>
+
+            <div class="dev-modal-notice">
+                <p style="margin-bottom: 8px;">
+                    Aplikasi ini <strong>sedang dalam proses pengembangan intensif &amp; finalisasi sistem</strong> oleh
+                    Developer.
+                </p>
+                <p style="color: #64748b; font-size: 0.84rem;">
+                    Aplikasi ini disiapkan untuk melengkapi 7 pilar ekosistem SiKoBaELah dan akan resmi diluncurkan pada
+                    pembaruan rilis berikutnya. Mohon nantikan rilis resminya!
+                </p>
+            </div>
+
+            <div class="d-flex flex-column align-items-center gap-2">
+                <button type="button" class="btn-dev-close" onclick="tutupAlertDev()">
+                    <span>Saya Mengerti</span>
+                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;">
+                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
+                    </svg>
+                </button>
+                <button type="button" id="btnDevPrototype" class="btn-dev-prototype" onclick="bukaPrototipeDev()" hidden>
+                    <span>Lihat Prototipe</span>
+                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;">
+                        <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT & AUDIO ENGINE (WEB AUDIO API)
+         ========================================================= -->
+    <script>
+        // --- 1. WEB AUDIO API SYNTHESIZER (100% OFFLINE & INSTAN) ---
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.muted = localStorage.getItem('sikobaelah_muted') === 'true';
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            toggleMute() {
+                this.muted = !this.muted;
+                localStorage.setItem('sikobaelah_muted', this.muted);
+                return this.muted;
+            }
+
+            // Suara halus saat hover kartu (Tick/Blip)
+            playHover() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    const now = this.ctx.currentTime;
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(950, now + 0.04);
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } catch (e) { }
+            }
+
+            // Suara kristal chime saat aplikasi diklik
+            playClick() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    // Kord harmoni kristal (C5, E5, G5, C6)
+                    const freqs = [523.25, 659.25, 783.99, 1046.50];
+                    freqs.forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        const startTime = now + (idx * 0.035);
+                        osc.frequency.setValueAtTime(freq, startTime);
+                        gain.gain.setValueAtTime(0.07, startTime);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.35);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(startTime);
+                        osc.stop(startTime + 0.38);
+                    });
+                } catch (e) { }
+            }
+
+            // Suara portal masuk (Whoosh + Warp)
+            playPortal() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(240, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.22);
+                    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.42);
+                    gain.gain.setValueAtTime(0.09, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.52);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.52);
+                } catch (e) { }
+            }
+        }
+
+        const sound = new SoundEngine();
+
+        // Update status ikon suara saat dimuat
+        function perbaruiIkonSuara() {
+            const btn = document.getElementById('soundToggle');
+            const icon = document.getElementById('soundIcon');
+            if (sound.muted) {
+                btn.classList.add('muted');
+                icon.textContent = '🔇';
+                btn.title = 'Suara Efek (Mati) - Klik untuk Mengaktifkan';
+            } else {
+                btn.classList.remove('muted');
+                icon.textContent = '🔊';
+                btn.title = 'Suara Efek (Aktif) - Klik untuk Mematikan';
+            }
+        }
+
+        function toggleMuteAudio() {
+            sound.toggleMute();
+            perbaruiIkonSuara();
+            if (!sound.muted) sound.playClick();
+        }
+
+        // --- 2. INTERAKSI 3D LOGO DI LANDING PAGE ---
+        const logo3D = document.getElementById('logo3D');
+        const landingContent = document.querySelector('.landing-content');
+
+        if (landingContent && logo3D) {
+            landingContent.addEventListener('mousemove', (e) => {
+                const rect = landingContent.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const tiltX = ((y - centerY) / centerY) * -16;
+                const tiltY = ((x - centerX) / centerX) * 22;
+                logo3D.style.transform = `rotateX(${tiltX.toFixed(1)}deg) rotateY(${tiltY.toFixed(1)}deg) scale(1.08)`;
+            });
+
+            landingContent.addEventListener('mouseleave', () => {
+                logo3D.style.transform = '';
+            });
+        }
+
+        function interaksiLogo3D() {
+            sound.playClick();
+            if (logo3D) {
+                logo3D.style.animation = 'none';
+                logo3D.offsetHeight; // trigger reflow
+                logo3D.style.transform = 'scale(1.2) rotateY(720deg)';
+                logo3D.style.transition = 'transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                setTimeout(() => {
+                    logo3D.style.transition = '';
+                    logo3D.style.animation = 'spin3DLogo 9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite';
+                }, 1050);
+            }
+        }
+
+        // --- 3. INTERAKSI 3D LOGO DI HEADER UTAMA ---
+        const headerLogo3D = document.getElementById('headerLogo3D');
+        const headerRight = document.querySelector('.header-right');
+
+        if (headerRight && headerLogo3D) {
+            headerRight.addEventListener('mousemove', (e) => {
+                const rect = headerRight.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const tiltX = ((y - centerY) / centerY) * -14;
+                const tiltY = ((x - centerX) / centerX) * 18;
+                headerLogo3D.style.transform = `perspective(800px) rotateX(${tiltX.toFixed(1)}deg) rotateY(${tiltY.toFixed(1)}deg) scale(1.08)`;
+            });
+
+            headerRight.addEventListener('mouseleave', () => {
+                headerLogo3D.style.transform = '';
+            });
+        }
+
+        function interaksiLogoHeader3D() {
+            sound.playClick();
+            if (headerLogo3D) {
+                headerLogo3D.style.animation = 'none';
+                headerLogo3D.offsetHeight;
+                headerLogo3D.style.transform = 'perspective(800px) scale(1.22) rotateY(360deg)';
+                headerLogo3D.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                setTimeout(() => {
+                    headerLogo3D.style.transition = '';
+                    headerLogo3D.style.animation = 'headerLogoFloat 5s ease-in-out infinite alternate';
+                }, 850);
+            }
+        }
+
+        // --- 4. INTERAKSI KARTU APLIKASI (3D TILT, COLOR & SOUND) ---
+        document.querySelectorAll('.app-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+
+            card.addEventListener('mouseenter', () => {
+                sound.playHover();
+            });
+        });
+
+        // --- 5. DAFTAR LINK RESMI ONLINE & DETEKSI LINGKUNGAN CERDAS ---
+        const URL_ONLINE_APLIKASI = {
+            'sidimas': 'https://sidimas.sman15tebo.sch.id',
+            'sipresdir': 'https://sipresdir.sman15tebo.sch.id',
+            'sibukinstal': 'https://sibukinstal.sman15tebo.sch.id',
+            'siempus': 'https://siempus.sman15tebo.sch.id',
+            'simpeel': 'https://simpeel.sman15tebo.sch.id',
+            'siladumas': 'https://siladumas.sman15tebo.sch.id',
+            'sinbas': 'https://sinbas.sman15tebo.sch.id'
+        };
+        const URL_PROTOTIPE_ONLINE = {
+            siladumas: 'https://siladumas.sman15tebo.sch.id',
+            sinbas: 'https://sinbas.sman15tebo.sch.id'
+        };
+
+        // Deteksi apakah sedang di Desktop App (Electron) atau di Web Online (GitHub Pages / Domain)
+        let ipcRenderer = null;
+        let isDesktopElectron = false;
+        try {
+            if (typeof window !== 'undefined' && window.process && window.process.type) {
+                const electron = require('electron');
+                ipcRenderer = electron.ipcRenderer;
+                isDesktopElectron = true;
+            } else if (typeof navigator === 'object' && navigator.userAgent && navigator.userAgent.toLowerCase().includes('electron')) {
+                const electron = require('electron');
+                ipcRenderer = electron.ipcRenderer;
+                isDesktopElectron = true;
+            }
+        } catch (e) {
+            isDesktopElectron = false;
+        }
+
+        console.log('[SiKoBaELah Runtime]', isDesktopElectron ? '🖥️ Mode Desktop (Electron)' : '🌐 Mode Online (GitHub Pages / Web)');
+
+        // --- 6. BUKA APLIKASI DENGAN DETEKSI CERDAS, EFEK TACTILE & SUARA ---
+        function bukaAplikasi(folderName, el, event) {
+            sound.playClick();
+
+            // Efek Gelombang Ripple di Kartu
+            if (el && event) {
+                const rect = el.getBoundingClientRect();
+                const circle = document.createElement('span');
+                const diameter = Math.max(rect.width, rect.height);
+                const radius = diameter / 2;
+                circle.style.width = circle.style.height = `${diameter}px`;
+                circle.style.left = `${event.clientX - rect.left - radius}px`;
+                circle.style.top = `${event.clientY - rect.top - radius}px`;
+                circle.classList.add('card-ripple');
+
+                const existingRipple = el.querySelector('.card-ripple');
+                if (existingRipple) existingRipple.remove();
+
+                el.appendChild(circle);
+                el.classList.add('card-clicking');
+                setTimeout(() => el.classList.remove('card-clicking'), 450);
+            }
+
+            // Letupan mini partikel di kartu yang diklik
+            if (window.confetti && el) {
+                const rect = el.getBoundingClientRect();
+                const x = (rect.left + rect.width / 2) / window.innerWidth;
+                const y = (rect.top + rect.height / 2) / window.innerHeight;
+                confetti({
+                    particleCount: 40,
+                    spread: 70,
+                    origin: { x: x, y: y },
+                    colors: ['#ffffff', '#00f2fe', '#f857a6', '#ffeb3b', '#00ffaa'],
+                    zIndex: 9999
+                });
+            }
+
+            // Cari URL Online aplikasi yang dituju
+            let targetOnlineUrl = el ? (el.getAttribute('data-online') || el.getAttribute('href')) : null;
+            if (!targetOnlineUrl) {
+                const lower = folderName.toLowerCase();
+                for (const [key, url] of Object.entries(URL_ONLINE_APLIKASI)) {
+                    if (lower.includes(key)) {
+                        targetOnlineUrl = url;
+                        break;
+                    }
+                }
+            }
+            if (!targetOnlineUrl) {
+                targetOnlineUrl = window.location.origin || './';
+            }
+
+            // Teruskan parameter ?id= dan ?exec= secara dinamis jika portal sedang aktif dengan tenant tertentu
+            try {
+                const portalParams = new URLSearchParams(window.location.search);
+                const activeTenantId = portalParams.get('id') ||
+                    portalParams.get('tenant') ||
+                    (typeof SIKOBAELAH_DB !== 'undefined' && (SIKOBAELAH_DB.activeSchoolId || SIKOBAELAH_DB.getSchoolIdFromUrl()));
+                const activeExec = portalParams.get('exec');
+                if (targetOnlineUrl && targetOnlineUrl.startsWith('http')) {
+                    const u = new URL(targetOnlineUrl, window.location.href);
+                    if (activeTenantId) {
+                        u.searchParams.set('id', activeTenantId);
+                        if (u.searchParams.has('tenant')) u.searchParams.set('tenant', activeTenantId);
+                        if (u.searchParams.has('school')) u.searchParams.set('school', activeTenantId);
+                    }
+                    if (activeExec && !u.searchParams.get('exec')) {
+                        u.searchParams.set('exec', activeExec);
+                    }
+                    targetOnlineUrl = u.toString();
+                }
+            } catch (e) { }
+
+            // Eksekusi Berdasarkan Lingkungan
+            if (isDesktopElectron && ipcRenderer) {
+                // Di Aplikasi Desktop (Electron): Jalankan aplikasi sub-folder lokal
+                console.log('[SiKoBaELah Desktop] Meluncurkan aplikasi lokal:', folderName);
+                ipcRenderer.send('launch-app', folderName);
+            } else {
+                // Di Web Online / GitHub Pages: Buka URL resmi di tab baru
+                let safeTarget;
+                try {
+                    safeTarget = new URL(targetOnlineUrl, window.location.href);
+                } catch (_) {
+                    window.alert('Tautan aplikasi tidak valid.');
+                    return;
+                }
+                if (safeTarget.protocol !== 'https:' && safeTarget.protocol !== 'http:') {
+                    window.alert('Tautan aplikasi harus menggunakan HTTP atau HTTPS.');
+                    return;
+                }
+                targetOnlineUrl = safeTarget.href;
+                console.log('[SiKoBaELah Web] Mengarahkan ke link resmi:', targetOnlineUrl);
+                setTimeout(() => {
+                    window.open(targetOnlineUrl, '_blank');
+                }, 180);
+            }
+        }
+
+        // --- 7. NAVIGASI LANDING & PEMILIHAN SEKOLAH ---
+        function getDeploymentBasePath() {
+            let pathname = window.location.pathname;
+            const pageSuffixes = ['/src/index.html', '/src/dasar-hukum.html', '/index.html'];
+            for (const suffix of pageSuffixes) {
+                if (pathname.endsWith(suffix)) return pathname.slice(0, -suffix.length);
+            }
+
+            const schoolId = typeof SIKOBAELAH_DB !== 'undefined' && SIKOBAELAH_DB.getSchoolIdFromUrl();
+            const parts = pathname.split('/').filter(Boolean);
+            if (schoolId && parts.length) {
+                let lastPart = parts[parts.length - 1];
+                try { lastPart = decodeURIComponent(lastPart); } catch (error) { }
+                if (lastPart.toLowerCase() === schoolId.toLowerCase()) parts.pop();
+            }
+            return parts.length ? '/' + parts.join('/') : '';
+        }
+
+        function getSchoolPortalUrl(schoolId) {
+            return getDeploymentBasePath() + '/' + encodeURIComponent(schoolId);
+        }
+
+        function getSchoolLawUrl(schoolId) {
+            const base = getDeploymentBasePath();
+            const page = window.location.protocol === 'file:' ? 'dasar-hukum.html' : base + '/src/dasar-hukum.html';
+            return page + '?id=' + encodeURIComponent(schoolId);
+        }
+
+        function eksekusiMasuk() {
+            const modal = document.getElementById('schoolPickerModal');
+            const input = document.getElementById('schoolPickerId');
+            const status = document.getElementById('schoolPickerStatus');
+            if (!modal || !input || !status) {
+                throw new Error('Tampilan pemilih sekolah belum tersedia.');
+            }
+            modal.classList.add('show');
+            status.textContent = '';
+            input.value = '';
+            input.focus();
+        }
+
+        function tutupPilihSekolah() {
+            const modal = document.getElementById('schoolPickerModal');
+            if (modal) modal.classList.remove('show');
+        }
+
+        function bukaSekolahDenganId() {
+            const input = document.getElementById('schoolPickerId');
+            const status = document.getElementById('schoolPickerStatus');
+            const schoolId = input ? input.value.trim().replace(/^\/+|\/+$/g, '').toLowerCase() : '';
+            if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(schoolId)) {
+                if (status) status.textContent = 'ID tidak valid. Gunakan huruf kecil, angka, dan tanda hubung, misalnya /sman5tebo.';
+                if (input) input.focus();
+                return;
+            }
+            window.location.assign(getSchoolPortalUrl(schoolId));
+        }
+
+        // --- 8. MODAL HELPDESK, KEBIJAKAN PRIVASI & ALERT PENGEMBANGAN ---
+        const modalHelpdesk = document.getElementById('modalHelpdesk');
+        const modalPrivacy = document.getElementById('modalPrivacy');
+        const modalDevAlert = document.getElementById('modalDevAlert');
+
+        function bukaHelpdesk() {
+            sound.playClick();
+            if (modalHelpdesk) modalHelpdesk.classList.add('show');
+        }
+
+        function tutupHelpdesk() {
+            sound.playHover();
+            if (modalHelpdesk) modalHelpdesk.classList.remove('show');
+        }
+
+        function bukaPrivacy() {
+            sound.playClick();
+            if (modalPrivacy) modalPrivacy.classList.add('show');
+        }
+
+        function tutupPrivacy() {
+            sound.playHover();
+            if (modalPrivacy) modalPrivacy.classList.remove('show');
+        }
+
+        // Alert Khusus Aplikasi Dalam Pengembangan (SiLaDuMas & SINBAS)
+        function bukaAplikasiPengembangan(namaApp, subApp, logoUrl, appId = '') {
+            sound.playClick();
+            if (window.confetti) {
+                confetti({
+                    particleCount: 35,
+                    spread: 60,
+                    origin: { y: 0.5 },
+                    colors: ['#94a3b8', '#64748b', '#cbd5e1', '#0d6efd', '#f59e0b'],
+                    zIndex: 9999
+                });
+            }
+
+            const titleEl = document.getElementById('devModalTitle');
+            const subEl = document.getElementById('devModalSubtitle');
+            const logoEl = document.getElementById('devModalLogo');
+            const prototypeButton = document.getElementById('btnDevPrototype');
+
+            if (titleEl) titleEl.textContent = namaApp;
+            if (subEl) subEl.textContent = subApp;
+            if (logoEl && logoUrl) logoEl.src = logoUrl;
+            if (modalDevAlert) modalDevAlert.dataset.prototypeAppId = appId;
+            if (prototypeButton) prototypeButton.hidden = !['siladumas', 'sinbas'].includes(appId);
+
+            if (modalDevAlert) modalDevAlert.classList.add('show');
+        }
+
+        function bukaPrototipeDev() {
+            const appId = modalDevAlert && modalDevAlert.dataset.prototypeAppId;
+            if (!['siladumas', 'sinbas'].includes(appId)) return;
+
+            const card = Array.from(document.querySelectorAll('#appGridContainer .app-card'))
+                .find(item => item.getAttribute('data-app') === appId);
+            let targetUrl = URL_PROTOTIPE_ONLINE[appId];
+            if (!targetUrl || !/^https?:\/\//i.test(targetUrl)) {
+                Swal.fire('Prototipe tidak tersedia', 'Tautan prototipe aplikasi belum diatur.', 'warning');
+                return;
+            }
+
+            try {
+                const currentParams = new URLSearchParams(window.location.search);
+                const url = new URL(targetUrl, window.location.href);
+                const tenantId = currentParams.get('id') || currentParams.get('tenant');
+                const execUrl = currentParams.get('exec');
+                if (tenantId && !url.searchParams.has('id')) url.searchParams.set('id', tenantId);
+                if (execUrl && !url.searchParams.has('exec')) url.searchParams.set('exec', execUrl);
+                targetUrl = url.toString();
+            } catch (error) {
+                console.error('[SiKoBaELah] URL prototipe tidak valid:', error);
+                Swal.fire('Prototipe tidak dapat dibuka', 'Tautan prototipe aplikasi tidak valid.', 'error');
+                return;
+            }
+
+            sound.playClick();
+            tutupAlertDev();
+            if (isDesktopElectron && ipcRenderer) {
+                ipcRenderer.send('launch-app', appId);
+                return;
+            }
+
+            const appWindow = window.open(targetUrl, '_blank');
+            if (appWindow) {
+                appWindow.opener = null;
+            } else {
+                Swal.fire('Prototipe belum terbuka', 'Izinkan pop-up untuk situs ini, lalu klik Lihat Prototipe kembali.', 'warning');
+            }
+        }
+
+        function tutupAlertDev() {
+            sound.playHover();
+            if (modalDevAlert) modalDevAlert.classList.remove('show');
+        }
+
+        // Pencarian Realtime Kartu Aplikasi di Halaman Daftar Aplikasi
+        function filterAplikasi(keyword) {
+            const clearBtn = document.getElementById('appSearchClearBtn');
+            if (clearBtn) clearBtn.style.display = keyword ? 'flex' : 'none';
+
+            const q = (keyword || '').toLowerCase().trim();
+            const cards = document.querySelectorAll('#appGridContainer .app-card');
+            const noResultBox = document.getElementById('noAppResult');
+            const counter = document.getElementById('topAppCounter');
+
+            let visibleCount = 0;
+            cards.forEach(card => {
+                if (card.dataset.schoolDisabled === 'true') {
+                    card.style.display = 'none';
+                    return;
+                }
+                const searchData = (card.getAttribute('data-search') || '').toLowerCase();
+                const textContent = card.innerText.toLowerCase();
+
+                if (!q || searchData.includes(q) || textContent.includes(q)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                if (noResultBox) {
+                    noResultBox.style.display = 'block';
+                    const qText = document.getElementById('noAppQueryText');
+                    if (qText) qText.textContent = `Tidak ada aplikasi yang cocok dengan kata kunci: "${keyword}"`;
+                }
+                if (counter) counter.textContent = '0 Aplikasi';
+            } else {
+                if (noResultBox) noResultBox.style.display = 'none';
+                if (counter) {
+                    counter.textContent = q ? `${visibleCount} Ditemukan` : `${visibleCount} Aplikasi`;
+                }
+            }
+        }
+
+        function clearSearchApp() {
+            const input = document.getElementById('appSearchInput');
+            if (input) {
+                input.value = '';
+                filterAplikasi('');
+                input.focus();
+            }
+        }
+
+        window.onclick = function (event) {
+            if (event.target === modalHelpdesk) {
+                tutupHelpdesk();
+            }
+            if (event.target === modalPrivacy) {
+                tutupPrivacy();
+            }
+            if (event.target === modalDevAlert) {
+                tutupAlertDev();
+            }
+            if (event.target && event.target.id === 'schoolPickerModal') tutupPilihSekolah();
+        };
+
+        // --- 9. INITIALIZE ON LOAD ---
+        window.addEventListener('load', () => {
+            perbaruiIkonSuara();
+
+            if (window.location.hash === '#login' || window.location.search.includes('login')) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+        });
+
+
+
+        // Pintasan Rahasia Masuk Admin: Tekan Ctrl + Shift + L
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
+                e.preventDefault();
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Pintasan Rahasia: Triple-click pada teks Hak Cipta di Footer
+        let clickCountCopyright = 0;
+        let clickTimerCopyright = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            const footerCopy = document.querySelector('.footer div:first-child');
+            if (footerCopy) {
+                footerCopy.style.cursor = 'pointer';
+                footerCopy.title = 'SiKoBaELah';
+                footerCopy.addEventListener('click', () => {
+                    clickCountCopyright++;
+                    clearTimeout(clickTimerCopyright);
+                    if (clickCountCopyright >= 3) {
+                        window.location.href = 'login.html';
+                    }
+                    clickTimerCopyright = setTimeout(() => { clickCountCopyright = 0; }, 800);
+                });
+            }
+        });
+
+        // --- 11. DYNAMIC DATABASE SINKRONISASI DARI GOOGLE SPREADSHEET ---
+        function resolveImgPath(p, type) {
+            if (!p) return './assets/img/sikobaelah.png';
+            p = String(p).trim();
+            if (/^https?:\/\//i.test(p) || /^data:image\/(?:jpeg|png|webp|gif);base64,/i.test(p) || p.startsWith('blob:')) {
+                return p;
+            }
+            if (/^[a-z][a-z0-9+.-]*:/i.test(p)) return './assets/img/sikobaelah.png';
+
+            // Bersihkan prefix direktori yang mungkin tersimpan
+            const clean = p.replace(/^(\.\/)?(src\/)?assets\/(img\/|img-sekolah\/)?/i, '');
+
+            // Aturan folder aset:
+            // 1. Modul Aplikasi SiKoBaELah -> folder assets/img/
+            // 2. Logo Sekolah / Instansi -> folder assets/img-sekolah/
+            let subfolder = 'assets/img/';
+            if (type === 'app' || type === 'aplikasi') {
+                subfolder = 'assets/img/';
+            } else if (type === 'sekolah' || type === 'instansi' || type === 'school') {
+                subfolder = 'assets/img-sekolah/';
+            } else {
+                // Auto-deteksi ketat:
+                const isApp = /sidimas|sipresdir|sibukinstal|siempus|simpeel|siladumas|sinbas|sikobaelah|fary|tutwuri/i.test(clean);
+                const isSchool = !isApp && (/sman|smkn|slbn|prov|ternate|tebo|sekolah|jambi/i.test(clean) || /img-sekolah/i.test(p));
+                subfolder = isSchool ? 'assets/img-sekolah/' : 'assets/img/';
+            }
+
+            // Jika protokol file://
+            if (window.location.protocol === 'file:') {
+                return './' + subfolder + clean;
+            }
+
+            // Di browser: file index.html berada di folder src/, path relatif selalu ./assets/...
+            const isInsideSrc = window.location.pathname.includes('/src/');
+            if (isInsideSrc) {
+                return './' + subfolder + clean;
+            }
+
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            let deploymentBase = '';
+            if (pathParts.length > 0 && pathParts[0] !== 'src') {
+                deploymentBase = '/' + pathParts[0];
+            }
+            return (deploymentBase ? deploymentBase : '') + '/src/' + subfolder + clean;
+        }
+
+        function safeHttpUrl(value) {
+            try {
+                const url = new URL(String(value || ''), window.location.href);
+                return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
+            } catch (_) {
+                return '';
+            }
+        }
+
+        function normalizeWebsiteUrl(value) {
+            const input = String(value || '').trim();
+            if (!input) return '';
+            const candidate = /^[a-z][a-z0-9+.-]*:/i.test(input)
+                ? input
+                : 'https://' + input.replace(/^\/\//, '');
+            return safeHttpUrl(candidate);
+        }
+
+        function bukaWebsiteSekolah(event) {
+            const link = document.getElementById('schoolWebsiteLink');
+            if (!link || !link.dataset.url) {
+                if (event) event.preventDefault();
+                window.alert('Website sekolah belum tersedia.');
+                return false;
+            }
+            link.href = link.dataset.url;
+            return true;
+        }
+
+        function canonicalizeSchoolUrl(schoolId) {
+            if (!schoolId) return;
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('id') !== schoolId) {
+                params.set('id', schoolId);
+                history.replaceState(null, '', window.location.pathname + '?' + params.toString() + window.location.hash);
+            }
+        }
+
+        function terapkanDataDariDatabase() {
+            if (typeof SIKOBAELAH_DB === 'undefined') return;
+            const schoolId = SIKOBAELAH_DB.activeSchoolId || SIKOBAELAH_DB.getSchoolIdFromUrl();
+            const cfg = SIKOBAELAH_DB.getConfig();
+            const favicon = document.querySelector('link[rel~="icon"]');
+            if (favicon) favicon.href = resolveImgPath('sikobaelah.png');
+            terapkanProfilHelpdesk(cfg);
+
+            // Terapkan Config Umum (Nama Portal, Logo Aplikasi, Tema)
+            if (cfg) {
+                if (cfg.nama_portal) {
+                    document.querySelectorAll('.landing-title, .app-title').forEach(el => el.textContent = cfg.nama_portal);
+                }
+                if (cfg.sub_judul) {
+                    document.querySelectorAll('.app-subtitle').forEach(el => el.textContent = cfg.sub_judul);
+                }
+                if (cfg.logo_aplikasi) {
+                    const lLanding = document.getElementById('landingLogoImg');
+                    if (lLanding) lLanding.src = resolveImgPath(cfg.logo_aplikasi, 'app');
+                    const lHeader = document.getElementById('headerLogoApp');
+                    if (lHeader) lHeader.src = resolveImgPath(cfg.logo_aplikasi, 'app');
+                }
+
+                // Terapkan Tema Gradasi Background 3 Warna Dinamis
+                const tc1 = /^#[0-9a-f]{6}$/i.test(String(cfg.theme_color_1 || '')) ? cfg.theme_color_1 : '#ff007a';
+                const tc2 = /^#[0-9a-f]{6}$/i.test(String(cfg.theme_color_2 || '')) ? cfg.theme_color_2 : '#7000ff';
+                const tc3 = /^#[0-9a-f]{6}$/i.test(String(cfg.theme_color_3 || '')) ? cfg.theme_color_3 : '#00d2ff';
+                let dynamicStyle = document.getElementById('dynamicThemeStyle');
+                if (!dynamicStyle) {
+                    dynamicStyle = document.createElement('style');
+                    dynamicStyle.id = 'dynamicThemeStyle';
+                    document.head.appendChild(dynamicStyle);
+                }
+                dynamicStyle.textContent = `
+                    body {
+                        background: linear-gradient(-45deg, ${tc1}, ${tc2}, ${tc3}, ${tc1}) !important;
+                        background-size: 400% 400% !important;
+                    }
+                `;
+
+                // Terapkan Data Lembaga / Sekolah
+                if (cfg.nama_sekolah) {
+                    document.querySelectorAll('.school-name').forEach(el => el.textContent = cfg.nama_sekolah);
+                    const schoolFooterName = document.getElementById('schoolFooterName');
+                    if (schoolFooterName) schoolFooterName.textContent = cfg.nama_sekolah;
+                    const schoolPrivacyName = document.getElementById('schoolPrivacyName');
+                    if (schoolPrivacyName) schoolPrivacyName.textContent = cfg.nama_sekolah;
+                    const schoolLogoBadge = document.getElementById('schoolLogoBadge');
+                    if (schoolLogoBadge) schoolLogoBadge.title = cfg.nama_sekolah;
+                }
+                // Mode sekolah: isi dari data sheet Sekolah; bila kosong sembunyikan (jangan tampilkan placeholder)
+                if (schoolId) {
+                    document.querySelectorAll('.agency-name').forEach(el => {
+                        el.textContent = cfg.pemprov || '';
+                        el.style.display = cfg.pemprov ? '' : 'none';
+                    });
+                    document.querySelectorAll('.school-address').forEach(el => {
+                        el.textContent = cfg.alamat_sekolah || '';
+                        el.style.display = cfg.alamat_sekolah ? '' : 'none';
+                    });
+                } else {
+                    if (cfg.pemprov) {
+                        document.querySelectorAll('.agency-name').forEach(el => { el.textContent = cfg.pemprov; });
+                    }
+                    if (cfg.alamat_sekolah) {
+                        document.querySelectorAll('.school-address').forEach(el => { el.textContent = cfg.alamat_sekolah; });
+                    }
+                }
+
+                const website = normalizeWebsiteUrl(cfg.url_web);
+                const websiteLink = document.getElementById('schoolWebsiteLink');
+                if (websiteLink) {
+                    websiteLink.style.display = schoolId ? 'inline-flex' : 'none';
+                    if (schoolId && website) {
+                        websiteLink.dataset.url = website;
+                        websiteLink.href = website;
+                        websiteLink.title = 'Buka website ' + (cfg.nama_sekolah || 'sekolah') + ' di tab baru';
+                        websiteLink.setAttribute('aria-label', 'Buka website ' + (cfg.nama_sekolah || 'sekolah'));
+                    } else {
+                        delete websiteLink.dataset.url;
+                        websiteLink.href = '#';
+                        websiteLink.title = 'Website sekolah belum tersedia';
+                        websiteLink.setAttribute('aria-label', 'Website sekolah belum tersedia');
+                    }
+                }
+                const lawLink = document.getElementById('schoolLawLink');
+                if (lawLink && schoolId) lawLink.href = getSchoolLawUrl(schoolId);
+
+                const privacyManaged = document.getElementById('schoolPrivacyManaged');
+                if (privacyManaged) privacyManaged.textContent = 'Tata Usaha ' + (cfg.nama_sekolah || 'Sekolah');
+                const privacyAddress = document.getElementById('schoolPrivacyAddress');
+                if (privacyAddress) privacyAddress.textContent = cfg.alamat_sekolah || '-';
+                const privacyWebsite = document.getElementById('schoolPrivacyWebsite');
+                if (privacyWebsite) privacyWebsite.textContent = website ? website.replace(/^https?:\/\//i, '') : '-';
+
+                // Terapkan Logo Instansi & Logo Sekolah
+                const lInstansi = document.getElementById('headerLogoInstansi');
+                if (lInstansi) {
+                    lInstansi.alt = 'Logo Instansi';
+                    lInstansi.style.display = cfg.logo_instansi ? '' : 'none';
+                    if (lInstansi.parentElement) lInstansi.parentElement.style.display = cfg.logo_instansi ? '' : 'none';
+                    if (cfg.logo_instansi) lInstansi.src = resolveImgPath(cfg.logo_instansi, 'sekolah');
+                }
+                const lSekolah = document.getElementById('headerLogoSekolah');
+                if (lSekolah) {
+                    lSekolah.style.display = cfg.logo_sekolah ? '' : 'none';
+                    if (lSekolah.parentElement) lSekolah.parentElement.style.display = cfg.logo_sekolah ? '' : 'none';
+                    if (cfg.logo_sekolah) lSekolah.src = resolveImgPath(cfg.logo_sekolah, 'sekolah');
+                    lSekolah.alt = 'Logo ' + (cfg.nama_sekolah || 'Sekolah');
+                }
+            }
+
+            // --- AMBIL & TERAPKAN APLIKASI ---
+            const apps = SIKOBAELAH_DB.getApps();
+            const appGrid = document.getElementById('appGridContainer');
+
+            if (schoolId) {
+                // Mode Sekolah: hanya tampilkan aplikasi yang diaktifkan untuk sekolah ini
+                const configuredApps = new Map((Array.isArray(apps) ? apps : []).map(app => [String(app.id), app]));
+
+                document.querySelectorAll('#appGridContainer .app-card[data-app]').forEach(card => {
+                    const appId = String(card.dataset.app);
+                    const app = configuredApps.get(appId);
+
+                    // Jika aplikasi tidak diaktifkan untuk sekolah ini, SEMBUNYIKAN
+                    if (!app) {
+                        card.dataset.schoolDisabled = 'true';
+                        card.style.display = 'none';
+                        return;
+                    }
+
+                    // Tampilkan kartu yang aktif
+                    delete card.dataset.schoolDisabled;
+                    card.style.display = '';
+
+                    // Perbarui isi kartu dengan data dan URL khusus sekolah ini
+                    if (app.nama) {
+                        const h3 = card.querySelector('h3');
+                        if (h3) h3.textContent = app.nama;
+                    }
+                    if (app.deskripsi) {
+                        const p = card.querySelector('p');
+                        if (p) p.textContent = app.deskripsi;
+                    }
+                    if (app.kategori) {
+                        const badge = card.querySelector('.card-badge');
+                        if (badge) badge.textContent = app.kategori;
+                    }
+                    if (app.logo) {
+                        const img = card.querySelector('.app-logo-wrapper img');
+                        if (img) img.src = resolveImgPath(app.logo, 'app');
+                    }
+                    if (app.url_online) {
+                        const safeUrl = safeHttpUrl(app.url_online);
+                        if (safeUrl) {
+                            card.setAttribute('data-online', safeUrl);
+                            card.href = safeUrl;
+                            URL_ONLINE_APLIKASI[app.id] = safeUrl;
+                        } else {
+                            card.removeAttribute('data-online');
+                            card.removeAttribute('href');
+                            delete URL_ONLINE_APLIKASI[app.id];
+                        }
+                    }
+                    if (app.kata_kunci) {
+                        card.setAttribute('data-search', app.kata_kunci);
+                    }
+                    const ribbon = card.querySelector('.card-dev-ribbon');
+                    if (app.status === 'aktif') {
+                        card.classList.remove('card-dev-gray');
+                        if (ribbon) ribbon.style.display = 'none';
+                        card.onclick = function (e) {
+                            bukaAplikasi(app.id, this, e);
+                            return false;
+                        };
+                    } else if (app.status === 'dev') {
+                        card.classList.add('card-dev-gray');
+                        if (ribbon) {
+                            ribbon.style.display = 'block';
+                            if (app.ribbon) ribbon.textContent = app.ribbon;
+                        }
+                        card.onclick = function (e) {
+                            bukaAplikasiPengembangan(app.nama || app.id, app.deskripsi || '', app.logo || './assets/img/sikobaelah.png', app.id);
+                            return false;
+                        };
+                    }
+                });
+
+                // Hapus kartu custom lama lalu render kartu custom baru jika ada
+                document.querySelectorAll('#appGridContainer .app-card[data-school-custom="true"]').forEach(card => card.remove());
+                if (appGrid && Array.isArray(apps)) {
+                    apps.filter(app => !document.querySelector(`#appGridContainer .app-card[data-app="${CSS.escape(String(app.id))}"]`))
+                        .forEach(app => appGrid.appendChild(buatKartuAplikasiSekolah(app)));
+                }
+            } else {
+                // Mode Umum (bukan sekolah tertentu): Tampilkan semua kartu
+                document.querySelectorAll('#appGridContainer .app-card[data-app]').forEach(card => {
+                    delete card.dataset.schoolDisabled;
+                    card.style.display = '';
+                });
+                if (Array.isArray(apps) && apps.length > 0) {
+                    apps.forEach(app => {
+                        const card = document.querySelector(`#appGridContainer [data-app="${CSS.escape(String(app.id))}"]`);
+                        if (card) {
+                            if (app.nama) {
+                                const h3 = card.querySelector('h3');
+                                if (h3) h3.textContent = app.nama;
+                            }
+                            if (app.deskripsi) {
+                                const p = card.querySelector('p');
+                                if (p) p.textContent = app.deskripsi;
+                            }
+                            if (app.kategori) {
+                                const badge = card.querySelector('.card-badge');
+                                if (badge) badge.textContent = app.kategori;
+                            }
+                            if (app.logo) {
+                                const img = card.querySelector('.app-logo-wrapper img');
+                                if (img) img.src = resolveImgPath(app.logo, 'app');
+                            }
+                            if (app.url_online) {
+                                const safeUrl = safeHttpUrl(app.url_online);
+                                if (safeUrl) {
+                                    card.setAttribute('data-online', safeUrl);
+                                    card.href = safeUrl;
+                                    URL_ONLINE_APLIKASI[app.id] = safeUrl;
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            function terapkanProfilHelpdesk(cfg) {
+                if (!cfg) return;
+                const devNama = cfg.dev_nama || cfg.creator || 'Pariyanto';
+                document.querySelectorAll('.creator-name').forEach(el => el.textContent = devNama);
+
+                const mNama = document.getElementById('modalDevNama');
+                if (mNama) mNama.textContent = devNama;
+                const mJabatan = document.getElementById('modalDevJabatan');
+                if (mJabatan) mJabatan.textContent = cfg.dev_jabatan || 'Pengembang Sistem & Pranata Komputer';
+                const mInstansi = document.getElementById('modalDevInstansi');
+                if (mInstansi) mInstansi.textContent = 'Helpdesk SiKoBaELah';
+                const mFoto = document.getElementById('modalDevFoto');
+                if (mFoto) mFoto.src = resolveImgPath(cfg.dev_foto || 'sikobaelah.png');
+
+                const devAlamat = cfg.dev_alamat || 'Alamat belum diatur';
+                const mAlamat = document.getElementById('modalDevAlamat');
+                if (mAlamat) mAlamat.textContent = devAlamat;
+                const devCoords = cfg.dev_koordinat || '';
+                const mCoords = document.getElementById('modalDevCoords');
+                if (mCoords) mCoords.textContent = devCoords || '-';
+                const mapsQuery = devCoords || devAlamat;
+                const mapsUrl = 'https://www.google.com/maps?q=' + encodeURIComponent(mapsQuery);
+                const mAlamatLink = document.getElementById('modalDevAlamatLink');
+                if (mAlamatLink) mAlamatLink.href = mapsUrl;
+                const mCoordsLink = document.getElementById('modalDevCoordsLink');
+                if (mCoordsLink) mCoordsLink.href = mapsUrl;
+
+                const devWa = String(cfg.dev_wa || '6285219901909').trim();
+                let cleanWa = devWa.replace(/\D/g, '');
+                if (cleanWa.startsWith('00')) cleanWa = cleanWa.slice(2);
+                if (cleanWa.startsWith('0')) cleanWa = '62' + cleanWa.slice(1);
+                else if (cleanWa.startsWith('8')) cleanWa = '62' + cleanWa;
+                const waUrl = cleanWa ? 'https://wa.me/' + cleanWa : 'javascript:void(0)';
+                const mWa = document.getElementById('modalDevWa');
+                if (mWa) mWa.textContent = cleanWa.startsWith('62') ? '0' + cleanWa.substring(2) : devWa;
+                const mWaLink = document.getElementById('modalDevWaLink');
+                if (mWaLink) mWaLink.href = waUrl;
+                const mQuickWa = document.getElementById('modalQuickWa');
+                if (mQuickWa) mQuickWa.href = waUrl;
+
+                const devTelp = cfg.dev_telp || cfg.telp_helpdesk || '';
+                const mTelp = document.getElementById('modalDevTelp');
+                if (mTelp) mTelp.textContent = devTelp || '-';
+                const mTelpLink = document.getElementById('modalDevTelpLink');
+                if (mTelpLink) mTelpLink.href = devTelp ? 'tel:' + devTelp : 'javascript:void(0)';
+                const devEmail = cfg.dev_email || cfg.email_resmi || '';
+                const mEmail = document.getElementById('modalDevEmail');
+                if (mEmail) mEmail.textContent = devEmail || '-';
+                const mEmailLink = document.getElementById('modalDevEmailLink');
+                if (mEmailLink) mEmailLink.href = devEmail ? 'mailto:' + devEmail : 'javascript:void(0)';
+            }
+        }
+
+        function buatKartuAplikasiSekolah(app) {
+            const card = document.createElement('a');
+            card.className = 'app-card ' + (app.card_class || 'card-custom');
+            card.dataset.app = app.id;
+            card.dataset.schoolCustom = 'true';
+            card.dataset.search = app.kata_kunci || app.nama || app.id;
+            const safeUrl = safeHttpUrl(app.url_online);
+            card.dataset.online = safeUrl;
+            card.href = safeUrl || '#';
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+            card.addEventListener('click', event => {
+                event.preventDefault();
+                if (app.status === 'dev') {
+                    bukaAplikasiPengembangan(app.nama || app.id, app.deskripsi || '', resolveImgPath(app.logo, 'app'), app.id);
+                } else {
+                    bukaAplikasi(app.id, card, event);
+                }
+            });
+
+            const glare = document.createElement('div');
+            glare.className = 'card-glare';
+            const logoWrapper = document.createElement('div');
+            logoWrapper.className = 'app-logo-wrapper';
+            const logo = document.createElement('img');
+            logo.src = resolveImgPath(app.logo, 'app');
+            logo.alt = 'Logo ' + (app.nama || app.id);
+            logo.onerror = () => { logo.src = './assets/img/sikobaelah.png'; };
+            logoWrapper.appendChild(logo);
+            const title = document.createElement('h3');
+            title.textContent = app.nama || app.id;
+            const description = document.createElement('p');
+            description.textContent = app.deskripsi || '';
+            const badge = document.createElement('span');
+            badge.className = 'card-badge';
+            badge.textContent = app.kategori || 'Umum';
+            card.append(glare, logoWrapper, title, description, badge);
+            return card;
+        }
+
+        async function muatPortalSekolah() {
+            if (typeof SIKOBAELAH_DB === 'undefined') return;
+            const schoolId = SIKOBAELAH_DB.getSchoolIdFromUrl();
+            if (!schoolId) {
+                return;
+            }
+
+            SIKOBAELAH_DB.activeSchoolId = schoolId;
+            const grid = document.getElementById('appGridContainer');
+            const status = document.getElementById('schoolLoadStatus');
+            const cachedCfg = SIKOBAELAH_DB.getConfig();
+
+            try {
+                // Cegah aplikasi umum bocor saat data sekolah belum tersedia.
+                const cachedApps = localStorage.getItem(SIKOBAELAH_DB.getSchoolAppsStorageKey(schoolId));
+                if (!cachedApps && grid) {
+                    grid.classList.add('school-loading');
+                    document.querySelectorAll('#appGridContainer .app-card[data-app]').forEach(card => {
+                        card.style.display = 'none';
+                    });
+                    if (status) {
+                        status.textContent = 'Memuat modul aplikasi sekolah...';
+                        status.hidden = false;
+                        status.style.color = '#475569';
+                    }
+                }
+
+                // Terapkan data cache lebih dulu, lalu perbarui dari Google Spreadsheet.
+                terapkanDataDariDatabase();
+                if (!cachedCfg.nama_sekolah) {
+                    document.querySelectorAll('.school-name').forEach(el => { el.textContent = 'Memuat data sekolah...'; });
+                }
+
+                const result = await SIKOBAELAH_DB.getSchoolData(schoolId);
+
+                if (!(result && result.success && result.data)) {
+                    if (status) {
+                        status.textContent = (cachedCfg.nama_sekolah
+                            ? 'Data sekolah terbaru tidak dapat dimuat'
+                            : 'Gagal memuat data sekolah dari server')
+                            + (result && result.message ? ': ' + result.message : '')
+                            + '. Muat ulang halaman.';
+                        status.hidden = false;
+                        status.style.color = '#b91c1c';
+                    }
+                    return;
+                }
+
+                SIKOBAELAH_DB.cacheSchoolData(schoolId, result.data);
+                canonicalizeSchoolUrl(schoolId);
+                if (result.data.school && result.data.school.nama) {
+                    document.title = result.data.school.nama + ' - SiKoBaELah';
+                }
+                terapkanDataDariDatabase();
+
+                if (Array.isArray(result.data.apps)) {
+                    const activeApps = result.data.apps.filter(app =>
+                        app.enabled === true || app.enabled === 1 || String(app.enabled).toLowerCase() === 'true'
+                    );
+                    if (!activeApps.length && status) {
+                        status.textContent = 'Belum ada aplikasi yang diaktifkan untuk sekolah ini.';
+                        status.hidden = false;
+                        status.style.color = '#475569';
+                    } else if (status) {
+                        status.hidden = true;
+                    }
+                }
+            } catch (error) {
+                console.warn('[Portal Sekolah] Gagal memuat data sekolah:', error);
+                if (status) {
+                    status.textContent = (cachedCfg.nama_sekolah
+                        ? 'Data sekolah tersimpan, tetapi pembaruan gagal dimuat.'
+                        : 'Gagal memuat data sekolah.')
+                        + ' Muat ulang halaman atau periksa koneksi internet.';
+                    status.hidden = false;
+                    status.style.color = '#b91c1c';
+                }
+            } finally {
+                if (grid) grid.classList.remove('school-loading');
+            }
+        }
+
+        window.addEventListener('sikobaelah:data-updated', () => {
+            console.log('[SiKoBaELah DB] Menerima pembaruan data dari Google Sheets...');
+            terapkanDataDariDatabase();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const schoolId = typeof SIKOBAELAH_DB !== 'undefined' && SIKOBAELAH_DB.getSchoolIdFromUrl();
+            if (schoolId) {
+                document.body.classList.add('school-portal');
+                document.getElementById('landing-page').style.display = 'none';
+                document.getElementById('main-portal').classList.add('show');
+            }
+            terapkanDataDariDatabase();
+            muatPortalSekolah();
+        });
+
+        // --- 10. PENGHITUNG PENGUNJUNG & LIVE ONLINE ---
+        // Data disimpan di layanan counter Abacus dengan angka awal tampilan 1909.
+        (function () {
+            const API = 'https://abacus.jasoncameron.dev';
+            const NS = 'sikobaelah-sman15tebo';
+            const VISITOR_KEY = 'pengunjung-total-v2';
+            const VISITOR_BASE = 1908;
+            const VISITOR_INITIAL = 1909;
+            const BUCKET_MS = 60000;           // Jendela 1 menit per bucket online
+            const TICK_MS = 15000;             // Polling status live tiap 15 detik
+            const LS_LAST = 'sikobaelah_visitor_last_v2';
+            const LS_OFFLINE = 'sikobaelah_visitor_offline_v2';
+
+            const digitsEl = document.getElementById('visitorDigits');
+            const liveEl = document.getElementById('liveOnlineCount');
+
+            // Deteksi lingkungan Desktop Offline / Localhost / Electron
+            const isDesktopLocal = (
+                window.location.protocol === 'file:' ||
+                window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1' ||
+                navigator.userAgent.indexOf('Electron') !== -1 ||
+                (window.process && window.process.type)
+            );
+
+            function renderVisitor(n) {
+                if (!digitsEl) return;
+                const s = String(Math.max(VISITOR_INITIAL, Number(n) || 0));
+                if (digitsEl.children.length !== s.length) {
+                    digitsEl.replaceChildren();
+                    for (let i = 0; i < s.length; i++) {
+                        const d = document.createElement('span');
+                        d.className = 'visitor-digit';
+                        digitsEl.appendChild(d);
+                    }
+                }
+                Array.from(digitsEl.children).forEach((el, i) => {
+                    if (el.textContent !== s[i]) {
+                        el.textContent = s[i];
+                        el.classList.remove('pop');
+                        void el.offsetWidth;
+                        el.classList.add('pop');
+                    }
+                });
+            }
+
+            async function apiCall(endpoint) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 6000);
+                try {
+                    const r = await fetch(API + endpoint, { cache: 'no-store', signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (r.status === 404) return 0;
+                    if (!r.ok) return null;
+                    const j = await r.json();
+                    return typeof j.value === 'number' ? j.value : Number(j.value) || 0;
+                } catch (e) {
+                    clearTimeout(timeoutId);
+                    return null;
+                }
+            }
+
+            // 1. JUMLAH PENGUNJUNG: Bertambah otomatis setiap kali aplikasi/halaman dibuka
+            async function hitungKunjungan() {
+                const cache = parseInt(localStorage.getItem(LS_LAST) || '0', 10);
+                renderVisitor(cache >= VISITOR_INITIAL ? cache : VISITOR_INITIAL);
+
+                if (isDesktopLocal || !navigator.onLine) {
+                    // Mode desktop/offline: hitung lokal mandiri
+                    const curOffline = parseInt(localStorage.getItem(LS_OFFLINE) || String(VISITOR_INITIAL - 1), 10);
+                    const nextOffline = curOffline + 1;
+                    localStorage.setItem(LS_OFFLINE, String(nextOffline));
+                    localStorage.setItem(LS_LAST, String(nextOffline));
+                    renderVisitor(nextOffline);
+                    return;
+                }
+
+                // Mode Online: panggil /hit/ agar total pengunjung global bertambah otomatis setiap kali dibuka
+                const hitVal = await apiCall('/hit/' + NS + '/' + VISITOR_KEY);
+                if (hitVal !== null) {
+                    const tampil = VISITOR_BASE + hitVal;
+                    localStorage.setItem(LS_LAST, String(tampil));
+                    renderVisitor(tampil);
+                }
+            }
+
+            // 2. LIVE ONLINE: Hanya menghitung jumlah browser/perangkat yang aktif bersamaan.
+            // 1 perangkat (meski refresh berkali-kali atau buka banyak tab) HANYA dihitung 1.
+            let bc = null;
+            try {
+                if (typeof BroadcastChannel !== 'undefined') {
+                    bc = new BroadcastChannel('sikobaelah_live_presence');
+                    bc.onmessage = function (ev) {
+                        if (ev.data && typeof ev.data.count === 'number' && liveEl) {
+                            liveEl.textContent = String(Math.max(1, ev.data.count));
+                        }
+                    };
+                }
+            } catch (e) { /* BroadcastChannel opsional */ }
+
+            async function perbaruiLive() {
+                if (!liveEl) return;
+
+                // Jika di mode Desktop / Offline: tetap fixed '1' orang
+                if (isDesktopLocal || !navigator.onLine) {
+                    liveEl.textContent = '1';
+                    return;
+                }
+
+                const b = Math.floor(Date.now() / BUCKET_MS);
+                const pingKey = 'sikobaelah_live_b_' + b;
+
+                try {
+                    // Membersihkan cache ping lama agar localStorage tidak menumpuk
+                    for (let i = 2; i <= 5; i++) {
+                        localStorage.removeItem('sikobaelah_live_b_' + (b - i));
+                    }
+
+                    let curCount;
+                    // Cek apakah browser/perangkat ini SUDAH mencatat ping pada menit ini
+                    if (!localStorage.getItem(pingKey)) {
+                        // Belum pernah ping di menit b: lakukan 1x hit untuk mendaftarkan kehadiran perangkat ini
+                        localStorage.setItem(pingKey, '1');
+                        curCount = await apiCall('/hit/' + NS + '/live-' + b);
+                    } else {
+                        // Perangkat ini SUDAH terdaftar di menit b: HANYA GET (baca) nilai saat ini,
+                        // sehingga reload berulang-ulang TIDAK AKAN menambah angka!
+                        curCount = await apiCall('/get/' + NS + '/live-' + b);
+                    }
+
+                    if (curCount === null) {
+                        return;
+                    }
+
+                    // Jika menit baru baru saja mulai (curCount masih 0), lihat menit sebelumnya (b - 1)
+                    let activeUsers = curCount;
+                    if (curCount <= 0) {
+                        const prevCount = await apiCall('/get/' + NS + '/live-' + (b - 1));
+                        activeUsers = (prevCount !== null && prevCount > 0) ? prevCount : 1;
+                    }
+
+                    const finalCount = Math.max(1, activeUsers);
+                    liveEl.textContent = String(finalCount);
+
+                    // Beri tahu tab lain di browser ini
+                    if (bc) {
+                        try { bc.postMessage({ count: finalCount }); } catch (err) { }
+                    }
+                } catch (e) {
+                    if (liveEl.textContent === '' || liveEl.textContent === '0') {
+                        liveEl.textContent = '1';
+                    }
+                }
+            }
+
+            window.addEventListener('load', () => {
+                hitungKunjungan();
+                perbaruiLive();
+                setInterval(perbaruiLive, TICK_MS);
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) perbaruiLive();
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>
