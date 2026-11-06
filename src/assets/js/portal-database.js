@@ -98,6 +98,7 @@ const SIKOBAELAH_GAS_EXEC_URL = "https://script.google.com/macros/s/AKfycbz3CWXh
             { file: "logo sman 20 tebo.png", label: "SMA Negeri 20 Tebo" },
             { file: "logo smkn 1 tebo.png", label: "SMK Negeri 1 Tebo" },
             { file: "logo smkn 2 tebo.png", label: "SMK Negeri 2 Tebo" },
+            { file: "logo smkn 4 tebo.png", label: "SMK Negeri 4 Tebo" },
             { file: "logo slbn tebo.png", label: "SLB Negeri Tebo" },
             { file: "logo sman 9 kota jambi.png", label: "SMA Negeri 9 Kota Jambi" },
             { file: "logo sman 6 tanjabbarat.png", label: "SMA Negeri 6 Tanjung Jabung Barat" },
